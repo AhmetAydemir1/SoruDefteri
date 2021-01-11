@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:soru_defteri/Models/Strings.dart';
+import 'package:soru_defteri/UI/Sign/SignInPhoneVerification.dart';
 
 class SignInWithPhone extends StatefulWidget {
   @override
@@ -85,13 +85,20 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       child: Padding(
-                        padding: const EdgeInsets.only(right:10.0),
+                        padding: const EdgeInsets.only(right:20.0),
                         child: InternationalPhoneNumberInput(
+                          inputDecoration: InputDecoration(
+                            hintText: "Telefon numarası",
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                          ),
                           searchBoxDecoration: InputDecoration(
                             hintText: "Ülke adına/koduna göre arama yapabilirsiniz."
                           ),
                           errorMessage: "Hatalı telefon numarası.",
-
                           hintText: "Telefon numarası",
                           autoValidateMode: AutovalidateMode.always,
                           selectorConfig: SelectorConfig(
@@ -121,7 +128,9 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
                   Container(
                     height: 45.0,
                     child: FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInPhoneVerification()));
+                      },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(45.0)),
                       padding: EdgeInsets.all(0.0),
