@@ -1,37 +1,37 @@
 {
   "project_info": {
-    "project_number": "118979766486",
-    "project_id": "soru-defteri-239d4",
-    "storage_bucket": "soru-defteri-239d4.appspot.com"
+    "project_number": "13487261515",
+    "project_id": "soru-defteri-15134",
+    "storage_bucket": "soru-defteri-15134.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:118979766486:android:0d1280828ebdfc40d84177",
+        "mobilesdk_app_id": "1:13487261515:android:03e8840ef01585affdcace",
         "android_client_info": {
           "package_name": "com.dyog.soru_defteri"
         }
       },
       "oauth_client": [
         {
-          "client_id": "118979766486-glmv17op032rv2f3hgac60vjodjnle1e.apps.googleusercontent.com",
+          "client_id": "13487261515-4nm355ru8pmivurtjt82f7fc5ts3egh0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBj3urszFVHpshIhftTCcCUJ0rXXFQ0KA0"
+          "current_key": "AIzaSyBQDq8MKVw9Us7nPwyZJj-Nj5h5JU0jt_w"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "118979766486-glmv17op032rv2f3hgac60vjodjnle1e.apps.googleusercontent.com",
+              "client_id": "13487261515-4nm355ru8pmivurtjt82f7fc5ts3egh0.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "118979766486-d5qvn5tcma3hqevigund58nog3cf44cf.apps.googleusercontent.com",
+              "client_id": "13487261515-k2ulp61c3o8rr4dmlu6hcj3thjd4h9ca.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.dyog.sorudefteri"

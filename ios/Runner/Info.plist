@@ -18,10 +18,35 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.13487261515-k2ulp61c3o8rr4dmlu6hcj3thjd4h9ca</string>
+				<string>fb898226990916302</string>
+
+			</array>
+
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Soru ve ipucu yükleyebilmek için kamera erişimine izin vermelisiniz.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Soru ve ipucu yükleyebilmek için bu erişime izin vermelisiniz.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Soru ve ipucu yükleyebilmek için galeri erişimine izin vermelisiniz.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,5 +66,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FacebookAppID</key>
+    <string>898226990916302</string>
+    <key>FacebookDisplayName</key>
+    <string>Soru Defteri</string>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fbauth2</string>
+    </array>
 </dict>
 </plist>

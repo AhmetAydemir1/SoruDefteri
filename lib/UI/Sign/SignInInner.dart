@@ -1,4 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:soru_defteri/UI/Home/Home.dart';
 
 class SignInInner extends StatefulWidget {
   @override
@@ -6,10 +12,19 @@ class SignInInner extends StatefulWidget {
 }
 
 class _SignInInnerState extends State<SignInInner> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   List<String> chooseClassList = ["9", "10", "11", "12", "Mezun"];
   String choosedClass;
   List<String> chooseAlanList = ["Sayısal", "Sözel", "Eşit Ağırlık", "Dil"];
   String choosedAlan;
+  bool load=true;
+
+
+  TextEditingController emailEdit = TextEditingController();
+  TextEditingController userNameEdit = TextEditingController();
+  TextEditingController passwordEdit = TextEditingController();
+  TextEditingController passwordVerifyEdit = TextEditingController();
 
   @override
   void initState() {
@@ -20,6 +35,7 @@ class _SignInInnerState extends State<SignInInner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         shadowColor: Colors.transparent,
@@ -58,34 +74,7 @@ class _SignInInnerState extends State<SignInInner> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 10,
                   ),
-
-                  //İSİM SOYİSİM-------------------
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 15, bottom: 3),
-                        child: Text(
-                          "İsim & Soyisim",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Card(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 2),
-                          child: TextField(),
-                        )),
-                  ),
-
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 60,
-                  ),
-                  //KULLANICI ADI-------------------
+//KULLANICI ADI-------------------
                   Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -104,12 +93,44 @@ class _SignInInnerState extends State<SignInInner> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 2),
-                          child: TextField(),
+                          child: TextField(
+                            controller: userNameEdit,
+                          ),
                         )),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 60,
                   ),
+                  //EPOSTA-------------------
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 15, bottom: 3),
+                        child: Text(
+                          "E-Posta",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 2),
+                          child: TextField(
+                            controller: emailEdit,
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                        )),
+                  ),
+
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 60,
+                  ),
+
                   //ŞİFRE-------------------
                   Align(
                       alignment: Alignment.centerLeft,
@@ -129,7 +150,10 @@ class _SignInInnerState extends State<SignInInner> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 2),
-                          child: TextField(obscureText: true,),
+                          child: TextField(
+                            obscureText: true,
+                            controller: passwordEdit,
+                          ),
                         )),
                   ),
                   SizedBox(
@@ -154,7 +178,10 @@ class _SignInInnerState extends State<SignInInner> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 2),
-                          child: TextField(obscureText: true,),
+                          child: TextField(
+                            obscureText: true,
+                            controller: passwordVerifyEdit,
+                          ),
                         )),
                   ),
                   SizedBox(
@@ -183,13 +210,19 @@ class _SignInInnerState extends State<SignInInner> {
                             dropdownColor: Color(0xFFBA00FF),
                             focusColor: Color(0xFFBA00FF),
                             iconEnabledColor: Colors.white,
-                            hint: Text("Sınıf Seçin",style: TextStyle(color: Colors.white),),
+                            hint: Text(
+                              "Sınıf Seçin",
+                              style: TextStyle(color: Colors.white),
+                            ),
                             isExpanded: true,
                             value: choosedClass,
                             items: chooseClassList.map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
-                                child: Text(value,style: TextStyle(color: Colors.white),),
+                                child: Text(
+                                  value,
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               );
                             }).toList(),
                             onChanged: (s) {
@@ -227,13 +260,19 @@ class _SignInInnerState extends State<SignInInner> {
                             dropdownColor: Color(0xFFBA00FF),
                             focusColor: Color(0xFFBA00FF),
                             iconEnabledColor: Colors.white,
-                            hint: Text("Alan Seçin",style: TextStyle(color: Colors.white),),
+                            hint: Text(
+                              "Alan Seçin",
+                              style: TextStyle(color: Colors.white),
+                            ),
                             isExpanded: true,
                             value: choosedAlan,
                             items: chooseAlanList.map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
-                                child: Text(value,style: TextStyle(color: Colors.white),),
+                                child: Text(
+                                  value,
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               );
                             }).toList(),
                             onChanged: (s) {
@@ -249,7 +288,7 @@ class _SignInInnerState extends State<SignInInner> {
                     height: MediaQuery.of(context).size.height / 50,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal:18.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -259,38 +298,54 @@ class _SignInInnerState extends State<SignInInner> {
                                 borderRadius: BorderRadius.circular(45)),
                             height: 45,
                             color: Colors.white,
-                            minWidth: MediaQuery.of(context).size.width/2.3,
-                            onPressed: () {},
+                            minWidth: MediaQuery.of(context).size.width / 2.3,
+                            onPressed: () {
+                              setState(() {
+                                choosedAlan=null;
+                                choosedClass=null;
+                                emailEdit.clear();
+                                userNameEdit.clear();
+                                passwordEdit.clear();
+                                passwordVerifyEdit.clear();
+                              });
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Text(
                                 "TEMİZLE",
-                                style: TextStyle(color: Colors.black,fontSize: 18),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
                               ),
                             )),
                         Container(
                           height: 45.0,
                           child: FlatButton(
-                            onPressed: () {},
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45.0)),
+                            onPressed: () =>kaydol(),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(45.0)),
                             padding: EdgeInsets.all(0.0),
                             child: Ink(
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [Color(0xFF00AD88), Color(0xFF6D5EFF)],
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF00AD88),
+                                      Color(0xFF6D5EFF)
+                                    ],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                   ),
-                                  borderRadius: BorderRadius.circular(45.0)
-                              ),
+                                  borderRadius: BorderRadius.circular(45.0)),
                               child: Container(
-                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width/2.3, minHeight: 45.0),
+                                constraints: BoxConstraints(
+                                    maxWidth:
+                                        MediaQuery.of(context).size.width / 2.3,
+                                    minHeight: 45.0),
                                 alignment: Alignment.center,
                                 child: Text(
                                   "KAYDOL",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Colors.white,fontSize: 18
-                                  ),
+                                      color: Colors.white, fontSize: 18),
                                 ),
                               ),
                             ),
@@ -303,8 +358,12 @@ class _SignInInnerState extends State<SignInInner> {
                     height: MediaQuery.of(context).size.height / 40,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal:40.0),
-                    child: Text("Kaydola tıklayarak,\nKullanım Koşulları' nı kabul etmiş olursunuz.",textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+                    padding: EdgeInsets.symmetric(horizontal: 40.0),
+                    child: Text(
+                      "Kaydola tıklayarak,\nKullanım Koşulları' nı kabul etmiş olursunuz.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 20,
@@ -313,8 +372,114 @@ class _SignInInnerState extends State<SignInInner> {
               ),
             ),
           ),
+          load? Container(): Container(color: Colors.black12,child: Center(child: CircularProgressIndicator(),),)
         ],
       ),
     );
+  }
+  kaydol()async{
+    String errorString;
+    if (emailEdit.text.isNotEmpty &&userNameEdit.text.isNotEmpty&&choosedClass!=null&&choosedAlan!=null&&
+        passwordEdit.text.isNotEmpty &&
+        passwordVerifyEdit.text.isNotEmpty) {
+      if (passwordVerifyEdit.text == passwordEdit.text) {
+        try {
+          setState(() {
+            load = false;
+          });
+
+          FirebaseAuth _auth = FirebaseAuth.instance;
+          final User user = (await _auth.createUserWithEmailAndPassword(
+            email: emailEdit.text.trim().replaceAll(" ", ""),
+            password: passwordEdit.text,
+          ))
+              .user;
+          if (user != null) {
+            assert(!user.isAnonymous);
+            assert(await user.getIdToken() != null);
+
+            final User currentUser = _auth.currentUser;
+            assert(user.uid == currentUser.uid);
+
+            print('signInWithGoogle succeeded: $user');
+
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString("userName", userNameEdit.text);
+            prefs.setString("ppURL", user.photoURL);
+            prefs.setString("alan", choosedAlan);
+            prefs.setString("sinif", choosedClass);
+
+
+            Map<String, dynamic> userData = Map();
+            userData["userName"] = userNameEdit.text;
+            userData["email"] = user.email;
+            userData["alan"] = choosedAlan;
+            userData["sinif"] = choosedClass;
+
+            passwordEdit.text.isNotEmpty
+                ? userData["pass"] = passwordEdit.text
+                : userData["pass"] = "google";
+            user.updateProfile(displayName: userNameEdit.text);
+            user.reload();
+
+            if (!kIsWeb) {
+              String fcmToken = await FirebaseMessaging().getToken();
+              userData["fcmToken"] = fcmToken;
+            }
+
+            await FirebaseFirestore.instance
+                .collection("Users")
+                .doc(user.uid)
+                .set(userData, SetOptions(merge: true));
+
+
+            setState(() {
+              load = true;
+            });
+
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => HomePage()));
+
+            return '$user';
+          }
+        } on FirebaseException catch (a) {
+          String e = a.message;
+          print(e.toString());
+          if (e.toString() == "The email address is badly formatted.") {
+            errorString = "Lütfen emailinizi kontrol ediniz. (Boşluk bırakmamaya dikkat ediniz)";
+          } else if (e.toString() ==
+              "There is no user record corresponding to this identifier. The user may have been deleted.") {
+            errorString = "Böyle bir kullanıcı bulunamadı.";
+          } else if (e.toString() ==
+              "The password is invalid or the user does not have a password.") {
+            errorString = "Parola hatalı.";
+          } else if (e.toString() ==
+              "The password is invalid or the user does not have a password.") {
+            errorString = "Parola hatalı.";
+          } else if (e.toString() ==
+              "Password should be at least 6 characters") {
+            errorString = "Şifre en az 6 karakter olmalı.";
+          } else if (e.toString() ==
+              "The email address is already in use by another account.") {
+            errorString = "Bu email adresi zaten kayıtlı.";
+          }
+        }
+      } else {
+        errorString = "Şifreler uyuşmuyor.";
+      }
+    } else {
+      errorString = "Boşlukları doldurunuz.";
+    }
+    setState(() {
+      load = true;
+    });
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(
+        errorString,
+        textAlign: TextAlign.center,
+      ),
+    ));
+    print(errorString);
   }
 }

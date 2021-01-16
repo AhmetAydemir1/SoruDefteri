@@ -16,6 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     pageController.addListener(() {
       if (pageController.page.round() != splashIndex) {
         setState(() {
@@ -25,6 +26,18 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     startSync();
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(Image.asset("assets/images/splashBG1.png").image, context);
+    precacheImage(Image.asset("assets/images/splashLabel1.png").image, context);
+    precacheImage(Image.asset("assets/images/splashBG2.png").image, context);
+    precacheImage(Image.asset("assets/images/splashLabel2.png").image, context);
+    precacheImage(Image.asset("assets/images/splashBG3.png").image, context);
+    precacheImage(Image.asset("assets/images/splashLabel3.png").image, context);
+  }
+
   startSync()async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
     prefs.setBool("splash", true);
@@ -33,17 +46,18 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF6E719B),
       body: Stack(
         fit: StackFit.expand,
         children: [
           Image.asset(
-            "assets/images/splashBG.png",
-            fit: BoxFit.fitHeight,
-            alignment: splashIndex == 0
-                ? Alignment.centerLeft
+            splashIndex == 0
+                ? "assets/images/splashBG1.png"
                 : splashIndex == 1
-                    ? Alignment.center
-                    : Alignment.centerRight,
+                ? "assets/images/splashBG2.png"
+                : "assets/images/splashBG3.png",
+            fit: BoxFit.fitHeight,
+            alignment: Alignment.centerLeft,
           ),
           PageView(
             controller: pageController,
@@ -61,8 +75,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             left: MediaQuery.of(context).size.width / 10,
                             bottom: 20),
                         child: Image.asset(
-                          "assets/images/orangeHorizontal.png",
-                          scale: MediaQuery.of(context).size.width / 160,
+                          "assets/images/splashLabel1.png",
+                          scale: MediaQuery.of(context).size.width / 100,
                         ),
                       ),
                       Padding(
@@ -71,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         child: Text(
                           "Bütün",
                           style: TextStyle(
-                              color: Color.fromRGBO(255, 126, 0, 1),
+                              color: Colors.white,
                               fontSize: 25),
                         ),
                       ),
@@ -79,8 +93,8 @@ class _SplashScreenState extends State<SplashScreen> {
                         padding: EdgeInsets.only(
                             left: MediaQuery.of(context).size.width / 10),
                         child: Text(
-                          "Soruları",
-                          style: TextStyle(color: Colors.white, fontSize: 35),
+                          "Sorularını",
+                          style: TextStyle(color: Colors.white, fontSize: 45),
                         ),
                       ),
                       Padding(
@@ -91,7 +105,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           "Biriktir...",
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 35,
+                              fontSize: 45,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -112,8 +126,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             left: MediaQuery.of(context).size.width / 10,
                             bottom: 20),
                         child: Image.asset(
-                          "assets/images/purpleHorizontal.png",
-                          scale: MediaQuery.of(context).size.width / 160,
+                          "assets/images/splashLabel2.png",
+                          scale: MediaQuery.of(context).size.width / 100,
                         ),
                       ),
                       Padding(
@@ -122,7 +136,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         child: Text(
                           "Tümünü",
                           style: TextStyle(
-                              color: Color.fromRGBO(0, 174, 135, 1),
+                              color: Colors.white,
                               fontSize: 25),
                         ),
                       ),
@@ -131,7 +145,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             left: MediaQuery.of(context).size.width / 10),
                         child: Text(
                           "Defalarca",
-                          style: TextStyle(color: Colors.white, fontSize: 35),
+                          style: TextStyle(color: Colors.white, fontSize: 45),
                         ),
                       ),
                       Padding(
@@ -142,7 +156,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           "Çöz...",
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 35,
+                              fontSize: 45,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -163,8 +177,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             left: MediaQuery.of(context).size.width / 10,
                             bottom: 20),
                         child: Image.asset(
-                          "assets/images/redHorizontal.png",
-                          scale: MediaQuery.of(context).size.width / 160,
+                          "assets/images/splashLabel3.png",
+                          scale: MediaQuery.of(context).size.width / 100,
                         ),
                       ),
                       Padding(
@@ -182,7 +196,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             left: MediaQuery.of(context).size.width / 10),
                         child: Text(
                           "Sınavdan",
-                          style: TextStyle(color: Colors.white, fontSize: 35),
+                          style: TextStyle(color: Colors.white, fontSize: 45),
                         ),
                       ),
                       Padding(
@@ -193,7 +207,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           "Korkmak yok!",
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 35,
+                              fontSize: 45,
                               fontWeight: FontWeight.bold),
                         ),
                       ),

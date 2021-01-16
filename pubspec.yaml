@@ -30,13 +30,24 @@ dependencies:
   cloud_firestore: ^0.14.3
 
   sign_in_with_apple: ^2.5.4
+  apple_sign_in: ^0.1.0
+
   google_sign_in: ^4.5.9
-  flutter_facebook_auth: ^2.0.0+1
 
   intl: ^0.16.1
   shared_preferences: ^0.5.12+4
+  flutter_facebook_login: ^3.0.0
 
   intl_phone_number_input: ^0.6.0
+
+  cached_network_image: ^2.5.0
+  modal_bottom_sheet: ^1.0.0+1
+  image_picker: ^0.6.7+21
+  uuid: ^2.2.2
+  firebase_messaging: ^7.0.3
+  permission_handler: ^5.0.1+1
+
+  smart_select: ^4.3.2
 
 
 

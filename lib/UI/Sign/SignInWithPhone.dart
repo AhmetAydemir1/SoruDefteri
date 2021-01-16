@@ -8,7 +8,8 @@ class SignInWithPhone extends StatefulWidget {
 }
 
 class _SignInWithPhoneState extends State<SignInWithPhone> {
-  String countryCode;
+
+  PhoneNumber phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +106,9 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
                               selectorType: PhoneInputSelectorType.DIALOG),
                           onInputChanged: (s) {
                             print(s);
-                            setState(() {});
+                            setState(() {
+                              phoneNumber=s;
+                            });
                           },
                         ),
                       ),
@@ -129,7 +132,7 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
                     height: 45.0,
                     child: FlatButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInPhoneVerification()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInPhoneVerification(phoneNum: phoneNumber.toString().trim(),)));
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(45.0)),
@@ -178,4 +181,5 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
       ),
     );
   }
+
 }
