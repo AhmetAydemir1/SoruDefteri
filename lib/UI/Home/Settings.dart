@@ -10,10 +10,16 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Ayarlar"),),body: FlatButton(child: Text("Çıkış"),onPressed: (){
-      FirebaseAuth.instance.signOut();
-      Navigator.popUntil(context, (route) => route.isFirst);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignIn()));
-    },),);
+    return Container(      color: Color(0xFF6E719B),
+
+      child: SafeArea(
+        bottom: false,
+        child: Scaffold(appBar: AppBar(title: Text("Ayarlar"),),body: FlatButton(child: Text("Çıkış"),onPressed: (){
+          FirebaseAuth.instance.signOut();
+          Navigator.popUntil(context, (route) => route.isFirst);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignIn()));
+        },),),
+      ),
+    );
   }
 }

@@ -8,6 +8,7 @@ class Repeat extends StatefulWidget {
 class _RepeatState extends State<Repeat> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Tekrar Yap"),),);
+    return Container(      color: Color(0xFF6E719B),
+        child: SafeArea(bottom:false,child: Scaffold(appBar: AppBar(title: Text("Tekrar Yap"),),)));
   }
 }

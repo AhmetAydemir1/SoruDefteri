@@ -1,5 +1,12 @@
 class MyStrings {
 
+  List mistakes=[
+    "asdasd","dsadsa","sdasda",
+    "asdasd","dsadsa","sdasda",
+    "asdasd","dsadsa","sdasda",
+    "asdasd","dsadsa","sdasda",
+  ];
+
   List classesTYT = [
     "Biyoloji",
     "Coğrafya",
@@ -23,7 +30,7 @@ class MyStrings {
     "Kimya",
     "Matematik",
     "Tarih",
-    "Türkçe",
+    //"Türkçe",
   ];
 
   List turkceTYT = [

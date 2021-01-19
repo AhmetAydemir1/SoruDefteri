@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soru_defteri/UI/Home/Home.dart';
 import 'package:soru_defteri/UI/Sign/Izinler.dart';
 import 'package:soru_defteri/UI/Sign/SignIn.dart';
+import 'package:soru_defteri/flutter_local_notifications.dart';
 
 import 'UI/Sign/ExtraInfoSign.dart';
 import 'UI/Splash/SplashScreen.dart';
@@ -49,12 +50,21 @@ class _MyAppState extends State<MyApp> {
     print(prefs.getBool("splash"));
     if(user!=null){
       await FirebaseFirestore.instance.collection("Users").doc(user.uid).get().then((doc){
-        if(!doc.data().containsKey("alan")){
+        if(!doc.data().containsKey("alan")||!doc.data().containsKey("sinif")||!doc.data().containsKey("email")||!doc.data().containsKey("userName")||!doc.data().containsKey("adsoyad")){
           bilgiVar=false;
         }else{
           bilgiVar=true;
         }
       });
+      login=true;
+      if(prefs.getBool("firstSign")==null){
+        firstSign=true;
+      }else{
+        firstSign=false;
+      }
+    }else{
+      login = false;
+
     }
 
     setState(() {
@@ -63,7 +73,7 @@ class _MyAppState extends State<MyApp> {
       } else {
         splash = true;
       }
-      if (user == null) {
+      if(user==null){
         login = false;
       }else{
         login=true;
@@ -87,25 +97,26 @@ class _MyAppState extends State<MyApp> {
       ),
       home: splash != null && login != null
           ? !splash
-              ? SplashScreen()
-              : !login
-                  ? SignIn()
-                  : bilgiVar ? firstSign?Izinler(): HomePage():SignInExtraInfo()
+          ? SplashScreen()
+          : !login
+          ? SignIn()
+          : bilgiVar ? firstSign?Izinler(): HomePage():SignInExtraInfo()
           : Scaffold(
         backgroundColor: Color(0xFF6E719B),
-              body: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    "assets/images/splashBG1.png",
-                    fit: BoxFit.fitHeight,
-                  ),
-                  Center(
-                    child: CircularProgressIndicator(),
-                  )
-                ],
-              ),
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              "assets/images/splashBG1.png",
+              fit: BoxFit.fitHeight,
             ),
+            Center(
+              child: CircularProgressIndicator(),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
+

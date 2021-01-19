@@ -58,416 +58,413 @@ class _SignInPhoneVerificationState extends State<SignInPhoneVerification> {
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.transparent,
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset(
-            "assets/images/BG.png",
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.topRight,
+    return Container(
+      color: Color(0xFF6E719B),
+
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Color(0xFF6E719B),
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
           ),
-          Container(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: AppBar().preferredSize.height + 20,
-                  ),
-                  Text(
-                    "Telefon ile Oturum Aç",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        color: Colors.white),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 10,
-                  ),
-                  Text(
-                    "MOBİL DOĞRULAMA",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Color(0XFFFF7E00),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 60,
-                  ),
-                  Text(
-                    "SMS ile gelen kodu gir",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 40,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                    child: Text(
-                      "Sana gönderdiğimiz 6 haneli kodu gir ${widget.phoneNum}. Lütfen doğru numarayı girdiğinizden emin olun.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 20,
-                  ),
-                  Row(
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                "assets/images/BG.png",
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.topRight,
+              ),
+              Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                          height: MediaQuery.of(context).size.width / 6,
-                          width: MediaQuery.of(context).size.width / 6.5,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                                child: TextField(
-                                    textAlignVertical: TextAlignVertical.top,
-                                    textAlign: TextAlign.center,
-                                    maxLength: 1,
-                                    style: TextStyle(
-                                        fontSize:
-                                            MediaQuery.of(context).size.width /
-                                                14),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      focusedErrorBorder: InputBorder.none,
-                                      counterStyle: TextStyle(
-                                        height: double.minPositive,
-                                      ),
-                                      counterText: "",
-                                    ),
-                                    onChanged: (s) {
-                                      if (s.length >= 1) {
-                                        node.nextFocus();
-                                      }
-                                    },
-                                    onSubmitted: (s) => node.nextFocus(),
-                                    textInputAction: TextInputAction.next,
-                                    controller: first,
-                                    maxLengthEnforced: true,
-                                    keyboardType: TextInputType.number)),
-                          )),
-                      Container(
-                          height: MediaQuery.of(context).size.width / 6,
-                          width: MediaQuery.of(context).size.width / 6.5,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                                child: TextField(
-                                    textAlignVertical: TextAlignVertical.top,
-                                    textAlign: TextAlign.center,
-                                    maxLength: 1,
-                                    style: TextStyle(
-                                        fontSize:
-                                            MediaQuery.of(context).size.width /
-                                                14),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      focusedErrorBorder: InputBorder.none,
-                                      counterStyle: TextStyle(
-                                        height: double.minPositive,
-                                      ),
-                                      counterText: "",
-                                    ),
-                                    onChanged: (s) {
-                                      if (s.length >= 1) {
-                                        node.nextFocus();
-                                      } else if (s.length == 0) {
-                                        node.previousFocus();
-                                      }
-                                    },
-                                    onSubmitted: (s) => node.nextFocus(),
-                                    textInputAction: TextInputAction.next,
-                                    controller: second,
-                                    keyboardType: TextInputType.number)),
-                          )),
-                      Container(
-                          height: MediaQuery.of(context).size.width / 6,
-                          width: MediaQuery.of(context).size.width / 6.5,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                                child: TextField(
-                                    textAlignVertical: TextAlignVertical.top,
-                                    textAlign: TextAlign.center,
-                                    maxLength: 1,
-                                    style: TextStyle(
-                                        fontSize:
-                                            MediaQuery.of(context).size.width /
-                                                14),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      focusedErrorBorder: InputBorder.none,
-                                      counterStyle: TextStyle(
-                                        height: double.minPositive,
-                                      ),
-                                      counterText: "",
-                                    ),
-                                    onChanged: (s) {
-                                      if (s.length >= 1) {
-                                        node.nextFocus();
-                                      } else if (s.length == 0) {
-                                        node.previousFocus();
-                                      }
-                                    },
-                                    onSubmitted: (s) => node.nextFocus(),
-                                    textInputAction: TextInputAction.next,
-                                    controller: third,
-                                    keyboardType: TextInputType.number)),
-                          )),
-                      Container(
-                          height: MediaQuery.of(context).size.width / 6,
-                          width: MediaQuery.of(context).size.width / 6.5,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                                child: TextField(
-                                    textAlignVertical: TextAlignVertical.top,
-                                    textAlign: TextAlign.center,
-                                    maxLength: 1,
-                                    style: TextStyle(
-                                        fontSize:
-                                            MediaQuery.of(context).size.width /
-                                                14),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      focusedErrorBorder: InputBorder.none,
-                                      counterStyle: TextStyle(
-                                        height: double.minPositive,
-                                      ),
-                                      counterText: "",
-                                    ),
-                                    onChanged: (s) {
-                                      if (s.length >= 1) {
-                                        node.nextFocus();
-                                      } else if (s.length == 0) {
-                                        node.previousFocus();
-                                      }
-                                    },
-                                    onSubmitted: (s) => node.nextFocus(),
-                                    textInputAction: TextInputAction.next,
-                                    controller: fourth,
-                                    keyboardType: TextInputType.number)),
-                          )),
-                      Container(
-                          height: MediaQuery.of(context).size.width / 6,
-                          width: MediaQuery.of(context).size.width / 6.5,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                                child: TextField(
-                                    textAlignVertical: TextAlignVertical.top,
-                                    textAlign: TextAlign.center,
-                                    maxLength: 1,
-                                    style: TextStyle(
-                                        fontSize:
-                                            MediaQuery.of(context).size.width /
-                                                14),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      focusedErrorBorder: InputBorder.none,
-                                      counterStyle: TextStyle(
-                                        height: double.minPositive,
-                                      ),
-                                      counterText: "",
-                                    ),
-                                    onChanged: (s) {
-                                      if (s.length >= 1) {
-                                        node.nextFocus();
-                                      } else if (s.length == 0) {
-                                        node.previousFocus();
-                                      }
-                                    },
-                                    onSubmitted: (s) => node.nextFocus(),
-                                    textInputAction: TextInputAction.next,
-                                    controller: fifth,
-                                    keyboardType: TextInputType.number)),
-                          )),
-                      Container(
-                          height: MediaQuery.of(context).size.width / 6,
-                          width: MediaQuery.of(context).size.width / 6.5,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                                child: TextField(
-                              textAlignVertical: TextAlignVertical.top,
-                              textAlign: TextAlign.center,
-                              maxLength: 1,
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width / 14),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                focusedErrorBorder: InputBorder.none,
-                                counterStyle: TextStyle(
-                                  height: double.minPositive,
-                                ),
-                                counterText: "",
-                              ),
-                              onChanged: (s) {
-                                if (s.length == 0) {
-                                  node.previousFocus();
-                                }
-                                if (s.length >= 1) {
-                                  node.unfocus();
-                                }
-                              },
-                              onSubmitted: (s) => node.nextFocus(),
-                              textInputAction: TextInputAction.next,
-                              controller: sixth,
-                              keyboardType: TextInputType.number,
-                            )),
-                          )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 20,
-                  ),
-                  cntDwn != 0
-                      ? Text(
-                          "${cntDwn.toString()} saniye içinde kodu yeniden al.",
+                      SizedBox(
+                        height: AppBar().preferredSize.height + 20,
+                      ),
+                      Text(
+                        "Telefon ile Oturum Aç",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 10,
+                      ),
+                      Text(
+                        "SMS ile gelen kodu gir",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 40,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        child: Text(
+                          "Sana gönderdiğimiz 6 haneli kodu gir ${widget.phoneNum}. Lütfen doğru numarayı girdiğinizden emin olun.",
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white),
-                        )
-                      : Container(
-                          height: 45.0,
-                          child: FlatButton(
-                            onPressed: () => resendCode(),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(45.0)),
-                            padding: EdgeInsets.all(0.0),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color(0xFF00AD88),
-                                      Color(0xFF6D5EFF)
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
-                                  borderRadius: BorderRadius.circular(45.0)),
-                              child: Container(
-                                constraints: BoxConstraints(
-                                    maxWidth:
-                                        MediaQuery.of(context).size.width / 2.3,
-                                    minHeight: 45.0),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "YENİDEN GÖNDER",
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 20,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                              height: MediaQuery.of(context).size.width / 6,
+                              width: MediaQuery.of(context).size.width / 6.5,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Center(
+                                    child: TextField(
+                                        textAlignVertical: TextAlignVertical.top,
+                                        textAlign: TextAlign.center,
+                                        maxLength: 1,
+                                        style: TextStyle(
+                                            fontSize:
+                                                MediaQuery.of(context).size.width /
+                                                    14),
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          disabledBorder: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          focusedErrorBorder: InputBorder.none,
+                                          counterStyle: TextStyle(
+                                            height: double.minPositive,
+                                          ),
+                                          counterText: "",
+                                        ),
+                                        onChanged: (s) {
+                                          if (s.length >= 1) {
+                                            node.nextFocus();
+                                          }
+                                        },
+                                        onSubmitted: (s) => node.nextFocus(),
+                                        textInputAction: TextInputAction.next,
+                                        controller: first,
+                                        maxLengthEnforced: true,
+                                        keyboardType: TextInputType.number)),
+                              )),
+                          Container(
+                              height: MediaQuery.of(context).size.width / 6,
+                              width: MediaQuery.of(context).size.width / 6.5,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Center(
+                                    child: TextField(
+                                        textAlignVertical: TextAlignVertical.top,
+                                        textAlign: TextAlign.center,
+                                        maxLength: 1,
+                                        style: TextStyle(
+                                            fontSize:
+                                                MediaQuery.of(context).size.width /
+                                                    14),
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          disabledBorder: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          focusedErrorBorder: InputBorder.none,
+                                          counterStyle: TextStyle(
+                                            height: double.minPositive,
+                                          ),
+                                          counterText: "",
+                                        ),
+                                        onChanged: (s) {
+                                          if (s.length >= 1) {
+                                            node.nextFocus();
+                                          } else if (s.length == 0) {
+                                            node.previousFocus();
+                                          }
+                                        },
+                                        onSubmitted: (s) => node.nextFocus(),
+                                        textInputAction: TextInputAction.next,
+                                        controller: second,
+                                        keyboardType: TextInputType.number)),
+                              )),
+                          Container(
+                              height: MediaQuery.of(context).size.width / 6,
+                              width: MediaQuery.of(context).size.width / 6.5,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Center(
+                                    child: TextField(
+                                        textAlignVertical: TextAlignVertical.top,
+                                        textAlign: TextAlign.center,
+                                        maxLength: 1,
+                                        style: TextStyle(
+                                            fontSize:
+                                                MediaQuery.of(context).size.width /
+                                                    14),
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          disabledBorder: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          focusedErrorBorder: InputBorder.none,
+                                          counterStyle: TextStyle(
+                                            height: double.minPositive,
+                                          ),
+                                          counterText: "",
+                                        ),
+                                        onChanged: (s) {
+                                          if (s.length >= 1) {
+                                            node.nextFocus();
+                                          } else if (s.length == 0) {
+                                            node.previousFocus();
+                                          }
+                                        },
+                                        onSubmitted: (s) => node.nextFocus(),
+                                        textInputAction: TextInputAction.next,
+                                        controller: third,
+                                        keyboardType: TextInputType.number)),
+                              )),
+                          Container(
+                              height: MediaQuery.of(context).size.width / 6,
+                              width: MediaQuery.of(context).size.width / 6.5,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Center(
+                                    child: TextField(
+                                        textAlignVertical: TextAlignVertical.top,
+                                        textAlign: TextAlign.center,
+                                        maxLength: 1,
+                                        style: TextStyle(
+                                            fontSize:
+                                                MediaQuery.of(context).size.width /
+                                                    14),
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          disabledBorder: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          focusedErrorBorder: InputBorder.none,
+                                          counterStyle: TextStyle(
+                                            height: double.minPositive,
+                                          ),
+                                          counterText: "",
+                                        ),
+                                        onChanged: (s) {
+                                          if (s.length >= 1) {
+                                            node.nextFocus();
+                                          } else if (s.length == 0) {
+                                            node.previousFocus();
+                                          }
+                                        },
+                                        onSubmitted: (s) => node.nextFocus(),
+                                        textInputAction: TextInputAction.next,
+                                        controller: fourth,
+                                        keyboardType: TextInputType.number)),
+                              )),
+                          Container(
+                              height: MediaQuery.of(context).size.width / 6,
+                              width: MediaQuery.of(context).size.width / 6.5,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Center(
+                                    child: TextField(
+                                        textAlignVertical: TextAlignVertical.top,
+                                        textAlign: TextAlign.center,
+                                        maxLength: 1,
+                                        style: TextStyle(
+                                            fontSize:
+                                                MediaQuery.of(context).size.width /
+                                                    14),
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          disabledBorder: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          focusedErrorBorder: InputBorder.none,
+                                          counterStyle: TextStyle(
+                                            height: double.minPositive,
+                                          ),
+                                          counterText: "",
+                                        ),
+                                        onChanged: (s) {
+                                          if (s.length >= 1) {
+                                            node.nextFocus();
+                                          } else if (s.length == 0) {
+                                            node.previousFocus();
+                                          }
+                                        },
+                                        onSubmitted: (s) => node.nextFocus(),
+                                        textInputAction: TextInputAction.next,
+                                        controller: fifth,
+                                        keyboardType: TextInputType.number)),
+                              )),
+                          Container(
+                              height: MediaQuery.of(context).size.width / 6,
+                              width: MediaQuery.of(context).size.width / 6.5,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Center(
+                                    child: TextField(
+                                  textAlignVertical: TextAlignVertical.top,
                                   textAlign: TextAlign.center,
+                                  maxLength: 1,
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
+                                      fontSize:
+                                          MediaQuery.of(context).size.width / 14),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    focusedErrorBorder: InputBorder.none,
+                                    counterStyle: TextStyle(
+                                      height: double.minPositive,
+                                    ),
+                                    counterText: "",
+                                  ),
+                                  onChanged: (s) {
+                                    if (s.length == 0) {
+                                      node.previousFocus();
+                                    }
+                                    if (s.length >= 1) {
+                                      node.unfocus();
+                                    }
+                                  },
+                                  onSubmitted: (s) => node.nextFocus(),
+                                  textInputAction: TextInputAction.next,
+                                  controller: sixth,
+                                  keyboardType: TextInputType.number,
+                                )),
+                              )),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 20,
+                      ),
+                      cntDwn != 0
+                          ? Text(
+                              "${cntDwn.toString()} saniye içinde kodu yeniden al.",
+                              style: TextStyle(color: Colors.white),
+                            )
+                          : Container(
+                              height: 45.0,
+                              child: FlatButton(
+                                onPressed: () => resendCode(),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(45.0)),
+                                padding: EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xFF00AE87),
+                                          Color(0xFF00AE87)
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                      ),
+                                      borderRadius: BorderRadius.circular(45.0)),
+                                  child: Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width / 2.3,
+                                        minHeight: 45.0),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "YENİDEN GÖNDER",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 20,
-                  ),
-                  Container(
-                    height: 45.0,
-                    child: FlatButton(
-                      onPressed: smsCode != null
-                          ? () {
-                              AuthCredential _credential =
-                                  PhoneAuthProvider.credential(
-                                      verificationId: verificationCode,
-                                      smsCode: first.text +
-                                          second.text +
-                                          third.text +
-                                          fourth.text);
-                              _auth
-                                  .signInWithCredential(_credential)
-                                  .then((UserCredential result) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SignInExtraInfo()));
-                              }).catchError((e) {
-                                print(e);
-                              });
-                            }
-                          : () => null,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(45.0)),
-                      padding: EdgeInsets.all(0.0),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xFF00AD88), Color(0xFF6D5EFF)],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 20,
+                      ),
+                      Container(
+                        height: 45.0,
+                        child: FlatButton(
+                          onPressed: smsCode != null
+                              ? () {
+                                  AuthCredential _credential =
+                                      PhoneAuthProvider.credential(
+                                          verificationId: verificationCode,
+                                          smsCode: first.text +
+                                              second.text +
+                                              third.text +
+                                              fourth.text);
+                                  _auth
+                                      .signInWithCredential(_credential)
+                                      .then((UserCredential result) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SignInExtraInfo()));
+                                  }).catchError((e) {
+                                    print(e);
+                                  });
+                                }
+                              : () => null,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(45.0)),
+                          padding: EdgeInsets.all(0.0),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Color(0xFF00AE87),
+                                    Color(0xFF00AE87)],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                                borderRadius: BorderRadius.circular(45.0)),
+                            child: Container(
+                              constraints: BoxConstraints(
+                                  maxWidth: MediaQuery.of(context).size.width / 2.3,
+                                  minHeight: 45.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "DOĞRULA",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white, fontSize: 18),
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(45.0)),
-                        child: Container(
-                          constraints: BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width / 2.3,
-                              minHeight: 45.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "DOĞRULA",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                         ),
                       ),
-                    ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 20,
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 20,
-                  ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -528,6 +525,8 @@ class _SignInPhoneVerificationState extends State<SignInPhoneVerification> {
                   bilgiVar = false;
                 }
               });
+
+              FirebaseMessaging().subscribeToTopic("all");
 
               if (result.additionalUserInfo.isNewUser || !bilgiVar) {
                 Navigator.pushReplacement(context,
