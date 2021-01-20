@@ -14,10 +14,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool firstAdd = false;
-  User user=FirebaseAuth.instance.currentUser;
+  User user = FirebaseAuth.instance.currentUser;
   String realName;
   String ppURL;
-  bool allLoaded=false;
+  bool allLoaded = false;
 
   @override
   void initState() {
@@ -42,17 +42,31 @@ class _HomePageState extends State<HomePage> {
         firstAdd = prefs.getBool("FirstAdd");
       });
     }
-    await FirebaseFirestore.instance.collection("Users").doc(user.uid).get().then((doc){
+    await FirebaseFirestore.instance.collection("Users").doc(user.uid)
+        .get()
+        .then((doc) {
       setState(() {
-        realName=doc.data().containsKey("adsoyad")?doc["adsoyad"]:"";
-        ppURL=doc.data().containsKey("pp")?doc["pp"]:null;
+        realName = doc.data().containsKey("adsoyad") ? doc["adsoyad"] : "";
+        ppURL = doc.data().containsKey("pp") ? doc["pp"] : null;
       });
     });
 
     setState(() {
-      allLoaded=true;
+      allLoaded = true;
     });
+  }
 
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    await FirebaseFirestore.instance.collection("Users").doc(user.uid)
+        .get()
+        .then((doc) {
+      setState(() {
+        realName = doc.data().containsKey("adsoyad") ? doc["adsoyad"] : "";
+      });
+    });
   }
 
   @override
@@ -91,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                   alignment: Alignment.topRight,
                 ),
               ),
-              allLoaded?Container(
+              allLoaded ? Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
@@ -148,7 +162,11 @@ class _HomePageState extends State<HomePage> {
                                             .height / 13.5,
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.height/60),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .height / 60),
                                         child: Text(
                                           "Merhaba $realName!",
                                           textAlign: TextAlign.center,
@@ -206,25 +224,25 @@ class _HomePageState extends State<HomePage> {
                                                       text: "Toplam ",
                                                     ),
                                                     TextSpan(text: "92",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .bold,
-                                                            color:
-                                                            Color(
-                                                                0xFF00AE87),
-                                                            fontSize: MediaQuery
-                                                                .of(
-                                                                context)
-                                                                .size
-                                                                .height /
-                                                                35),
-                                                        ),
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .bold,
+                                                          color:
+                                                          Color(
+                                                              0xFF00AE87),
+                                                          fontSize: MediaQuery
+                                                              .of(
+                                                              context)
+                                                              .size
+                                                              .height /
+                                                              35),
+                                                    ),
                                                     TextSpan(
                                                       text:
                                                       " soru sordun ve tekrarlanacak ",
                                                     ),
-                                                    TextSpan(text:"27",
+                                                    TextSpan(text: "27",
                                                         style: TextStyle(
                                                             fontWeight: FontWeight
                                                                 .bold,
@@ -266,39 +284,46 @@ class _HomePageState extends State<HomePage> {
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                              builder: (context) =>
+                                                              builder: (
+                                                                  context) =>
                                                               firstAdd
                                                                   ? SoruZorluk()
                                                                   : FirstAdd())),
                                                   child: ClipRRect(
                                                       borderRadius: BorderRadius
                                                           .only(
-                                                          topLeft: Radius.circular(
+                                                          topLeft: Radius
+                                                              .circular(
                                                               MediaQuery
                                                                   .of(context)
                                                                   .size
                                                                   .width / 7),
-                                                          topRight: Radius.circular(
+                                                          topRight: Radius
+                                                              .circular(
                                                               MediaQuery
                                                                   .of(context)
                                                                   .size
                                                                   .width / 13),
                                                           bottomLeft: Radius
-                                                              .circular(MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width / 13),
+                                                              .circular(
+                                                              MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width / 13),
                                                           bottomRight:
-                                                          Radius.circular(MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width / 13)),
+                                                          Radius.circular(
+                                                              MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width / 13)),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                          color: Color(0xFF5068EE),),
+                                                          color: Color(
+                                                              0xFF5068EE),),
                                                         child: Center(
                                                           child: Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            mainAxisAlignment: MainAxisAlignment
+                                                                .spaceEvenly,
                                                             mainAxisSize: MainAxisSize
                                                                 .max,
                                                             children: [
@@ -326,17 +351,24 @@ class _HomePageState extends State<HomePage> {
                                                                 child: Image
                                                                     .asset(
                                                                   "assets/images/camIcon.png",
-                                                                  height: MediaQuery.of(context).size.height/15,
+                                                                  height: MediaQuery
+                                                                      .of(
+                                                                      context)
+                                                                      .size
+                                                                      .height /
+                                                                      15,
                                                                 ),
                                                               ),
                                                               Padding(
                                                                 padding: EdgeInsets
                                                                     .only(
                                                                     top: MediaQuery
-                                                                        .of(context)
+                                                                        .of(
+                                                                        context)
                                                                         .size
                                                                         .height /
-                                                                        200,bottom: 1),
+                                                                        200,
+                                                                    bottom: 1),
                                                                 child: Text(
                                                                   "Soru Yükle",
                                                                   style: TextStyle(
@@ -350,46 +382,56 @@ class _HomePageState extends State<HomePage> {
                                                       )),
                                                 ),
                                               ),
-                                              SizedBox(width: MediaQuery.of(context).size.width/30,),
+                                              SizedBox(width: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width / 30,),
                                               Expanded(
                                                 child: GestureDetector(
                                                   onTap: () =>
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                              builder: (context) =>
+                                                              builder: (
+                                                                  context) =>
                                                                   BottomNav(
                                                                     currentIndex: 2,))),
 
                                                   child: ClipRRect(
                                                       borderRadius: BorderRadius
                                                           .only(
-                                                          topLeft: Radius.circular(
+                                                          topLeft: Radius
+                                                              .circular(
                                                               MediaQuery
                                                                   .of(context)
                                                                   .size
                                                                   .width / 13),
-                                                          topRight: Radius.circular(
+                                                          topRight: Radius
+                                                              .circular(
                                                               MediaQuery
                                                                   .of(context)
                                                                   .size
                                                                   .width / 7),
                                                           bottomLeft: Radius
-                                                              .circular(MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width / 13),
+                                                              .circular(
+                                                              MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width / 13),
                                                           bottomRight:
-                                                          Radius.circular(MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width / 13)),
+                                                          Radius.circular(
+                                                              MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width / 13)),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                          color: Color(0xFF41C6FF),),
+                                                          color: Color(
+                                                              0xFF41C6FF),),
                                                         child: Center(
                                                           child: Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            mainAxisAlignment: MainAxisAlignment
+                                                                .spaceEvenly,
                                                             mainAxisSize: MainAxisSize
                                                                 .max,
                                                             children: [
@@ -417,17 +459,24 @@ class _HomePageState extends State<HomePage> {
                                                                 child: Image
                                                                     .asset(
                                                                   "assets/images/repeatIcon.png",
-                                                                  height: MediaQuery.of(context).size.height/15,
+                                                                  height: MediaQuery
+                                                                      .of(
+                                                                      context)
+                                                                      .size
+                                                                      .height /
+                                                                      15,
                                                                 ),
                                                               ),
                                                               Padding(
                                                                 padding: EdgeInsets
                                                                     .only(
                                                                     top: MediaQuery
-                                                                        .of(context)
+                                                                        .of(
+                                                                        context)
                                                                         .size
                                                                         .height /
-                                                                        200,bottom: 1),
+                                                                        200,
+                                                                    bottom: 1),
                                                                 child: Text(
                                                                   "Tekrar Yap",
                                                                   style: TextStyle(
@@ -445,7 +494,10 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(height: MediaQuery.of(context).size.width/30,),
+                                      SizedBox(height: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width / 30,),
                                       Expanded(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
@@ -463,39 +515,46 @@ class _HomePageState extends State<HomePage> {
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                              builder: (context) =>
+                                                              builder: (
+                                                                  context) =>
                                                                   BottomNav(
                                                                     currentIndex: 1,))),
 
                                                   child: ClipRRect(
                                                       borderRadius: BorderRadius
                                                           .only(
-                                                          topLeft: Radius.circular(
+                                                          topLeft: Radius
+                                                              .circular(
                                                               MediaQuery
                                                                   .of(context)
                                                                   .size
                                                                   .width / 13),
-                                                          topRight: Radius.circular(
+                                                          topRight: Radius
+                                                              .circular(
                                                               MediaQuery
                                                                   .of(context)
                                                                   .size
                                                                   .width / 13),
                                                           bottomLeft: Radius
-                                                              .circular(MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width / 7),
+                                                              .circular(
+                                                              MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width / 7),
                                                           bottomRight:
-                                                          Radius.circular(MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width / 13)),
+                                                          Radius.circular(
+                                                              MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width / 13)),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                          color: Color(0xFF00AE87),),
+                                                          color: Color(
+                                                              0xFF00AE87),),
                                                         child: Center(
                                                           child: Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            mainAxisAlignment: MainAxisAlignment
+                                                                .spaceEvenly,
                                                             mainAxisSize: MainAxisSize
                                                                 .max,
                                                             children: [
@@ -523,17 +582,24 @@ class _HomePageState extends State<HomePage> {
                                                                 child: Image
                                                                     .asset(
                                                                   "assets/images/questionWallIcon.png",
-                                                                  height: MediaQuery.of(context).size.height/15,
+                                                                  height: MediaQuery
+                                                                      .of(
+                                                                      context)
+                                                                      .size
+                                                                      .height /
+                                                                      15,
                                                                 ),
                                                               ),
                                                               Padding(
                                                                 padding: EdgeInsets
                                                                     .only(
                                                                     top: MediaQuery
-                                                                        .of(context)
+                                                                        .of(
+                                                                        context)
                                                                         .size
                                                                         .height /
-                                                                        200,bottom: 1),
+                                                                        200,
+                                                                    bottom: 1),
                                                                 child: Text(
                                                                   "Soru Duvarı",
                                                                   style: TextStyle(
@@ -547,45 +613,55 @@ class _HomePageState extends State<HomePage> {
                                                       )),
                                                 ),
                                               ),
-                                              SizedBox(width: MediaQuery.of(context).size.width/30,),
+                                              SizedBox(width: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width / 30,),
                                               Expanded(
                                                 child: GestureDetector(
                                                   onTap: () =>
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                              builder: (context) =>
+                                                              builder: (
+                                                                  context) =>
                                                                   BottomNav(
                                                                     currentIndex: 0,))),
                                                   child: ClipRRect(
                                                       borderRadius: BorderRadius
                                                           .only(
-                                                          topLeft: Radius.circular(
+                                                          topLeft: Radius
+                                                              .circular(
                                                               MediaQuery
                                                                   .of(context)
                                                                   .size
                                                                   .width / 13),
-                                                          topRight: Radius.circular(
+                                                          topRight: Radius
+                                                              .circular(
                                                               MediaQuery
                                                                   .of(context)
                                                                   .size
                                                                   .width / 13),
                                                           bottomLeft: Radius
-                                                              .circular(MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width / 13),
+                                                              .circular(
+                                                              MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width / 13),
                                                           bottomRight:
-                                                          Radius.circular(MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width / 7)),
+                                                          Radius.circular(
+                                                              MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width / 7)),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                            color: Color(0xFFFF4800),),
+                                                          color: Color(
+                                                              0xFFFF4800),),
                                                         child: Center(
                                                           child: Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            mainAxisAlignment: MainAxisAlignment
+                                                                .spaceEvenly,
                                                             mainAxisSize: MainAxisSize
                                                                 .max,
                                                             children: [
@@ -613,17 +689,24 @@ class _HomePageState extends State<HomePage> {
                                                                 child: Image
                                                                     .asset(
                                                                   "assets/images/settingsIcon.png",
-                                                                  height: MediaQuery.of(context).size.height/16,
+                                                                  height: MediaQuery
+                                                                      .of(
+                                                                      context)
+                                                                      .size
+                                                                      .height /
+                                                                      16,
                                                                 ),
                                                               ),
                                                               Padding(
                                                                 padding: EdgeInsets
                                                                     .only(
                                                                     top: MediaQuery
-                                                                        .of(context)
+                                                                        .of(
+                                                                        context)
                                                                         .size
                                                                         .height /
-                                                                        200,bottom: 1),
+                                                                        200,
+                                                                    bottom: 1),
                                                                 child: Text(
                                                                   "Ayarlar",
                                                                   style: TextStyle(
@@ -656,7 +739,8 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                      shape: BoxShape.circle, color: Colors.white),
+                                      shape: BoxShape.circle,
+                                      color: Colors.white),
                                   height: MediaQuery
                                       .of(context)
                                       .size
@@ -666,23 +750,84 @@ class _HomePageState extends State<HomePage> {
                                       .size
                                       .height / 13.5 * 2,
                                 ),
-                                ppURL!=null?CircleAvatar(
-                                  radius: MediaQuery
+                                StreamBuilder(stream: FirebaseFirestore.instance
+                                    .collection("Users")
+                                    .doc(user.uid)
+                                    .snapshots(),
+                                    builder: (context, AsyncSnapshot<
+                                        DocumentSnapshot>snapshot) {
+                                      if (snapshot.hasData) {
+                                        if (snapshot.data.data().containsKey(
+                                            "pp")) {
+                                          return CircleAvatar(
+                                            radius: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .height / 15,
+                                            backgroundImage: CachedNetworkImageProvider(
+                                                snapshot.data["pp"]),
+                                          );
+                                        } else {
+                                          return Container(
+                                            height: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .height / 7.5,
+                                            width: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .height / 7.5,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Color(0xFF6E719B)),
+                                            child: FittedBox(child: Padding(
+                                              padding: const EdgeInsets.all(
+                                                  10.0),
+                                              child: Text(realName[0],
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 100),),
+                                            )),);
+                                        }
+                                      } else {
+                                        return Container(height: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .height / 7.5,
+                                          width: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .height / 7.5,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color(0xFF6E719B)),
+                                          child: FittedBox(child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Text(realName[0],
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 100),),
+                                          )),);
+                                      }
+                                      /*ppURL!=null?CircleAvatar(
+                                    radius: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height / 15,
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        ppURL),
+                                  ):Container(height: MediaQuery
                                       .of(context)
                                       .size
-                                      .height / 15,
-                                  backgroundImage: CachedNetworkImageProvider(
-                                      ppURL),
-                                ):Container(height: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height / 7.5,width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height / 7.5,decoration: BoxDecoration(shape:BoxShape.circle,color: Color(0xFF6E719B)),child: FittedBox(child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Text(realName[0],style: TextStyle(color:Colors.white,fontSize: 100),),
-                                    )),),
+                                      .height / 7.5,width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height / 7.5,decoration: BoxDecoration(shape:BoxShape.circle,color: Color(0xFF6E719B)),child: FittedBox(child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(realName[0],style: TextStyle(color:Colors.white,fontSize: 100),),
+                                  )),)
+*/
+                                    }),
                               ],
                             )
                           ],
@@ -694,7 +839,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-              ):Container(child: Center(child: CircularProgressIndicator(),),),
+              ) : Container(
+                child: Center(child: CircularProgressIndicator(),),),
             ],
           ),
         ),

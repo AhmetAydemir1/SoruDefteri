@@ -32,7 +32,7 @@ class _QuestionWallState extends State<QuestionWall> {
               ),
               body: StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection("Sorular")
+                    .collection("Sorular").orderBy("date",descending: true)
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
