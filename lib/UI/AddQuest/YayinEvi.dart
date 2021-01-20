@@ -99,7 +99,7 @@ class _YayinEviState extends State<YayinEvi> {
                       height: MediaQuery.of(context).size.height / 40,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height/2.1,
+                      height: MediaQuery.of(context).size.height/2.2,
                       child: Scrollbar(
                         controller: _scrollController,
                         isAlwaysShown: true,

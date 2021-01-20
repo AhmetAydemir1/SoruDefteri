@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soru_defteri/UI/AddQuest/BottomNav.dart';
 import 'package:soru_defteri/UI/AddQuest/FirstAdd.dart';
 import 'package:soru_defteri/UI/AddQuest/QuestDiff.dart';
+import 'package:soru_defteri/UI/Settings/YetersizKredi.dart';
+import 'package:soru_defteri/flutter_local_notifications.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   String realName;
   String ppURL;
   bool allLoaded = false;
+  int kredi;
 
   @override
   void initState() {
@@ -51,6 +54,55 @@ class _HomePageState extends State<HomePage> {
       });
     });
 
+
+    gunlukKredi();
+  }
+
+  gunlukKredi() async {
+    await FirebaseFirestore.instance.collection("Users").doc(user.uid)
+        .get()
+        .then((doc) async {
+      if (!doc.data().containsKey("krediTime")) {
+        await FirebaseFirestore.instance.collection("Users").doc(user.uid).set(
+            {"krediTime": DateTime.now(), "kredi": 3}, SetOptions(merge: true));
+        setState(() {
+          kredi=3;
+        });
+        LocalNotification().scheduledNotify(2, "Ücretsiz Kredi", "Ücretsiz 3 kredin hazır gel ve al!",day: 1);
+      } else {
+        if (DateTime.now().subtract(Duration(days: 1)).isAfter(doc["krediTime"].toDate())) {
+          await FirebaseFirestore.instance.collection("Users").doc(user.uid).get().then((doc){
+            if(doc.data().containsKey("kredi")){
+              setState(() {
+                kredi=doc["kredi"];
+              });
+            }else{
+              setState(() {
+                kredi=3;
+              });
+            }
+          });
+          setState(() {
+            kredi=kredi+3;
+          });
+          await FirebaseFirestore.instance.collection("Users")
+              .doc(user.uid)
+              .set({"krediTime": DateTime.now(), "kredi": kredi},
+              SetOptions(merge: true));
+        }else{
+          if(doc.data().containsKey("kredi")){
+            setState(() {
+              kredi=doc["kredi"];
+            });
+          }else{
+            setState(() {
+              kredi=3;
+            });
+          }
+        }
+      }
+    });
+    print(kredi);
     setState(() {
       allLoaded = true;
     });
@@ -286,9 +338,9 @@ class _HomePageState extends State<HomePage> {
                                                           MaterialPageRoute(
                                                               builder: (
                                                                   context) =>
-                                                              firstAdd
+                                                              kredi!=0&&kredi!=null? firstAdd
                                                                   ? SoruZorluk()
-                                                                  : FirstAdd())),
+                                                                  : FirstAdd():YetersizKredi())),
                                                   child: ClipRRect(
                                                       borderRadius: BorderRadius
                                                           .only(

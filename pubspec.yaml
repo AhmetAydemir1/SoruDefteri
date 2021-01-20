@@ -59,6 +59,10 @@ dependencies:
   flutter_local_notifications: ^3.0.3
 
   rxdart: ^0.25.0
+  cron: ^0.2.4
+
+
+  in_app_purchase: ^0.3.5+1
 
 
 
