@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heic_to_jpg/heic_to_jpg.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -143,12 +144,9 @@ class _AddQuestionState extends State<AddQuestion>
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             shadowColor: Colors.transparent,
-            title: GestureDetector(
-              onTap:()=>Navigator.push(context, MaterialPageRoute(builder:(context)=>Izinler())),
-              child: Text(
-                "Soru Yükle (TYT)",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+            title: Text(
+              "Soru Yükle (TYT)",
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             backgroundColor: Colors.transparent,
           ),
@@ -982,7 +980,6 @@ class _AddQuestionState extends State<AddQuestion>
                                                                               .size
                                                                               .width /
                                                                               90),
-
                                                                       GestureDetector(
                                                                           onTap:()=>_mistakeModalBottomSheet(context),
                                                                         child: Container(
@@ -1064,7 +1061,17 @@ class _AddQuestionState extends State<AddQuestion>
                                                                                 ],),
                                                                             )),
                                                                       ),
-
+                                                                      SizedBox(
+                                                                          width: MediaQuery
+                                                                              .of(
+                                                                              context)
+                                                                              .size
+                                                                              .width /
+                                                                              90),
+                                                                      GestureDetector(
+                                                                          child:Container(decoration:BoxDecoration(gradient:LinearGradient(colors:[Color(0xFF6E6DB7),Color(0xFFA5A5A7)],begin:Alignment.topCenter,end:Alignment.bottomCenter),shape:BoxShape.circle),height:MediaQuery.of(context).size.height/10,width:MediaQuery.of(context).size.height/10,
+                                                                              child: Center(child:Icon(Icons.done_all,color:Colors.white)))
+                                                                      )
                                                                     ]
 
                                                                 ),
@@ -2259,6 +2266,7 @@ class _AddQuestionState extends State<AddQuestion>
     questInfo["sinav"]=sinav;
     questInfo["ders"]=ders;
     questInfo["konu"]=konu;
+    questInfo["tekrar"]=false;
 
     await FirebaseFirestore.instance.collection("Sorular").doc().set(questInfo);
     Fluttertoast.showToast(msg:"Sorunuz başarıyla yüklenmiştir.",gravity: ToastGravity.CENTER);
@@ -2544,130 +2552,163 @@ class _AddQuestionState extends State<AddQuestion>
 
 
   questChoose() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Container(
-            color: Color(0xFF6E719B),
-            child: Scaffold(
-              extendBodyBehindAppBar: true,
-              backgroundColor: Color(0xFF6E719B),
-              appBar: AppBar(
-                title: Text("Soru Yükle"),
-                backgroundColor: Colors.transparent,
-                shadowColor: Colors.transparent,
-              ),
-              body: Center(
-                  child: Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: MediaQuery
+    if(questFileList.length>=1){
+      Fluttertoast.showToast(msg: "Her soru için yalnız bir soru fotoğrafı yükleyebilirsiniz");
+    }else{
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Container(
+              color: Color(0xFF6E719B),
+              child: Scaffold(
+                extendBodyBehindAppBar: true,
+                backgroundColor: Color(0xFF6E719B),
+                appBar: AppBar(
+                  title: Text("Soru Yükle"),
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                ),
+                body: Center(
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: MediaQuery
+                              .of(context)
+                              .size
+                              .height / 16),
+                          child: Container(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height / 3.5,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 1.6,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(15)),
+                                  color: Colors.white),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min, children: [
+                                SizedBox(height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 16,),
+                                Text("Soru Fotoğrafını Çek", style: TextStyle(
+                                    fontSize: 20, color: Color(0xFF6E719B))),
+                                SizedBox(height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 60),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Text(
+                                    "Bulanık soruları daha sonra okuyamayacağını unutmamalısın.",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Color(0xFF999CB9)),
+                                    textAlign: TextAlign.center,),
+                                ),
+                                Expanded(
+                                  child: Center(
+                                    child: FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10))),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      minWidth: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height / 30,
+                                      color: Color(0xFF00AE87),
+                                      child: Text(
+                                          "BAŞLA"),
+                                      onPressed: () async {
+                                        //TODO CAMERA OLARAK DEĞİŞTİR SOURCE
+
+                                        if (await Permission.camera
+                                            .isGranted) {} else {
+                                          await Permission.camera.request();
+                                        }
+                                        final pickedFile =
+                                        await _picker.getImage(
+                                            source: ImageSource.gallery);
+                                        File finalImage = await ImageCropper.cropImage(
+                                            sourcePath: File(pickedFile.path).path,
+                                            aspectRatioPresets: Platform.isAndroid
+                                                ? [
+                                              CropAspectRatioPreset.square,
+                                              CropAspectRatioPreset.ratio3x2,
+                                              CropAspectRatioPreset.original,
+                                              CropAspectRatioPreset.ratio4x3,
+                                              CropAspectRatioPreset.ratio16x9
+                                            ]
+                                                : [
+                                              CropAspectRatioPreset.original,
+                                              CropAspectRatioPreset.square,
+                                              CropAspectRatioPreset.ratio3x2,
+                                              CropAspectRatioPreset.ratio4x3,
+                                              CropAspectRatioPreset.ratio5x3,
+                                              CropAspectRatioPreset.ratio5x4,
+                                              CropAspectRatioPreset.ratio7x5,
+                                              CropAspectRatioPreset.ratio16x9
+                                            ],
+                                            androidUiSettings: AndroidUiSettings(
+                                                toolbarTitle: 'Görseli Kırp',
+                                                toolbarColor: Colors.black,
+                                                toolbarWidgetColor: Colors.white,
+                                                initAspectRatio: CropAspectRatioPreset.original,
+                                                lockAspectRatio: false),
+                                            iosUiSettings: IOSUiSettings(
+                                              title: 'Görseli Kırp',
+                                            ));
+                                        setState(() {
+                                          questionChoosen = false;
+                                          questLastFile = finalImage!=null?finalImage:File(pickedFile.path);
+                                          questFileList.add(questLastFile);
+                                          Navigator.pop(context);
+                                          questionChoosingNow = true;
+                                        });
+                                        await Future.delayed(Duration(milliseconds: 200));
+                                        _scrollToIndex(5);
+                                      },),
+                                  ),
+                                )
+                              ],)),
+                        ),
+                        Container(height: MediaQuery
                             .of(context)
                             .size
-                            .height / 16),
-                        child: Container(height: MediaQuery
-                            .of(context)
-                            .size
-                            .height / 3.5,
+                            .height / 8,
                             width: MediaQuery
                                 .of(context)
                                 .size
-                                .width / 1.6,
+                                .width / 4,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(15)),
-                                color: Colors.white),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min, children: [
-                              SizedBox(height: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height / 16,),
-                              Text("Soru Fotoğrafını Çek", style: TextStyle(
-                                  fontSize: 20, color: Color(0xFF6E719B))),
-                              SizedBox(height: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height / 60),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0),
-                                child: Text(
-                                  "Bulanık soruları daha sonra okuyamayacağını unutmamalısın.",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Color(0xFF999CB9)),
-                                  textAlign: TextAlign.center,),
-                              ),
-                              Expanded(
-                                child: Center(
-                                  child: FlatButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                    minWidth: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height / 30,
-                                    color: Color(0xFF00AE87),
-                                    child: Text(
-                                        "BAŞLA"),
-                                    onPressed: () async {
-                                      //TODO CAMERA OLARAK DEĞİŞTİR SOURCE
-
-                                      if (await Permission.camera
-                                          .isGranted) {} else {
-                                        await Permission.camera.request();
-                                      }
-                                      final pickedFile =
-                                      await _picker.getImage(
-                                          source: ImageSource.gallery);
-                                      setState(() {
-                                        questionChoosen = false;
-                                        questLastFile = File(pickedFile.path);
-                                        questFileList.add(questLastFile);
-                                        Navigator.pop(context);
-                                        questionChoosingNow = true;
-                                      });
-                                      await Future.delayed(Duration(milliseconds: 200));
-                                      _scrollToIndex(5);
-                                    },),
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: Color(
+                                    0xFF6E719B),
                                 ),
-                              )
-                            ],)),
-                      ),
-                      Container(height: MediaQuery
-                          .of(context)
-                          .size
-                          .height / 8,
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width / 4,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Color(
-                                  0xFF6E719B),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Image.asset("assets/images/camIcon.png"),
-                              ),),
-                          )),
-                    ],
-                  )
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Image.asset("assets/images/camIcon.png"),
+                                ),),
+                            )),
+                      ],
+                    )
+                ),
               ),
-            ),
-          );
-        });
+            );
+          });
+    }
   }
 
   questChooseNext() async {
@@ -2677,73 +2718,189 @@ class _AddQuestionState extends State<AddQuestion>
     });
   }
 
-/*
-  solutChoose2() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            title: Text("Görsel Seç"),
-            actions: [
-              FlatButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: Text("Kameradan Seç"),
-                onPressed: () async {
-                  if (await Permission.camera.isGranted) {} else {
-                    await Permission.camera.request();
-                  }
-                  final pickedFile =
-                  await _picker.getImage(source: ImageSource.gallery);
-                  setState(() {
-                    solutionChoosen = false;
-                    solutLastFile = File(pickedFile.path);
-                    solutFileList.add(solutLastFile);
-                    Navigator.pop(context);
-                    solutionChoosingNow = true;
-                  });
-                },
-              ),
-              FlatButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: Text("Galeriden Seç"),
-                onPressed: () async {
-                  print(Permission.storage.status.toString());
-                  if (Platform.isIOS) {
-                    if (await Permission.storage.isGranted) {} else {
-                      await Permission.storage.request();
-                    }
-                  }
-                  final pickedFile =
-                  await _picker.getImage(source: ImageSource.gallery);
-                  setState(() {
-                    solutionChoosen = false;
-                    solutLastFile = File(pickedFile.path);
-                    solutFileList.add(solutLastFile);
-                    Navigator.pop(context);
-                    solutionChoosingNow = true;
-                  });
-                },
-              ),
-            ],
-          );
-        });
-  }
-*/
   solutChoose() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Container(
-            color: Color(0xFF6E719B),
-            child: Scaffold(
+    if(solutFileList.length>=1){
+      Fluttertoast.showToast(msg: "Her soru için yalnız bir çözüm fotoğrafı yükleyebilirsiniz");
+    }else{
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Container(
+              color: Color(0xFF6E719B),
+              child: Scaffold(
+                extendBodyBehindAppBar: true,
+                backgroundColor: Color(0xFF6E719B),
+                appBar: AppBar(
+                  title: Text("Çözüm Yükle"),
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                ),
+                body: Center(
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: MediaQuery
+                              .of(context)
+                              .size
+                              .height / 16),
+                          child: Container(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height / 3.5,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 1.6,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(15)),
+                                  color: Colors.white),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min, children: [
+                                SizedBox(height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 16,),
+                                Text("Çözüm Fotoğrafını Çek", style: TextStyle(
+                                    fontSize: 20, color: Color(0xFF6E719B))),
+                                SizedBox(height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 60),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Text(
+                                    "Bulanık çözümleri daha sonra okuyamayacağını unutmamalısın.",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Color(0xFF999CB9)),
+                                    textAlign: TextAlign.center,),
+                                ),
+                                Expanded(
+                                  child: Center(
+                                    child: FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10))),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      minWidth: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height / 30,
+                                      color: Color(0xFF00AE87),
+                                      child: Text(
+                                          "BAŞLA"),
+                                      onPressed: () async {
+                                        //TODO CAMERA OLARAK DEĞİŞTİR SOURCE
+
+                                        if (await Permission.camera
+                                            .isGranted) {} else {
+                                          await Permission.camera.request();
+                                        }
+                                        final pickedFile =
+                                        await _picker.getImage(
+                                            source: ImageSource.gallery);
+                                        File finalImage = await ImageCropper.cropImage(
+                                            sourcePath: File(pickedFile.path).path,
+                                            aspectRatioPresets: Platform.isAndroid
+                                                ? [
+                                              CropAspectRatioPreset.square,
+                                              CropAspectRatioPreset.ratio3x2,
+                                              CropAspectRatioPreset.original,
+                                              CropAspectRatioPreset.ratio4x3,
+                                              CropAspectRatioPreset.ratio16x9
+                                            ]
+                                                : [
+                                              CropAspectRatioPreset.original,
+                                              CropAspectRatioPreset.square,
+                                              CropAspectRatioPreset.ratio3x2,
+                                              CropAspectRatioPreset.ratio4x3,
+                                              CropAspectRatioPreset.ratio5x3,
+                                              CropAspectRatioPreset.ratio5x4,
+                                              CropAspectRatioPreset.ratio7x5,
+                                              CropAspectRatioPreset.ratio16x9
+                                            ],
+                                            androidUiSettings: AndroidUiSettings(
+                                                toolbarTitle: 'Görseli Kırp',
+                                                toolbarColor: Colors.black,
+                                                toolbarWidgetColor: Colors.white,
+                                                initAspectRatio: CropAspectRatioPreset.original,
+                                                lockAspectRatio: false),
+                                            iosUiSettings: IOSUiSettings(
+                                              title: 'Görseli Kırp',
+                                            ));
+                                        setState(() {
+                                          solutionChoosen = false;
+                                          solutLastFile = finalImage!=null?finalImage: File(pickedFile.path);
+                                          solutFileList.add(solutLastFile);
+                                          Navigator.pop(context);
+                                          solutionChoosingNow = true;
+                                        });
+                                        await Future.delayed(Duration(milliseconds: 200));
+                                        _scrollToIndex(7);
+                                        if(solutFileList.length==1&&ipucuFinal==""){
+                                          await Future.delayed(Duration(milliseconds: 400));
+                                          solutTipType();
+                                        }
+                                      },),
+                                  ),
+                                )
+                              ],)),
+                        ),
+                        Container(height: MediaQuery
+                            .of(context)
+                            .size
+                            .height / 8,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width / 4,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: Color(
+                                    0xFF6E719B),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Image.asset("assets/images/camIcon.png"),
+                                ),),
+                            )),
+                      ],
+                    )
+                ),
+              ),
+            );
+          });
+    }
+  }
+
+  solutChooseNext() async {
+    setState(() {
+      solutionChoosingNow = false;
+      solutionChoosen = true;
+    });
+  }
+
+  solutChooseAndNext() async {
+    if(solutFileList.length>=1){
+      Fluttertoast.showToast(msg: "Her soru için yalnız bir çözüm fotoğrafı yükleyebilirsiniz");
+    }else{
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Scaffold(
               extendBodyBehindAppBar: true,
               backgroundColor: Color(0xFF6E719B),
               appBar: AppBar(
-                title: Text("Soru Yükle"),
+                title: Text("Çözüm Yükle"),
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
               ),
@@ -2814,19 +2971,44 @@ class _AddQuestionState extends State<AddQuestion>
                                       final pickedFile =
                                       await _picker.getImage(
                                           source: ImageSource.gallery);
+                                      File finalImage = await ImageCropper.cropImage(
+                                          sourcePath: File(pickedFile.path).path,
+                                          aspectRatioPresets: Platform.isAndroid
+                                              ? [
+                                            CropAspectRatioPreset.square,
+                                            CropAspectRatioPreset.ratio3x2,
+                                            CropAspectRatioPreset.original,
+                                            CropAspectRatioPreset.ratio4x3,
+                                            CropAspectRatioPreset.ratio16x9
+                                          ]
+                                              : [
+                                            CropAspectRatioPreset.original,
+                                            CropAspectRatioPreset.square,
+                                            CropAspectRatioPreset.ratio3x2,
+                                            CropAspectRatioPreset.ratio4x3,
+                                            CropAspectRatioPreset.ratio5x3,
+                                            CropAspectRatioPreset.ratio5x4,
+                                            CropAspectRatioPreset.ratio7x5,
+                                            CropAspectRatioPreset.ratio16x9
+                                          ],
+                                          androidUiSettings: AndroidUiSettings(
+                                              toolbarTitle: 'Görseli Kırp',
+                                              toolbarColor: Colors.black,
+                                              toolbarWidgetColor: Colors.white,
+                                              initAspectRatio: CropAspectRatioPreset.original,
+                                              lockAspectRatio: false),
+                                          iosUiSettings: IOSUiSettings(
+                                            title: 'Görseli Kırp',
+                                          ));
                                       setState(() {
                                         solutionChoosen = false;
-                                        solutLastFile = File(pickedFile.path);
+                                        solutLastFile = finalImage!=null?finalImage: File(pickedFile.path);
                                         solutFileList.add(solutLastFile);
                                         Navigator.pop(context);
                                         solutionChoosingNow = true;
+                                        solutionChoosingNow = false;
+                                        solutionChoosen = true;
                                       });
-                                      await Future.delayed(Duration(milliseconds: 200));
-                                      _scrollToIndex(7);
-                                      if(solutFileList.length==1&&ipucuFinal==""){
-                                        await Future.delayed(Duration(milliseconds: 400));
-                                        solutTipType();
-                                      }
                                     },),
                                 ),
                               )
@@ -2848,8 +3030,7 @@ class _AddQuestionState extends State<AddQuestion>
                             padding: EdgeInsets.all(8.0),
                             child: Container(
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Color(
-                                  0xFF6E719B),
+                                shape: BoxShape.circle, color: Color(0xFF6E719B),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(15.0),
@@ -2859,139 +3040,10 @@ class _AddQuestionState extends State<AddQuestion>
                     ],
                   )
               ),
-            ),
-          );
-        });
-  }
+            );
+          });
+    }
 
-  solutChooseNext() async {
-    setState(() {
-      solutionChoosingNow = false;
-      solutionChoosen = true;
-    });
-  }
-
-  solutChooseAndNext() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Scaffold(
-            extendBodyBehindAppBar: true,
-            backgroundColor: Color(0xFF6E719B),
-            appBar: AppBar(
-              title: Text("Çözüm Yükle"),
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
-            ),
-            body: Center(
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: MediaQuery
-                          .of(context)
-                          .size
-                          .height / 16),
-                      child: Container(height: MediaQuery
-                          .of(context)
-                          .size
-                          .height / 3.5,
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width / 1.6,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(15)),
-                              color: Colors.white),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min, children: [
-                            SizedBox(height: MediaQuery
-                                .of(context)
-                                .size
-                                .height / 16,),
-                            Text("Çözüm Fotoğrafını Çek", style: TextStyle(
-                                fontSize: 20, color: Color(0xFF6E719B))),
-                            SizedBox(height: MediaQuery
-                                .of(context)
-                                .size
-                                .height / 60),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0),
-                              child: Text(
-                                "Bulanık çözümleri daha sonra okuyamayacağını unutmamalısın.",
-                                style: TextStyle(
-                                    fontSize: 15, color: Color(0xFF999CB9)),
-                                textAlign: TextAlign.center,),
-                            ),
-                            Expanded(
-                              child: Center(
-                                child: FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  minWidth: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height / 30,
-                                  color: Color(0xFF00AE87),
-                                  child: Text(
-                                      "BAŞLA"),
-                                  onPressed: () async {
-                                    //TODO CAMERA OLARAK DEĞİŞTİR SOURCE
-
-                                    if (await Permission.camera
-                                        .isGranted) {} else {
-                                      await Permission.camera.request();
-                                    }
-                                    final pickedFile =
-                                    await _picker.getImage(
-                                        source: ImageSource.gallery);
-                                    setState(() {
-                                      //solutionChoosen = false;
-                                      solutLastFile = File(pickedFile.path);
-                                      solutFileList.add(solutLastFile);
-                                      Navigator.pop(context);
-                                      //solutionChoosingNow = true;
-                                      //solutionChoosingNow = false;
-                                      //solutionChoosen = true;
-                                    });
-                                  },),
-                              ),
-                            )
-                          ],)),
-                    ),
-                    Container(height: MediaQuery
-                        .of(context)
-                        .size
-                        .height / 8,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width / 4,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Color(0xFF6E719B),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Image.asset("assets/images/camIcon.png"),
-                            ),),
-                        )),
-                  ],
-                )
-            ),
-          );
-        });
   }
 
   solutTipType() async {

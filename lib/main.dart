@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soru_defteri/UI/Home/Home.dart';
 import 'package:soru_defteri/UI/Sign/Izinler.dart';
 import 'package:soru_defteri/UI/Sign/SignIn.dart';
-import 'package:soru_defteri/flutter_local_notifications.dart';
 
 import 'UI/Sign/ExtraInfoSign.dart';
 import 'UI/Splash/SplashScreen.dart';
@@ -89,6 +89,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('tr');
     return MaterialApp(
       title: 'Soru Defteri',
       theme: ThemeData(

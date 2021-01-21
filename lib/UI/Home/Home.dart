@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soru_defteri/UI/AddQuest/BottomNav.dart';
 import 'package:soru_defteri/UI/AddQuest/FirstAdd.dart';
@@ -21,6 +22,8 @@ class _HomePageState extends State<HomePage> {
   String ppURL;
   bool allLoaded = false;
   int kredi;
+  int tekrarlanacakSoru;
+  int toplamSoru;
 
   @override
   void initState() {
@@ -53,8 +56,6 @@ class _HomePageState extends State<HomePage> {
         ppURL = doc.data().containsKey("pp") ? doc["pp"] : null;
       });
     });
-
-
     gunlukKredi();
   }
 
@@ -275,39 +276,90 @@ class _HomePageState extends State<HomePage> {
                                                     TextSpan(
                                                       text: "Toplam ",
                                                     ),
-                                                    TextSpan(text: "92",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                          FontWeight
-                                                              .bold,
-                                                          color:
-                                                          Color(
-                                                              0xFF00AE87),
-                                                          fontSize: MediaQuery
-                                                              .of(
-                                                              context)
-                                                              .size
-                                                              .height /
-                                                              35),
-                                                    ),
+                                                    WidgetSpan(child: StreamBuilder(stream: FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).snapshots(),
+                                                    builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+                                                      if(!snapshot.hasData){
+                                                        return SizedBox(height: MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height /
+                                                            30,width: MediaQuery
+                                                            .of(
+                                                            context)
+                                                            .size
+                                                            .height /
+                                                            40,child: Padding(
+                                                              padding: const EdgeInsets.only(bottom:2.0),
+                                                              child: JumpingDotsProgressIndicator(
+                                                          fontSize: 20.0,
+                                                          color: Colors.white,
+                                                          milliseconds: 100,
+                                                        ),
+                                                            ),);
+                                                      }else{
+                                                        return Text(snapshot.data.docs.length.toString(),
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold,
+                                                              color:
+                                                              Color(
+                                                                  0xFF00AE87),
+                                                              fontSize: MediaQuery
+                                                                  .of(
+                                                                  context)
+                                                                  .size
+                                                                  .height /
+                                                                  35),
+                                                        );
+                                                      }
+                                                    },)),
                                                     TextSpan(
                                                       text:
                                                       " soru sordun ve tekrarlanacak ",
                                                     ),
-                                                    TextSpan(text: "27",
-                                                        style: TextStyle(
-                                                            fontWeight: FontWeight
-                                                                .bold,
-                                                            fontSize:
-                                                            MediaQuery
-                                                                .of(context)
-                                                                .size
-                                                                .height /
-                                                                35,
-                                                            color: Color(
-                                                                0xFFFF9600))),
+                                                    WidgetSpan(child: StreamBuilder(stream: FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).where("tekrar",isEqualTo: false).snapshots(),
+                                                      builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+                                                        if(!snapshot.hasData){
+                                                          return SizedBox(height: MediaQuery
+                                                              .of(
+                                                              context)
+                                                              .size
+                                                              .height /
+                                                              30,width: MediaQuery
+                                                              .of(
+                                                              context)
+                                                              .size
+                                                              .height /
+                                                              40,child: Padding(
+                                                            padding: const EdgeInsets.only(bottom:2.0),
+                                                            child: JumpingDotsProgressIndicator(
+                                                              fontSize: 20.0,
+                                                              color: Colors.white,
+                                                              milliseconds: 100,
+                                                            ),
+                                                          ),);
+                                                        }else{
+                                                          return Text(snapshot.data.docs.length.toString(),
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                                color:
+                                                                Color(
+                                                                    0xFFFF9600),
+                                                                fontSize: MediaQuery
+                                                                    .of(
+                                                                    context)
+                                                                    .size
+                                                                    .height /
+                                                                    35),
+                                                          );
+                                                        }
+                                                      },)),
                                                     TextSpan(
-                                                      text: " sorun daha var",
+                                                      text: " sorun daha var",//0xFFFF9600
                                                     )
                                                   ])),
                                         ),

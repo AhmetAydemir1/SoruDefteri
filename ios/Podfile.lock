@@ -419,7 +419,12 @@ PODS:
     - GTMSessionFetcher/Core (= 1.5.0)
   - heic_to_jpg (0.0.1):
     - Flutter
+  - image_cropper (0.0.3):
+    - Flutter
+    - TOCropViewController (~> 2.5.4)
   - image_picker (0.0.1):
+    - Flutter
+  - in_app_purchase (0.0.1):
     - Flutter
   - leveldb-library (1.22)
   - libphonenumber (0.0.1):
@@ -445,6 +450,7 @@ PODS:
     - Flutter
     - FMDB (~> 2.7.2)
   - Toast (4.0.0)
+  - TOCropViewController (2.5.5)
 
 DEPENDENCIES:
   - apple_sign_in (from `.symlinks/plugins/apple_sign_in/ios`)
@@ -460,7 +466,9 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - heic_to_jpg (from `.symlinks/plugins/heic_to_jpg/ios`)
+  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - in_app_purchase (from `.symlinks/plugins/in_app_purchase/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
@@ -500,6 +508,7 @@ SPEC REPOS:
     - PromisesObjC
     - Protobuf
     - Toast
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   apple_sign_in:
@@ -528,8 +537,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   heic_to_jpg:
     :path: ".symlinks/plugins/heic_to_jpg/ios"
+  image_cropper:
+    :path: ".symlinks/plugins/image_cropper/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  in_app_purchase:
+    :path: ".symlinks/plugins/in_app_purchase/ios"
   libphonenumber:
     :path: ".symlinks/plugins/libphonenumber/ios"
   path_provider:
@@ -581,7 +594,9 @@ SPEC CHECKSUMS:
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   heic_to_jpg: cce9d6463ab11852a7393daa61be23f98a951c64
+  image_cropper: c8f9b4157933c7bb965a66d1c5e6c8fd408c6eb4
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
+  in_app_purchase: 3e2155afa9d03d4fa32d9e62d567885080ce97d6
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
@@ -594,6 +609,7 @@ SPEC CHECKSUMS:
   sign_in_with_apple: 34f3f5456a45fd7ac5fb42905e2ad31dae061b4a
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  TOCropViewController: da59f531f8ac8a94ef6d6c0fc34009350f9e8bfe
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 

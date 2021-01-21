@@ -121,7 +121,7 @@ class _KrediState extends State<Kredi> {
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         TextSpan(
                             text:
-                                " satın alarakkesintisiz Soru Defteri deneyimi yaşayabilirsiniz."),
+                                " satın alarak kesintisiz Soru Defteri deneyimi yaşayabilirsiniz."),
                       ], style: TextStyle(fontSize: 25, color: Colors.white)),
                     ),
                   ),
