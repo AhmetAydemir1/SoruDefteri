@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soru_defteri/UI/AddQuest/BottomNav.dart';
 import 'package:soru_defteri/UI/AddQuest/FirstAdd.dart';
 import 'package:soru_defteri/UI/AddQuest/QuestDiff.dart';
+import 'package:soru_defteri/UI/Home/EditorHome.dart';
 import 'package:soru_defteri/UI/Settings/YetersizKredi.dart';
 import 'package:soru_defteri/flutter_local_notifications.dart';
 
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   int kredi;
   int tekrarlanacakSoru;
   int toplamSoru;
+  bool admin=false;
 
   @override
   void initState() {
@@ -33,9 +35,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   startSync() async {
-    print(user.displayName);
-    print(user.email);
-    print(user.phoneNumber);
     print(user.providerData);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool("FirstAdd") == null) {
@@ -56,7 +55,21 @@ class _HomePageState extends State<HomePage> {
         ppURL = doc.data().containsKey("pp") ? doc["pp"] : null;
       });
     });
-    gunlukKredi();
+    await FirebaseFirestore.instance.collection("Editor").doc("Editor").get().then((doc)async{
+      SharedPreferences prefs=await SharedPreferences.getInstance();
+
+      if(doc["editor"].contains(user.uid)){
+        prefs.setBool("admin", true);
+        setState(() {
+          admin=true;
+          allLoaded = true;
+        });
+      }else{
+        prefs.setBool("admin", false);
+        admin=false;
+        gunlukKredi();
+      }
+    });
   }
 
   gunlukKredi() async {
@@ -69,7 +82,7 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           kredi=3;
         });
-        LocalNotification().scheduledNotify(2, "Ücretsiz Kredi", "Ücretsiz 3 kredin hazır gel ve al!",day: 1);
+        LocalNotification().scheduledNotify(2, "Ücretsiz Kredi", "Ücretsiz 2 kredin hazır gel ve al!",day: 1);
       } else {
         if (DateTime.now().subtract(Duration(days: 1)).isAfter(doc["krediTime"].toDate())) {
           await FirebaseFirestore.instance.collection("Users").doc(user.uid).get().then((doc){
@@ -79,12 +92,12 @@ class _HomePageState extends State<HomePage> {
               });
             }else{
               setState(() {
-                kredi=3;
+                kredi=2;
               });
             }
           });
           setState(() {
-            kredi=kredi+3;
+            kredi=kredi+2;
           });
           await FirebaseFirestore.instance.collection("Users")
               .doc(user.uid)
@@ -97,7 +110,7 @@ class _HomePageState extends State<HomePage> {
             });
           }else{
             setState(() {
-              kredi=3;
+              kredi=2;
             });
           }
         }
@@ -124,6 +137,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if(admin){
+      return EditorHome(user: user,realName: realName,);
+    }
     return Container(
       color: Color(0xFF6E719B),
       child: SafeArea(

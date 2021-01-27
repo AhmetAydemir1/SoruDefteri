@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:soru_defteri/UI/Settings/YetersizKredi.dart';
+
+import 'PremiumAvantaj.dart';
 
 class Kredi extends StatefulWidget {
   @override
@@ -135,7 +135,7 @@ class _KrediState extends State<Kredi> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => YetersizKredi()));
+                                builder: (context) => PremiumOl()));
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(45.0)),

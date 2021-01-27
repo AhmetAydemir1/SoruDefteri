@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soru_defteri/UI/Settings/PremiumAvantaj.dart';
 
 class YetersizKredi extends StatefulWidget {
   @override
@@ -99,7 +100,9 @@ class _YetersizKrediState extends State<YetersizKredi> {
                             Container(
                               height: 45.0,
                               child: FlatButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>PremiumOl()));
+                                },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(45.0)),
                                 padding: EdgeInsets.all(0.0),

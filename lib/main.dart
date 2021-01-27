@@ -91,9 +91,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     initializeDateFormatting('tr');
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Soru Defteri',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        accentColor: Color(0xff00AE87),
+        primaryColor: Color(0xff6E719B),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: splash != null && login != null

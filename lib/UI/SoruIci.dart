@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _SoruCozState extends State<SoruCoz> {
   bool ipucuGoster = false;
   int initialIndex;
   final ImagePicker _picker = ImagePicker();
+  User user=FirebaseAuth.instance.currentUser;
 
   ScrollController scrollController = ScrollController();
 
@@ -117,328 +119,527 @@ class _SoruCozState extends State<SoruCoz> {
                             .snapshots(),
                         builder: (context, AsyncSnapshot<
                             DocumentSnapshot> snapshot) {
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Text(snapshot.data["ders"]
-                                  .toString()
-                                  .toUpperCase(),
-                                  style: TextStyle(
-                                    color: Color(0xFF41C6FF),
-                                    fontSize: 20,
-                                  )),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                snapshot.data["konu"],
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Container(
-                                width: 50,
-                                height: 3,
-                                color: Color(0xFF41C6FF),
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width / 10),
-                                child: Text(
-                                  "Soru Çözmenin faydalarıyla alakalı motivasyon mottoları eklenmeli. Bu mottolar ünlü düşünürlerin başarıya dair söylemleri olabilir.",
+                          if(!snapshot.hasData){
+                            return Center(child: CircularProgressIndicator(),);
+                          }else{
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(snapshot.data["ders"]
+                                    .toString()
+                                    .toUpperCase(),
+                                    style: TextStyle(
+                                      color: Color(0xFF41C6FF),
+                                      fontSize: 20,
+                                    )),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  snapshot.data["konu"],
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.w300),
-                                  textAlign: TextAlign.center,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width / 9),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceBetween,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        snapshot.data.data().containsKey(
-                                            "liked") &&
-                                            snapshot.data["liked"]
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        color: Color(0xFFFF007F),
-                                        size: 30,
-                                      ),
-                                      onPressed: () async {
-                                        print(snapshot.data.id + " butt");
-                                        if (snapshot.data.data().containsKey(
-                                            "liked") &&
-                                            snapshot.data["liked"]) {
-                                          await FirebaseFirestore.instance
-                                              .collection("Sorular").doc(
-                                              snapshot.data.id).set(
-                                              {"liked": false},
-                                              SetOptions(merge: true));
-                                          print("ok");
-                                        } else {
-                                          await FirebaseFirestore.instance
-                                              .collection("Sorular").doc(
-                                              snapshot.data.id).set(
-                                              {"liked": true},
-                                              SetOptions(merge: true));
-                                          print("okk");
-                                        }
-                                      },
-                                    ),
-                                    Text(DateFormat.MMMd('tr_TR').format(
-                                        snapshot.data["date"].toDate()),
-                                      style: TextStyle(color: Colors.white,
-                                          fontWeight: FontWeight.bold),),
-                                  ],
+                                SizedBox(
+                                  height: 8,
                                 ),
-                              ),
-                              SizedBox(height: 3,),
-                              CarouselSlider(
-                                  options: CarouselOptions(
-                                    initialPage: initialIndex,
-                                    height: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height / 2,
-                                    enlargeCenterPage: true,
-                                    enableInfiniteScroll: false,
-                                    onPageChanged: (index, reason) async {
-                                      setState(() {
-                                        currentDoc = widget.docList[index];
-                                        cozumGoster = false;
-                                        ipucuGoster = false;
-                                      });
-                                      await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrar":true,"tekrarTime":DateTime.now()},SetOptions(merge:true));
-                                    },),
-                                  items: widget.docList.map((e) {
-                                    print(currentDoc.id);
-                                    return e.id == currentDoc.id ? !ipucuGoster
-                                        ? Container(
-                                        child: Stack(
-                                          fit: StackFit.expand,
-                                          alignment: Alignment.bottomLeft,
-                                          children: [
-                                            Hero(
-                                              tag: e.id == currentDoc.id
-                                                  ? cozumGoster
-                                                  ? e["cozumFotos"][0]
-                                                  : e["soruFotos"][0]
-                                                  : e["soruFotos"][0],
-                                              child: ClipRRect(
-                                                  borderRadius: BorderRadius
-                                                      .all(
-                                                      Radius.circular(15)),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: e.id ==
-                                                        currentDoc.id
-                                                        ? cozumGoster
-                                                        ? e["cozumFotos"][0]
-                                                        : e["soruFotos"][0]
-                                                        : e["soruFotos"][0],
-                                                    fit: BoxFit.cover,
-                                                  )),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.bottomLeft,
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(
-                                                    10.0),
-                                                child: IconButton(icon: Icon(
-                                                  Icons.zoom_in,
-                                                  color: Color(0xFF6E719B),
-                                                  size: 40,), onPressed: () {
-                                                  Navigator.push(context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ImageFull(e.id ==
-                                                                  currentDoc.id
-                                                                  ? cozumGoster
-                                                                  ? e["cozumFotos"][0]
-                                                                  : e["soruFotos"][0]
-                                                                  : e["soruFotos"][0])));
-                                                },),
-                                              ),
-                                            )
-
-                                          ],
-                                        ))
-                                        :
-
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15)),
-                                      child: Container(
-                                        width: double.maxFinite,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                              colors: [
-                                                Colors.white,
-                                                Color(0xFFCDCEDC)
-                                              ],
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter),
+                                Container(
+                                  width: 50,
+                                  height: 3,
+                                  color: Color(0xFF41C6FF),
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width / 10),
+                                  child: Text(
+                                    "Soru Çözmenin faydalarıyla alakalı motivasyon mottoları eklenmeli. Bu mottolar ünlü düşünürlerin başarıya dair söylemleri olabilir.",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w300),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width / 9),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          snapshot.data.data().containsKey(
+                                              "liked") &&
+                                              snapshot.data["liked"].contains(user.uid)
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color: Color(0xFFFF007F),
+                                          size: 30,
                                         ),
-                                        child: Scrollbar(
-                                          isAlwaysShown: true,
-                                          controller: scrollController,
-                                          child: SingleChildScrollView(
-                                            controller: scrollController,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment
-                                                  .start,
-                                              children: [
-                                                Padding(
+                                        onPressed: () async {
+                                          print(snapshot.data.id + " butt");
+                                          if (snapshot.data.data().containsKey(
+                                              "liked") &&
+                                              snapshot.data["liked"].contains(user.uid)) {
+                                            List newLiked =[];
+                                            newLiked=snapshot.data["liked"];
+                                            newLiked.remove(user.uid);
+                                            await FirebaseFirestore.instance
+                                                .collection("Sorular").doc(
+                                                snapshot.data.id).set(
+                                                {"liked": newLiked},
+                                                SetOptions(merge: true));
+                                            print("ok");
+                                          } else {
+                                            List newLiked=[];
+                                            if(snapshot.data.data().containsKey(
+                                                "liked")){
+                                              newLiked=snapshot.data["liked"];
+                                            }
+                                            newLiked.add(user.uid);
+                                            await FirebaseFirestore.instance
+                                                .collection("Sorular").doc(
+                                                snapshot.data.id).set(
+                                                {"liked": newLiked},
+                                                SetOptions(merge: true));
+                                            print("okk");
+                                          }
+                                        },
+                                      ),
+                                      Text(DateFormat.MMMd('tr_TR').format(
+                                          snapshot.data["date"].toDate()),
+                                        style: TextStyle(color: Colors.white,
+                                            fontWeight: FontWeight.bold),),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 3,),
+                                CarouselSlider(
+                                    options: CarouselOptions(
+                                      initialPage: initialIndex,
+                                      height: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height / 2,
+                                      enlargeCenterPage: true,
+                                      enableInfiniteScroll: false,
+                                      onPageChanged: (index, reason) async {
+                                        setState(() {
+                                          currentDoc = widget.docList[index];
+                                          cozumGoster = false;
+                                          ipucuGoster = false;
+                                        });
+                                        await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrarTime":DateTime.now(),"tekrar":true},SetOptions(merge:true));
+                                      },),
+                                    items: widget.docList.map((e) {
+                                      print(currentDoc.id);
+                                      return e.id == currentDoc.id ? !ipucuGoster
+                                          ? Container(
+                                          child: Stack(
+                                            fit: StackFit.expand,
+                                            alignment: Alignment.bottomLeft,
+                                            children: [
+                                              Hero(
+                                                tag: e.id == currentDoc.id
+                                                    ? cozumGoster
+                                                    ? e["cozumFotos"][0]
+                                                    : e["soruFotos"][0]
+                                                    : e["soruFotos"][0],
+                                                child: ClipRRect(
+                                                    borderRadius: BorderRadius
+                                                        .all(
+                                                        Radius.circular(15)),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: e.id ==
+                                                          currentDoc.id
+                                                          ? cozumGoster
+                                                          ? e["cozumFotos"][0]
+                                                          : e["soruFotos"][0]
+                                                          : e["soruFotos"][0],
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.bottomLeft,
+                                                child: Padding(
                                                   padding: const EdgeInsets.all(
-                                                      8.0),
-                                                  child: Text(snapshot
-                                                      .data["ipucu"]),
+                                                      10.0),
+                                                  child: IconButton(icon: Icon(
+                                                    Icons.zoom_in,
+                                                    color: Color(0xFF6E719B),
+                                                    size: 40,), onPressed: () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ImageFull(e.id ==
+                                                                    currentDoc.id
+                                                                    ? cozumGoster
+                                                                    ? e["cozumFotos"][0]
+                                                                    : e["soruFotos"][0]
+                                                                    : e["soruFotos"][0])));
+                                                  },),
                                                 ),
-                                              ],
+                                              )
+
+                                            ],
+                                          ))
+                                          :
+
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                        child: Container(
+                                          width: double.maxFinite,
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                                colors: [
+                                                  Colors.white,
+                                                  Color(0xFFCDCEDC)
+                                                ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter),
+                                          ),
+                                          child: Scrollbar(
+                                            isAlwaysShown: true,
+                                            controller: scrollController,
+                                            child: SingleChildScrollView(
+                                              controller: scrollController,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Text(snapshot
+                                                        .data["ipucu"]),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ) :
+                                      ) :
 
-                                    ClipRRect(borderRadius: BorderRadius.all(
-                                        Radius.circular(15)),
-                                        child: CachedNetworkImage(
-                                          imageUrl: e["soruFotos"][0],
-                                          fit: BoxFit.cover,));
-                                  }).toList()
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceAround,
-                                mainAxisSize: MainAxisSize
-                                    .min,
-                                children: [
-                                  !cozumGoster ?
-                                  GestureDetector(
-                                    onTap: snapshot.data.data().containsKey(
-                                        "cozumFotos") &&
-                                        snapshot.data["cozumFotos"] is List &&
-                                        snapshot.data["cozumFotos"] != null &&
-                                        snapshot.data["cozumFotos"][0] != null
-                                        ? () {
-                                      setState(() {
-                                        cozumGoster = !cozumGoster;
-                                        ipucuGoster = false;
-                                      });
-                                    }
-                                        : () {
-                                      solutChoose(snapshot.data.id);
-                                    },
-                                    child: Container(
+                                      ClipRRect(borderRadius: BorderRadius.all(
+                                          Radius.circular(15)),
+                                          child: CachedNetworkImage(
+                                            imageUrl: e["soruFotos"][0],
+                                            fit: BoxFit.cover,));
+                                    }).toList()
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceAround,
+                                  mainAxisSize: MainAxisSize
+                                      .min,
+                                  children: [
+                                    !cozumGoster ?
+                                    GestureDetector(
+                                      onTap: snapshot.data.data().containsKey(
+                                          "cozumFotos") &&
+                                          snapshot.data["cozumFotos"] is List &&
+                                          snapshot.data["cozumFotos"] != null &&
+                                          snapshot.data["cozumFotos"][0] != null
+                                          ? () {
+                                        setState(() {
+                                          cozumGoster = !cozumGoster;
+                                          ipucuGoster = false;
+                                        });
+                                      }
+                                          : () {
+                                        solutChoose(snapshot.data.id);
+                                      },
+                                      child: Container(
+                                          width: MediaQuery
+                                              .of(
+                                              context)
+                                              .size
+                                              .width /
+                                              2.5,
+                                          height: MediaQuery
+                                              .of(
+                                              context)
+                                              .size
+                                              .height /
+                                              10,
+                                          decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(
+                                                        0xFF6E719A),
+                                                    Color(
+                                                        0xFF5F6397)
+                                                  ],
+                                                  begin: Alignment
+                                                      .topCenter,
+                                                  end: Alignment
+                                                      .bottomCenter),
+                                              borderRadius: BorderRadius
+                                                  .only(
+                                                  topLeft: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          20),
+                                                  topRight: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          20),
+                                                  bottomLeft: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          20),
+                                                  bottomRight: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          40))),
+                                          child: Center(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize
+                                                  .min,
+                                              children: [
+                                                Image
+                                                    .asset(
+                                                    "assets/images/chooseSolution.png",
+                                                    scale: 10),
+                                                Text(
+                                                    "Çözümü\nGöster",
+                                                    textAlign: TextAlign
+                                                        .center,
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .white))
+
+                                              ],),
+                                          )),
+                                    ) :
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          cozumGoster = !cozumGoster;
+                                          ipucuGoster = false;
+                                        });
+                                      },
+                                      child: Container(
+                                          width: MediaQuery
+                                              .of(
+                                              context)
+                                              .size
+                                              .width /
+                                              2.5,
+                                          height: MediaQuery
+                                              .of(
+                                              context)
+                                              .size
+                                              .height /
+                                              10,
+                                          decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(
+                                                        0xFF6E709B),
+                                                    Color(
+                                                        0xFF6E6BC4)
+                                                  ],
+                                                  begin: Alignment
+                                                      .topCenter,
+                                                  end: Alignment
+                                                      .bottomCenter),
+                                              borderRadius: BorderRadius
+                                                  .only(
+                                                  topLeft: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          20),
+                                                  topRight: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          20),
+                                                  bottomLeft: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          20),
+                                                  bottomRight: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          40))),
+                                          child: Center(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize
+                                                  .min,
+                                              children: [
+                                                Image
+                                                    .asset(
+                                                    "assets/images/chooseQuestion.png",
+                                                    scale: 10),
+                                                Text(
+                                                    "Soruyu\nGöster",
+                                                    textAlign: TextAlign
+                                                        .center,
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .white))
+
+                                              ],),
+                                          )),
+                                    ),
+
+                                    SizedBox(
                                         width: MediaQuery
                                             .of(
                                             context)
                                             .size
                                             .width /
-                                            2.5,
-                                        height: MediaQuery
-                                            .of(
-                                            context)
-                                            .size
-                                            .height /
-                                            10,
-                                        decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                                colors: [
-                                                  Color(
-                                                      0xFF6E719A),
-                                                  Color(
-                                                      0xFF5F6397)
-                                                ],
-                                                begin: Alignment
-                                                    .topCenter,
-                                                end: Alignment
-                                                    .bottomCenter),
-                                            borderRadius: BorderRadius
-                                                .only(
-                                                topLeft: Radius
-                                                    .circular(
-                                                    MediaQuery
-                                                        .of(
-                                                        context)
-                                                        .size
-                                                        .width /
-                                                        20),
-                                                topRight: Radius
-                                                    .circular(
-                                                    MediaQuery
-                                                        .of(
-                                                        context)
-                                                        .size
-                                                        .width /
-                                                        20),
-                                                bottomLeft: Radius
-                                                    .circular(
-                                                    MediaQuery
-                                                        .of(
-                                                        context)
-                                                        .size
-                                                        .width /
-                                                        20),
-                                                bottomRight: Radius
-                                                    .circular(
-                                                    MediaQuery
-                                                        .of(
-                                                        context)
-                                                        .size
-                                                        .width /
-                                                        40))),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize
-                                                .min,
-                                            children: [
-                                              Image
-                                                  .asset(
-                                                  "assets/images/chooseSolution.png",
-                                                  scale: 10),
-                                              Text(
-                                                  "Çözümü\nGöster",
-                                                  textAlign: TextAlign
-                                                      .center,
-                                                  style: TextStyle(
-                                                      color: Colors
-                                                          .white))
+                                            90),
 
-                                            ],),
-                                        )),
-                                  ) :
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        cozumGoster = !cozumGoster;
-                                        ipucuGoster = false;
-                                      });
-                                    },
-                                    child: Container(
+                                    !ipucuGoster ?
+                                    GestureDetector(
+                                      onTap: snapshot.data.data().containsKey(
+                                          "ipucu") &&
+                                          snapshot.data["ipucu"] is String &&
+                                          snapshot.data["ipucu"] != null &&
+                                          snapshot.data["ipucu"] != "" ? () {
+                                        setState(() {
+                                          ipucuGoster = !ipucuGoster;
+                                          cozumGoster = false;
+                                        });
+                                      } : () {
+                                        solutTipType(snapshot.data);
+                                      },
+                                      child: Container(
+                                          width: MediaQuery
+                                              .of(
+                                              context)
+                                              .size
+                                              .width /
+                                              2.5,
+                                          height: MediaQuery
+                                              .of(
+                                              context)
+                                              .size
+                                              .height /
+                                              10,
+                                          decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(
+                                                        0xFF00AD88),
+                                                    Color(
+                                                        0xFF6E719B)
+                                                  ],
+                                                  begin: Alignment
+                                                      .topCenter,
+                                                  end: Alignment
+                                                      .bottomCenter),
+                                              borderRadius: BorderRadius
+                                                  .only(
+                                                  topLeft: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          20),
+                                                  topRight: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          20),
+                                                  bottomLeft: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          40),
+                                                  bottomRight: Radius
+                                                      .circular(
+                                                      MediaQuery
+                                                          .of(
+                                                          context)
+                                                          .size
+                                                          .width /
+                                                          20))),
+                                          child: Center(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize
+                                                  .min,
+                                              children: [
+                                                Image
+                                                    .asset(
+                                                    "assets/images/cozumYukle.png",
+                                                    scale: 10),
+                                                Text(
+                                                    "İpucunu\nGöster",
+                                                    textAlign: TextAlign
+                                                        .center,
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .white))
+                                              ],),
+                                          )),
+                                    ) :
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          ipucuGoster = !ipucuGoster;
+                                          cozumGoster = false;
+                                        });
+                                      },
+                                      child: Container(
                                         width: MediaQuery
                                             .of(
                                             context)
@@ -488,7 +689,7 @@ class _SoruCozState extends State<SoruCoz> {
                                                         context)
                                                         .size
                                                         .width /
-                                                        20),
+                                                        40),
                                                 bottomRight: Radius
                                                     .circular(
                                                     MediaQuery
@@ -496,7 +697,7 @@ class _SoruCozState extends State<SoruCoz> {
                                                         context)
                                                         .size
                                                         .width /
-                                                        40))),
+                                                        20))),
                                         child: Center(
                                           child: Column(
                                             mainAxisSize: MainAxisSize
@@ -514,202 +715,17 @@ class _SoruCozState extends State<SoruCoz> {
                                                       color: Colors
                                                           .white))
 
-                                            ],),
-                                        )),
-                                  ),
-
-                                  SizedBox(
-                                      width: MediaQuery
-                                          .of(
-                                          context)
-                                          .size
-                                          .width /
-                                          90),
-
-                                  !ipucuGoster ?
-                                  GestureDetector(
-                                    onTap: snapshot.data.data().containsKey(
-                                        "ipucu") &&
-                                        snapshot.data["ipucu"] is String &&
-                                        snapshot.data["ipucu"] != null &&
-                                        snapshot.data["ipucu"] != "" ? () {
-                                      setState(() {
-                                        ipucuGoster = !ipucuGoster;
-                                        cozumGoster = false;
-                                      });
-                                    } : () {
-                                      solutTipType(snapshot.data);
-                                    },
-                                    child: Container(
-                                        width: MediaQuery
-                                            .of(
-                                            context)
-                                            .size
-                                            .width /
-                                            2.5,
-                                        height: MediaQuery
-                                            .of(
-                                            context)
-                                            .size
-                                            .height /
-                                            10,
-                                        decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                                colors: [
-                                                  Color(
-                                                      0xFF00AD88),
-                                                  Color(
-                                                      0xFF6E719B)
-                                                ],
-                                                begin: Alignment
-                                                    .topCenter,
-                                                end: Alignment
-                                                    .bottomCenter),
-                                            borderRadius: BorderRadius
-                                                .only(
-                                                topLeft: Radius
-                                                    .circular(
-                                                    MediaQuery
-                                                        .of(
-                                                        context)
-                                                        .size
-                                                        .width /
-                                                        20),
-                                                topRight: Radius
-                                                    .circular(
-                                                    MediaQuery
-                                                        .of(
-                                                        context)
-                                                        .size
-                                                        .width /
-                                                        20),
-                                                bottomLeft: Radius
-                                                    .circular(
-                                                    MediaQuery
-                                                        .of(
-                                                        context)
-                                                        .size
-                                                        .width /
-                                                        40),
-                                                bottomRight: Radius
-                                                    .circular(
-                                                    MediaQuery
-                                                        .of(
-                                                        context)
-                                                        .size
-                                                        .width /
-                                                        20))),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize
-                                                .min,
-                                            children: [
-                                              Image
-                                                  .asset(
-                                                  "assets/images/cozumYukle.png",
-                                                  scale: 10),
-                                              Text(
-                                                  "İpucunu\nGöster",
-                                                  textAlign: TextAlign
-                                                      .center,
-                                                  style: TextStyle(
-                                                      color: Colors
-                                                          .white))
-                                            ],),
-                                        )),
-                                  ) :
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        ipucuGoster = !ipucuGoster;
-                                        cozumGoster = false;
-                                      });
-                                    },
-                                    child: Container(
-                                      width: MediaQuery
-                                          .of(
-                                          context)
-                                          .size
-                                          .width /
-                                          2.5,
-                                      height: MediaQuery
-                                          .of(
-                                          context)
-                                          .size
-                                          .height /
-                                          10,
-                                      decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                              colors: [
-                                                Color(
-                                                    0xFF6E709B),
-                                                Color(
-                                                    0xFF6E6BC4)
-                                              ],
-                                              begin: Alignment
-                                                  .topCenter,
-                                              end: Alignment
-                                                  .bottomCenter),
-                                          borderRadius: BorderRadius
-                                              .only(
-                                              topLeft: Radius
-                                                  .circular(
-                                                  MediaQuery
-                                                      .of(
-                                                      context)
-                                                      .size
-                                                      .width /
-                                                      20),
-                                              topRight: Radius
-                                                  .circular(
-                                                  MediaQuery
-                                                      .of(
-                                                      context)
-                                                      .size
-                                                      .width /
-                                                      20),
-                                              bottomLeft: Radius
-                                                  .circular(
-                                                  MediaQuery
-                                                      .of(
-                                                      context)
-                                                      .size
-                                                      .width /
-                                                      40),
-                                              bottomRight: Radius
-                                                  .circular(
-                                                  MediaQuery
-                                                      .of(
-                                                      context)
-                                                      .size
-                                                      .width /
-                                                      20))),
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize
-                                              .min,
-                                          children: [
-                                            Image
-                                                .asset(
-                                                "assets/images/chooseQuestion.png",
-                                                scale: 10),
-                                            Text(
-                                                "Soruyu\nGöster",
-                                                textAlign: TextAlign
-                                                    .center,
-                                                style: TextStyle(
-                                                    color: Colors
-                                                        .white))
-
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
+                                  ],
+                                ),
+                              ],
+                            );
+
+                          }
                         },
                       ),
                     ),
@@ -816,7 +832,7 @@ class _SoruCozState extends State<SoruCoz> {
                                                   final pickedFile =
                                                   await _picker.getImage(
                                                       source: ImageSource
-                                                          .gallery);
+                                                          .camera);
                                                   File finalImage = await ImageCropper
                                                       .cropImage(
                                                       sourcePath: File(

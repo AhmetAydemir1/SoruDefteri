@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Soru Defteri</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,21 +29,42 @@
 			<array>
 				<string>com.googleusercontent.apps.13487261515-k2ulp61c3o8rr4dmlu6hcj3thjd4h9ca</string>
 				<string>fb898226990916302</string>
-
 			</array>
-
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>898226990916302</string>
+	<key>FacebookDisplayName</key>
+	<string>Soru Defteri</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fbauth2</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Soru yüklemek için müziklere erişim gerekiyor.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Soru yüklemek için takvime erişim gerekiyor.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Soru ve ipucu yükleyebilmek için kamera erişimine izin vermelisiniz.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Soru yüklemek için kişilere erişim gerekiyor.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Soru yüklemek için konuma erişim gerekiyor.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Soru yüklemek için konuma erişim gerekiyor.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Soru ve ipucu yükleyebilmek için bu erişime izin vermelisiniz.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Soru yüklemek için telefon hareketine erişim gerekiyor.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Soru ve ipucu yükleyebilmek için galeri erişimine izin vermelisiniz.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Soru yüklemek için ses tanımaya erişim gerekiyor.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -51,11 +74,11 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIStatusBarHidden</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -66,15 +89,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>FacebookAppID</key>
-    <string>898226990916302</string>
-    <key>FacebookDisplayName</key>
-    <string>Soru Defteri</string>
-
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbapi</string>
-        <string>fbauth2</string>
-    </array>
 </dict>
 </plist>

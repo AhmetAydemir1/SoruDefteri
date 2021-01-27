@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soru_defteri/UI/Home/Home.dart';
 import 'ForgotPass.dart';
+import 'Izinler.dart';
 
 class SignInLogin extends StatefulWidget {
   @override
@@ -257,9 +259,16 @@ class _SignInLoginState extends State<SignInLogin> {
           setState(() {
             load = true;
           });
+          bool firstSign;
+          SharedPreferences prefs=await SharedPreferences.getInstance();
+          if(prefs.getBool("firstSign")==null){
+            firstSign=true;
+          }else{
+            firstSign=false;
+          }
           Navigator.popUntil(context, (route) => route.isFirst);
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
+              context, MaterialPageRoute(builder: (context) => firstSign?Izinler(): HomePage()));
 
           return '$user';
         }
