@@ -14,6 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soru_defteri/Models/Strings.dart';
+import 'package:soru_defteri/Models/randomInt.dart';
 import 'package:soru_defteri/UI/Settings/YetersizKredi.dart';
 import 'package:soru_defteri/flutter_local_notifications.dart';
 import 'package:uuid/uuid.dart';
@@ -2293,7 +2294,10 @@ class _AddQuestionState extends State<AddQuestion>
         questInfo["sinav"]=sinav;
         questInfo["ders"]=ders;
         questInfo["konu"]=konu;
-        questInfo["tekrar"]=false;
+        questInfo["tekrarNum"]=0;
+        questInfo["tekrarTime"]=DateTime.now();
+        questInfo["tekrarYapilacak"]=DateTime.now().add(Duration(days: 1));
+        questInfo["tekrar"]=true;
         questInfo["liked"]=[];
         questInfo["likeSayisi"]=0;
 
@@ -2304,9 +2308,11 @@ class _AddQuestionState extends State<AddQuestion>
 
         Fluttertoast.showToast(msg:"Sorunuz başarıyla yüklenmiştir.",gravity: ToastGravity.CENTER);
         if (!admin) {
-          LocalNotification().scheduledNotify(0, ders, konu,day: 1,hour: 0,minute: 0,second: 0);
-          LocalNotification().scheduledNotify(0, ders, konu,day: 7,hour: 0,minute: 0,second: 0);
-          LocalNotification().scheduledNotify(0, ders, konu,day: 28,hour: 0,minute: 0,second: 0);
+          int id=RandomDigits.getInteger(10);
+
+          LocalNotification().scheduledNotify(id, "Tekrar etmen gereken sorular var!", "Bugünkü tekrarlarına göz atmayı unutma.",day: 1,hour: 0,minute: 0,second: 0);
+          LocalNotification().scheduledNotify(id, "Tekrar etmen gereken sorular var!", "Bugünkü tekrarlarına göz atmayı unutma.",day: 7,hour: 0,minute: 0,second: 0);
+          LocalNotification().scheduledNotify(id, "Tekrar etmen gereken sorular var!", "Bugünkü tekrarlarına göz atmayı unutma.",day: 28,hour: 0,minute: 0,second: 0);
         }
       }
       else{

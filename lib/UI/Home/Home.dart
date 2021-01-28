@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
         });
         LocalNotification().scheduledNotify(2, "Ücretsiz Kredi", "Ücretsiz 2 kredin hazır gel ve al!",day: 1);
       } else {
-        if (DateTime.now().subtract(Duration(days: 1)).isAfter(doc["krediTime"].toDate())) {
+        if (DateTime.now().subtract(Duration(minutes: 1)).isAfter(doc["krediTime"].toDate())) {
           await FirebaseFirestore.instance.collection("Users").doc(user.uid).get().then((doc){
             if(doc.data().containsKey("kredi")){
               setState(() {
@@ -335,7 +335,7 @@ class _HomePageState extends State<HomePage> {
                                                       text:
                                                       " soru sordun ve tekrarlanacak ",
                                                     ),
-                                                    WidgetSpan(child: StreamBuilder(stream: FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).where("tekrar",isEqualTo: false).snapshots(),
+                                                    WidgetSpan(child: StreamBuilder(stream: FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).snapshots(),
                                                       builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
                                                         if(!snapshot.hasData){
                                                           return SizedBox(height: MediaQuery
@@ -357,7 +357,24 @@ class _HomePageState extends State<HomePage> {
                                                             ),
                                                           ),);
                                                         }else{
-                                                          return Text(snapshot.data.docs.length.toString(),
+                                                          int sayi=0;
+                                                          for(int i=0;i<snapshot.data.docs.length;i++){
+                                                            if((snapshot.data.docs[i].data().containsKey("tekrarNum")&&snapshot.data.docs[i]["tekrarNum"]!=3)||!snapshot.data.docs[i]["tekrar"]){
+                                                              if(snapshot.data.docs[i].data().containsKey("tekrarNum")&&snapshot.data.docs[i]["tekrarNum"]!=3){
+                                                                if(snapshot.data.docs[i]["tekrarNum"]==0&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 1)))){
+                                                                  sayi=sayi+1;
+
+                                                                }else if(snapshot.data.docs[i]["tekrarNum"]==1&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 6)))){
+                                                                  sayi=sayi+1;
+
+                                                                }else if(snapshot.data.docs[i]["tekrarNum"]==2&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 22)))){
+                                                                  sayi=sayi+1;
+
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                          return Text(sayi.toString(),
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                 FontWeight

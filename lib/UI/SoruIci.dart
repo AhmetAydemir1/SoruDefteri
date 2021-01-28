@@ -50,7 +50,30 @@ class _SoruCozState extends State<SoruCoz> {
     startSync();
   }
   startSync()async{
-    await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrar":true,"tekrarTime":DateTime.now()},SetOptions(merge:true));
+    tekrarYap();
+
+  }
+
+  tekrarYap()async{
+    int tekrarNum;
+    await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).get().then((doc){
+      if(doc.data().containsKey("tekrarNum")){
+        tekrarNum=doc["tekrarNum"];
+      }else{
+        tekrarNum=0;
+      }
+    });
+
+    if(tekrarNum==0){
+      print("tkrar 1 oldu");
+      await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrar":true,"tekrarTime":DateTime.now(),"tekrarYapilacak":DateTime.now().add(Duration(days: 1)),"tekrarNum":tekrarNum+1},SetOptions(merge:true));
+    } else if(tekrarNum==1){
+      print("tkrar 2 oldu");
+      await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrar":true,"tekrarTime":DateTime.now(),"tekrarYapilacak":DateTime.now().add(Duration(days: 6)),"tekrarNum":tekrarNum+1},SetOptions(merge:true));
+    }else if(tekrarNum==2){
+      print("tkrar 3 oldu");
+      await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrar":true,"tekrarTime":DateTime.now(),"tekrarYapilacak":DateTime.now().add(Duration(days: 22)),"tekrarNum":tekrarNum+1},SetOptions(merge:true));
+    }
   }
 
   @override
@@ -190,7 +213,6 @@ class _SoruCozState extends State<SoruCoz> {
                                           size: 30,
                                         ),
                                         onPressed: () async {
-                                          print(snapshot.data.id + " butt");
                                           if (snapshot.data.data().containsKey(
                                               "liked") &&
                                               snapshot.data["liked"].contains(user.uid)) {
@@ -241,11 +263,11 @@ class _SoruCozState extends State<SoruCoz> {
                                           currentDoc = widget.docList[index];
                                           cozumGoster = false;
                                           ipucuGoster = false;
+                                          tekrarYap();
                                         });
                                         await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrarTime":DateTime.now(),"tekrar":true},SetOptions(merge:true));
                                       },),
                                     items: widget.docList.map((e) {
-                                      print(currentDoc.id);
                                       return e.id == currentDoc.id ? !ipucuGoster
                                           ? Container(
                                           child: Stack(

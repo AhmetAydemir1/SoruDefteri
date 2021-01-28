@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:soru_defteri/UI/SoruKategori/TodaysRepeat.dart';
 
 class Repeat extends StatefulWidget {
   @override
@@ -93,12 +94,11 @@ class _RepeatState extends State<Repeat> {
                                               .collection("Sorular")
                                               .where(
                                               "paylasanID", isEqualTo: user.uid)
-                                              .where("tekrar", isEqualTo: false)
                                               .snapshots(),
                                           builder: (context, AsyncSnapshot<
                                               QuerySnapshot> snapshot) {
                                             if (!snapshot.hasData) {
-                                              return SizedBox(height: MediaQuery
+                                                return SizedBox(height: MediaQuery
                                                   .of(
                                                   context)
                                                   .size
@@ -118,8 +118,25 @@ class _RepeatState extends State<Repeat> {
                                                 ),
                                               ),);
                                             } else {
+                                              int sayi=0;
+                                              for(int i=0;i<snapshot.data.docs.length;i++){
+                                                if((snapshot.data.docs[i].data().containsKey("tekrarNum")&&snapshot.data.docs[i]["tekrarNum"]!=3)||!snapshot.data.docs[i]["tekrar"]){
+                                                  if(snapshot.data.docs[i].data().containsKey("tekrarNum")&&snapshot.data.docs[i]["tekrarNum"]!=3){
+                                                    if(snapshot.data.docs[i]["tekrarNum"]==0&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 1)))){
+                                                      sayi=sayi+1;
+
+                                                    }else if(snapshot.data.docs[i]["tekrarNum"]==1&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 6)))){
+                                                      sayi=sayi+1;
+
+                                                    }else if(snapshot.data.docs[i]["tekrarNum"]==2&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 22)))){
+                                                      sayi=sayi+1;
+
+                                                    }
+                                                  }
+                                                }
+                                              }
                                               return Text(
-                                                snapshot.data.docs.length
+                                                sayi
                                                     .toString(),
                                                 style: TextStyle(
                                                     fontWeight:
@@ -185,7 +202,7 @@ class _RepeatState extends State<Repeat> {
                                   children: [
                                     Expanded(
                                       child: GestureDetector(
-                                        onTap: () => null,
+                                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>TodaysRepeat())),
                                         child: ClipRRect(
                                             borderRadius: BorderRadius
                                                 .only(
