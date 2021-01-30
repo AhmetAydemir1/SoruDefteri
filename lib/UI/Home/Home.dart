@@ -8,6 +8,7 @@ import 'package:soru_defteri/UI/AddQuest/BottomNav.dart';
 import 'package:soru_defteri/UI/AddQuest/FirstAdd.dart';
 import 'package:soru_defteri/UI/AddQuest/QuestDiff.dart';
 import 'package:soru_defteri/UI/Home/EditorHome.dart';
+import 'package:soru_defteri/UI/Home/Settings.dart' as MySettings;
 import 'package:soru_defteri/UI/Settings/YetersizKredi.dart';
 import 'package:soru_defteri/flutter_local_notifications.dart';
 
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   int kredi;
   int tekrarlanacakSoru;
   int toplamSoru;
-  bool admin=false;
+  bool admin = false;
 
   @override
   void initState() {
@@ -55,18 +56,20 @@ class _HomePageState extends State<HomePage> {
         ppURL = doc.data().containsKey("pp") ? doc["pp"] : null;
       });
     });
-    await FirebaseFirestore.instance.collection("Editor").doc("Editor").get().then((doc)async{
-      SharedPreferences prefs=await SharedPreferences.getInstance();
+    await FirebaseFirestore.instance.collection("Editor").doc("Editor")
+        .get()
+        .then((doc) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      if(doc["editor"].contains(user.uid)){
+      if (doc["editor"].contains(user.uid)) {
         prefs.setBool("admin", true);
         setState(() {
-          admin=true;
+          admin = true;
           allLoaded = true;
         });
-      }else{
+      } else {
         prefs.setBool("admin", false);
-        admin=false;
+        admin = false;
         gunlukKredi();
       }
     });
@@ -80,37 +83,42 @@ class _HomePageState extends State<HomePage> {
         await FirebaseFirestore.instance.collection("Users").doc(user.uid).set(
             {"krediTime": DateTime.now(), "kredi": 3}, SetOptions(merge: true));
         setState(() {
-          kredi=3;
+          kredi = 3;
         });
-        LocalNotification().scheduledNotify(2, "Ücretsiz Kredi", "Ücretsiz 2 kredin hazır gel ve al!",day: 1);
+        LocalNotification().scheduledNotify(
+            2, "Ücretsiz Kredi", "Ücretsiz 2 kredin hazır gel ve al!", day: 1);
       } else {
-        if (DateTime.now().subtract(Duration(minutes: 1)).isAfter(doc["krediTime"].toDate())) {
-          await FirebaseFirestore.instance.collection("Users").doc(user.uid).get().then((doc){
-            if(doc.data().containsKey("kredi")){
+        if (DateTime.now().subtract(Duration(minutes: 1)).isAfter(
+            doc["krediTime"].toDate())) {
+          await FirebaseFirestore.instance.collection("Users")
+              .doc(user.uid)
+              .get()
+              .then((doc) {
+            if (doc.data().containsKey("kredi")) {
               setState(() {
-                kredi=doc["kredi"];
+                kredi = doc["kredi"];
               });
-            }else{
+            } else {
               setState(() {
-                kredi=2;
+                kredi = 2;
               });
             }
           });
           setState(() {
-            kredi=kredi+2;
+            kredi = kredi + 2;
           });
           await FirebaseFirestore.instance.collection("Users")
               .doc(user.uid)
               .set({"krediTime": DateTime.now(), "kredi": kredi},
               SetOptions(merge: true));
-        }else{
-          if(doc.data().containsKey("kredi")){
+        } else {
+          if (doc.data().containsKey("kredi")) {
             setState(() {
-              kredi=doc["kredi"];
+              kredi = doc["kredi"];
             });
-          }else{
+          } else {
             setState(() {
-              kredi=2;
+              kredi = 2;
             });
           }
         }
@@ -137,8 +145,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if(admin){
-      return EditorHome(user: user,realName: realName,);
+    if (admin) {
+      return EditorHome(user: user, realName: realName,);
     }
     return Container(
       color: Color(0xFF6E719B),
@@ -155,11 +163,11 @@ class _HomePageState extends State<HomePage> {
             ),
             actions: [
               IconButton(
-                  icon: Icon(Icons.notifications),
-                  color: Colors.white,
-                  onPressed: () {
-
-                  })
+                icon: Icon(Icons.notifications),
+                color: Colors.white,
+                splashRadius: 25,
+                onPressed: () {},
+              )
             ],
             centerTitle: true,
           ),
@@ -236,16 +244,48 @@ class _HomePageState extends State<HomePage> {
                                                 .of(context)
                                                 .size
                                                 .height / 60),
-                                        child: Text(
-                                          "Merhaba $realName!",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .height / 32),
-                                        ),
+                                        child: StreamBuilder(
+                                          stream: FirebaseFirestore.instance
+                                              .collection("Users")
+                                              .doc(user.uid)
+                                              .snapshots(),
+                                          builder: (context, AsyncSnapshot<
+                                              DocumentSnapshot> snapshot) {
+                                            if (snapshot.hasData) {
+                                              return Text(
+                                                "Merhaba ${snapshot
+                                                    .data["adsoyad"]}!",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .height / 32),
+                                              );
+                                            } else {
+                                              return Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    "Merhaba ",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: MediaQuery
+                                                            .of(context)
+                                                            .size
+                                                            .height / 32),
+                                                  ),
+                                                  JumpingDotsProgressIndicator(
+                                                    fontSize: 20.0,
+                                                    color: Colors.white,
+                                                    milliseconds: 100,
+                                                  )
+                                                ],
+                                              );
+                                            }
+                                          },),
                                       ),
                                       SizedBox(
                                         height: MediaQuery
@@ -292,107 +332,217 @@ class _HomePageState extends State<HomePage> {
                                                     TextSpan(
                                                       text: "Toplam ",
                                                     ),
-                                                    WidgetSpan(child: StreamBuilder(stream: FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).snapshots(),
-                                                    builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
-                                                      if(!snapshot.hasData){
-                                                        return SizedBox(height: MediaQuery
-                                                            .of(
-                                                            context)
-                                                            .size
-                                                            .height /
-                                                            30,width: MediaQuery
-                                                            .of(
-                                                            context)
-                                                            .size
-                                                            .height /
-                                                            40,child: Padding(
-                                                              padding: const EdgeInsets.only(bottom:2.0),
-                                                              child: JumpingDotsProgressIndicator(
-                                                          fontSize: 20.0,
-                                                          color: Colors.white,
-                                                          milliseconds: 100,
-                                                        ),
-                                                            ),);
-                                                      }else{
-                                                        return Text(snapshot.data.docs.length.toString(),
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .bold,
-                                                              color:
-                                                              Color(
-                                                                  0xFF00AE87),
-                                                              fontSize: MediaQuery
-                                                                  .of(
-                                                                  context)
-                                                                  .size
-                                                                  .height /
-                                                                  35),
-                                                        );
-                                                      }
-                                                    },)),
-                                                    TextSpan(
-                                                      text:
-                                                      " soru sordun ve tekrarlanacak ",
-                                                    ),
-                                                    WidgetSpan(child: StreamBuilder(stream: FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).snapshots(),
-                                                      builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
-                                                        if(!snapshot.hasData){
-                                                          return SizedBox(height: MediaQuery
-                                                              .of(
-                                                              context)
-                                                              .size
-                                                              .height /
-                                                              30,width: MediaQuery
-                                                              .of(
-                                                              context)
-                                                              .size
-                                                              .height /
-                                                              40,child: Padding(
-                                                            padding: const EdgeInsets.only(bottom:2.0),
-                                                            child: JumpingDotsProgressIndicator(
-                                                              fontSize: 20.0,
-                                                              color: Colors.white,
-                                                              milliseconds: 100,
-                                                            ),
-                                                          ),);
-                                                        }else{
-                                                          int sayi=0;
-                                                          for(int i=0;i<snapshot.data.docs.length;i++){
-                                                            if((snapshot.data.docs[i].data().containsKey("tekrarNum")&&snapshot.data.docs[i]["tekrarNum"]!=3)||!snapshot.data.docs[i]["tekrar"]){
-                                                              if(snapshot.data.docs[i].data().containsKey("tekrarNum")&&snapshot.data.docs[i]["tekrarNum"]!=3){
-                                                                if(snapshot.data.docs[i]["tekrarNum"]==0&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 1)))){
-                                                                  sayi=sayi+1;
-
-                                                                }else if(snapshot.data.docs[i]["tekrarNum"]==1&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 6)))){
-                                                                  sayi=sayi+1;
-
-                                                                }else if(snapshot.data.docs[i]["tekrarNum"]==2&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 22)))){
-                                                                  sayi=sayi+1;
-
-                                                                }
-                                                              }
-                                                            }
-                                                          }
-                                                          return Text(sayi.toString(),
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .bold,
-                                                                color:
-                                                                Color(
-                                                                    0xFFFF9600),
-                                                                fontSize: MediaQuery
+                                                    WidgetSpan(
+                                                        child: StreamBuilder(
+                                                          stream: FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                              "Sorular")
+                                                              .where(
+                                                              "paylasanID",
+                                                              isEqualTo: user
+                                                                  .uid)
+                                                              .snapshots(),
+                                                          builder: (context,
+                                                              AsyncSnapshot<
+                                                                  QuerySnapshot> snapshot) {
+                                                            if (!snapshot
+                                                                .hasData) {
+                                                              return SizedBox(
+                                                                height: MediaQuery
                                                                     .of(
                                                                     context)
                                                                     .size
                                                                     .height /
-                                                                    35),
-                                                          );
-                                                        }
-                                                      },)),
+                                                                    30,
+                                                                width: MediaQuery
+                                                                    .of(
+                                                                    context)
+                                                                    .size
+                                                                    .height /
+                                                                    40,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .only(
+                                                                      bottom: 2.0),
+                                                                  child: JumpingDotsProgressIndicator(
+                                                                    fontSize: 20.0,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    milliseconds: 100,
+                                                                  ),
+                                                                ),);
+                                                            } else {
+                                                              return Text(
+                                                                snapshot.data
+                                                                    .docs.length
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                    color:
+                                                                    Color(
+                                                                        0xFF00AE87),
+                                                                    fontSize: MediaQuery
+                                                                        .of(
+                                                                        context)
+                                                                        .size
+                                                                        .height /
+                                                                        35),
+                                                              );
+                                                            }
+                                                          },)),
                                                     TextSpan(
-                                                      text: " sorun daha var",//0xFFFF9600
+                                                      text:
+                                                      " soru sordun ve tekrarlanacak ",
+                                                    ),
+                                                    WidgetSpan(
+                                                        child: StreamBuilder(
+                                                          stream: FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                              "Sorular")
+                                                              .where(
+                                                              "paylasanID",
+                                                              isEqualTo: user
+                                                                  .uid)
+                                                              .snapshots(),
+                                                          builder: (context,
+                                                              AsyncSnapshot<
+                                                                  QuerySnapshot> snapshot) {
+                                                            if (!snapshot
+                                                                .hasData) {
+                                                              return SizedBox(
+                                                                height: MediaQuery
+                                                                    .of(
+                                                                    context)
+                                                                    .size
+                                                                    .height /
+                                                                    30,
+                                                                width: MediaQuery
+                                                                    .of(
+                                                                    context)
+                                                                    .size
+                                                                    .height /
+                                                                    40,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .only(
+                                                                      bottom: 2.0),
+                                                                  child: JumpingDotsProgressIndicator(
+                                                                    fontSize: 20.0,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    milliseconds: 100,
+                                                                  ),
+                                                                ),);
+                                                            } else {
+                                                              int sayi = 0;
+                                                              for (int i = 0; i <
+                                                                  snapshot.data
+                                                                      .docs
+                                                                      .length; i++) {
+                                                                if ((snapshot
+                                                                    .data
+                                                                    .docs[i]
+                                                                    .data()
+                                                                    .containsKey(
+                                                                    "tekrarNum") &&
+                                                                    snapshot
+                                                                        .data
+                                                                        .docs[i]["tekrarNum"] !=
+                                                                        3) ||
+                                                                    !snapshot
+                                                                        .data
+                                                                        .docs[i]["tekrar"]) {
+                                                                  if (snapshot
+                                                                      .data
+                                                                      .docs[i]
+                                                                      .data()
+                                                                      .containsKey(
+                                                                      "tekrarNum") &&
+                                                                      snapshot
+                                                                          .data
+                                                                          .docs[i]["tekrarNum"] !=
+                                                                          3) {
+                                                                    if (snapshot
+                                                                        .data
+                                                                        .docs[i]["tekrarNum"] ==
+                                                                        0 &&
+                                                                        snapshot
+                                                                            .data
+                                                                            .docs[i]["tekrarTime"]
+                                                                            .toDate()
+                                                                            .isBefore(
+                                                                            DateTime
+                                                                                .now()
+                                                                                .subtract(
+                                                                                Duration(
+                                                                                    days: 1)))) {
+                                                                      sayi =
+                                                                          sayi +
+                                                                              1;
+                                                                    } else
+                                                                    if (snapshot
+                                                                        .data
+                                                                        .docs[i]["tekrarNum"] ==
+                                                                        1 &&
+                                                                        snapshot
+                                                                            .data
+                                                                            .docs[i]["tekrarTime"]
+                                                                            .toDate()
+                                                                            .isBefore(
+                                                                            DateTime
+                                                                                .now()
+                                                                                .subtract(
+                                                                                Duration(
+                                                                                    days: 6)))) {
+                                                                      sayi =
+                                                                          sayi +
+                                                                              1;
+                                                                    } else
+                                                                    if (snapshot
+                                                                        .data
+                                                                        .docs[i]["tekrarNum"] ==
+                                                                        2 &&
+                                                                        snapshot
+                                                                            .data
+                                                                            .docs[i]["tekrarTime"]
+                                                                            .toDate()
+                                                                            .isBefore(
+                                                                            DateTime
+                                                                                .now()
+                                                                                .subtract(
+                                                                                Duration(
+                                                                                    days: 22)))) {
+                                                                      sayi =
+                                                                          sayi +
+                                                                              1;
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                              return Text(
+                                                                sayi.toString(),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                    color:
+                                                                    Color(
+                                                                        0xFFFF9600),
+                                                                    fontSize: MediaQuery
+                                                                        .of(
+                                                                        context)
+                                                                        .size
+                                                                        .height /
+                                                                        35),
+                                                              );
+                                                            }
+                                                          },)),
+                                                    TextSpan(
+                                                      text: " sorun daha var", //0xFFFF9600
                                                     )
                                                   ])),
                                         ),
@@ -423,9 +573,12 @@ class _HomePageState extends State<HomePage> {
                                                           MaterialPageRoute(
                                                               builder: (
                                                                   context) =>
-                                                              kredi!=0&&kredi!=null? firstAdd
+                                                              kredi != 0 &&
+                                                                  kredi != null
+                                                                  ? firstAdd
                                                                   ? SoruZorluk()
-                                                                  : FirstAdd():YetersizKredi())),
+                                                                  : FirstAdd()
+                                                                  : YetersizKredi())),
                                                   child: ClipRRect(
                                                       borderRadius: BorderRadius
                                                           .only(
@@ -761,9 +914,7 @@ class _HomePageState extends State<HomePage> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (
-                                                                  context) =>
-                                                                  BottomNav(
-                                                                    currentIndex: 0,))),
+                                                                  context) =>MySettings.Settings())),
                                                   child: ClipRRect(
                                                       borderRadius: BorderRadius
                                                           .only(

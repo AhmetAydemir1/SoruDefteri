@@ -17,8 +17,9 @@ import 'package:soru_defteri/UI/FullImage.dart';
 class SoruCoz extends StatefulWidget {
   DocumentSnapshot doc;
   List<DocumentSnapshot> docList;
+  bool shuffle;
 
-  SoruCoz({Key key, @required this.doc, @required this.docList})
+  SoruCoz({Key key, @required this.doc, @required this.docList, this.shuffle})
       : super(key: key);
 
   @override
@@ -31,7 +32,7 @@ class _SoruCozState extends State<SoruCoz> {
   bool ipucuGoster = false;
   int initialIndex;
   final ImagePicker _picker = ImagePicker();
-  User user=FirebaseAuth.instance.currentUser;
+  User user = FirebaseAuth.instance.currentUser;
 
   ScrollController scrollController = ScrollController();
 
@@ -49,30 +50,54 @@ class _SoruCozState extends State<SoruCoz> {
     });
     startSync();
   }
-  startSync()async{
-    tekrarYap();
 
+  startSync() async {
+    tekrarYap();
   }
 
-  tekrarYap()async{
+  tekrarYap() async {
+    if (widget.shuffle!=true) {
     int tekrarNum;
-    await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).get().then((doc){
-      if(doc.data().containsKey("tekrarNum")){
-        tekrarNum=doc["tekrarNum"];
-      }else{
-        tekrarNum=0;
+    await FirebaseFirestore.instance.collection("Sorular")
+        .doc(currentDoc.id)
+        .get()
+        .then((doc) {
+      if (doc.data().containsKey("tekrarNum")) {
+        tekrarNum = doc["tekrarNum"];
+      } else {
+        tekrarNum = 0;
       }
     });
+    print(widget.shuffle);
 
-    if(tekrarNum==0){
-      print("tkrar 1 oldu");
-      await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrar":true,"tekrarTime":DateTime.now(),"tekrarYapilacak":DateTime.now().add(Duration(days: 1)),"tekrarNum":tekrarNum+1},SetOptions(merge:true));
-    } else if(tekrarNum==1){
-      print("tkrar 2 oldu");
-      await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrar":true,"tekrarTime":DateTime.now(),"tekrarYapilacak":DateTime.now().add(Duration(days: 6)),"tekrarNum":tekrarNum+1},SetOptions(merge:true));
-    }else if(tekrarNum==2){
-      print("tkrar 3 oldu");
-      await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrar":true,"tekrarTime":DateTime.now(),"tekrarYapilacak":DateTime.now().add(Duration(days: 22)),"tekrarNum":tekrarNum+1},SetOptions(merge:true));
+      if (tekrarNum == 0) {
+        print("tkrar 1 oldu");
+        await FirebaseFirestore.instance.collection("Sorular").doc(
+            currentDoc.id).set({
+          "tekrar": true,
+          "tekrarTime": DateTime.now(),
+          "tekrarYapilacak": DateTime.now().add(Duration(days: 1)),
+          "tekrarNum": tekrarNum + 1
+        }, SetOptions(merge: true));
+      } else if (tekrarNum == 1) {
+        print("tkrar 2 oldu");
+        await FirebaseFirestore.instance.collection("Sorular").doc(
+            currentDoc.id).set({
+          "tekrar": true,
+          "tekrarTime": DateTime.now(),
+          "tekrarYapilacak": DateTime.now().add(Duration(days: 6)),
+          "tekrarNum": tekrarNum + 1
+        }, SetOptions(merge: true));
+      } else if (tekrarNum == 2) {
+        print("tkrar 3 oldu");
+        await FirebaseFirestore.instance.collection("Sorular").doc(
+            currentDoc.id).set({
+          "tekrar": true,
+          "tekrarTime": DateTime.now(),
+          "tekrarYapilacak": DateTime.now().add(Duration(days: 22)),
+          "tekrarNum": tekrarNum + 1
+        }, SetOptions(merge: true));
+      }
     }
   }
 
@@ -142,9 +167,9 @@ class _SoruCozState extends State<SoruCoz> {
                             .snapshots(),
                         builder: (context, AsyncSnapshot<
                             DocumentSnapshot> snapshot) {
-                          if(!snapshot.hasData){
+                          if (!snapshot.hasData) {
                             return Center(child: CircularProgressIndicator(),);
-                          }else{
+                          } else {
                             return Column(
                               children: [
                                 SizedBox(
@@ -206,7 +231,8 @@ class _SoruCozState extends State<SoruCoz> {
                                         icon: Icon(
                                           snapshot.data.data().containsKey(
                                               "liked") &&
-                                              snapshot.data["liked"].contains(user.uid)
+                                              snapshot.data["liked"].contains(
+                                                  user.uid)
                                               ? Icons.favorite
                                               : Icons.favorite_border,
                                           color: Color(0xFFFF007F),
@@ -215,9 +241,10 @@ class _SoruCozState extends State<SoruCoz> {
                                         onPressed: () async {
                                           if (snapshot.data.data().containsKey(
                                               "liked") &&
-                                              snapshot.data["liked"].contains(user.uid)) {
-                                            List newLiked =[];
-                                            newLiked=snapshot.data["liked"];
+                                              snapshot.data["liked"].contains(
+                                                  user.uid)) {
+                                            List newLiked = [];
+                                            newLiked = snapshot.data["liked"];
                                             newLiked.remove(user.uid);
                                             await FirebaseFirestore.instance
                                                 .collection("Sorular").doc(
@@ -226,10 +253,11 @@ class _SoruCozState extends State<SoruCoz> {
                                                 SetOptions(merge: true));
                                             print("ok");
                                           } else {
-                                            List newLiked=[];
-                                            if(snapshot.data.data().containsKey(
-                                                "liked")){
-                                              newLiked=snapshot.data["liked"];
+                                            List newLiked = [];
+                                            if (snapshot.data.data()
+                                                .containsKey(
+                                                "liked")) {
+                                              newLiked = snapshot.data["liked"];
                                             }
                                             newLiked.add(user.uid);
                                             await FirebaseFirestore.instance
@@ -265,10 +293,18 @@ class _SoruCozState extends State<SoruCoz> {
                                           ipucuGoster = false;
                                           tekrarYap();
                                         });
-                                        await FirebaseFirestore.instance.collection("Sorular").doc(currentDoc.id).set({"tekrarTime":DateTime.now(),"tekrar":true},SetOptions(merge:true));
+                                        if (widget.shuffle!=true) {
+                                          await FirebaseFirestore.instance
+                                              .collection("Sorular").doc(
+                                              currentDoc.id).set({
+                                            "tekrarTime": DateTime.now(),
+                                            "tekrar": true
+                                          }, SetOptions(merge: true));
+                                        }
                                       },),
                                     items: widget.docList.map((e) {
-                                      return e.id == currentDoc.id ? !ipucuGoster
+                                      return e.id == currentDoc.id
+                                          ? !ipucuGoster
                                           ? Container(
                                           child: Stack(
                                             fit: StackFit.expand,
@@ -305,13 +341,16 @@ class _SoruCozState extends State<SoruCoz> {
                                                     size: 40,), onPressed: () {
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ImageFull(e.id ==
-                                                                    currentDoc.id
-                                                                    ? cozumGoster
-                                                                    ? e["cozumFotos"][0]
-                                                                    : e["soruFotos"][0]
-                                                                    : e["soruFotos"][0])));
+                                                            builder: (
+                                                                context) =>
+                                                                ImageFull(
+                                                                    e.id ==
+                                                                        currentDoc
+                                                                            .id
+                                                                        ? cozumGoster
+                                                                        ? e["cozumFotos"][0]
+                                                                        : e["soruFotos"][0]
+                                                                        : e["soruFotos"][0])));
                                                   },),
                                                 ),
                                               )
@@ -344,7 +383,8 @@ class _SoruCozState extends State<SoruCoz> {
                                                     .start,
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets.all(
+                                                    padding: const EdgeInsets
+                                                        .all(
                                                         8.0),
                                                     child: Text(snapshot
                                                         .data["ipucu"]),
@@ -354,7 +394,8 @@ class _SoruCozState extends State<SoruCoz> {
                                             ),
                                           ),
                                         ),
-                                      ) :
+                                      )
+                                          :
 
                                       ClipRRect(borderRadius: BorderRadius.all(
                                           Radius.circular(15)),
@@ -746,7 +787,6 @@ class _SoruCozState extends State<SoruCoz> {
                                 ),
                               ],
                             );
-
                           }
                         },
                       ),

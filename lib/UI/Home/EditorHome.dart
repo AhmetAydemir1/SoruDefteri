@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:soru_defteri/UI/AddQuest/BottomNav.dart';
+import 'package:soru_defteri/UI/Home/Settings.dart'as mySettings;
 import 'package:soru_defteri/UI/AddQuest/QuestDiff.dart';
 import 'package:soru_defteri/UI/SoruKategori/Dersler.dart';
 
@@ -362,8 +362,7 @@ class _EditorHomeState extends State<EditorHome> {
                                                           MaterialPageRoute(
                                                               builder: (
                                                                   context) =>
-                                                                  BottomNav(
-                                                                    currentIndex: 1,))),
+                                                                  mySettings.Settings())),
 
                                                   child: ClipRRect(
                                                       borderRadius: BorderRadius

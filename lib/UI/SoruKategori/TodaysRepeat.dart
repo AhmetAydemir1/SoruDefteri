@@ -33,13 +33,16 @@ class _TodaysRepeatState extends State<TodaysRepeat>
 
   startSync() async {
     /*await FirebaseFirestore.instance
-        .collection("Sorular")
+        .collection("Sorular").where("ders",isEqualTo:"Coğrafya").where("konu",isEqualTo: "Doğa ve İnsan")
         .where("paylasanID", isEqualTo: user.uid)
+        .orderBy("date",
+        descending:
+        tabIndex == 0 ? true : false)
         .get()
         .then((value) async {
-      for(DocumentSnapshot ds in value.docs){
+      *//*for(DocumentSnapshot ds in value.docs){
           await FirebaseFirestore.instance.collection("Sorular").doc(ds.id).set({"tekrarNum":0,"tekrarYapilacak":DateTime.now().add(Duration(days: 2)),"tekrarTime":DateTime.now(),"tekrar":true},SetOptions(merge: true));
-          }
+          }*//*
     });*/
     setState(() {});
   }
@@ -117,7 +120,6 @@ class _TodaysRepeatState extends State<TodaysRepeat>
                                       unselectedLabelColor: Color(0xFF4D4FBB),
                                       controller: tabController,
                                       onTap: (index) {
-                                        // Tab index when user select it, it start from zero
                                         setState(() {
                                           if (index == 0) {
                                             dersler = MyStrings().classesTYT;
@@ -159,7 +161,7 @@ class _TodaysRepeatState extends State<TodaysRepeat>
                               Expanded(
                                 child: StreamBuilder(
                                   stream: FirebaseFirestore.instance
-                                      .collection("Sorular")
+                                      .collection("Sorular").where("ders",isEqualTo:"Coğrafya").where("konu",isEqualTo: "Doğa ve İnsan")
                                       .where("paylasanID", isEqualTo: user.uid)
                                       .orderBy("date",
                                           descending:

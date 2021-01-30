@@ -7,8 +7,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:soru_defteri/UI/Home/MyProfile.dart';
 import 'package:soru_defteri/UI/Settings/Kredi.dart';
+import 'package:soru_defteri/UI/Settings/hakkimizda.dart';
+import 'package:soru_defteri/UI/Sign/GizlilikP.dart';
+import 'package:soru_defteri/UI/Sign/KullanimK.dart';
 import 'package:soru_defteri/UI/Sign/SignIn.dart';
 
 class Settings extends StatefulWidget {
@@ -73,127 +78,153 @@ class _SettingsState extends State<Settings> {
           ),
           body: allLoaded
               ? Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle, color: Colors.white),
-                              height: MediaQuery.of(context).size.height / 18 * 2,
-                              width: MediaQuery.of(context).size.height / 18 * 2,
-                            ),
-                            GestureDetector(
-                              onTap: ()=>changeProfile(),
-                              child: ppURL != null
-                                  ? CircleAvatar(
-                                      radius:
-                                          MediaQuery.of(context).size.height / 20,
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(ppURL),
-                                    )
-                                  : Container(
-                                      height:
-                                          MediaQuery.of(context).size.height / 10,
-                                      width:
-                                          MediaQuery.of(context).size.height / 10,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xFF6E719B)),
-                                      child: FittedBox(
-                                          child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text(
-                                          realName[0],
-                                          style: TextStyle(
-                                              color: Colors.white, fontSize: 100),
-                                        ),
-                                      )),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle, color: Colors.white),
+                                    height: MediaQuery.of(context).size.height / 18 * 2,
+                                    width: MediaQuery.of(context).size.height / 18 * 2,
+                                  ),
+                                  GestureDetector(
+                                    onTap: ()=>changeProfile(),
+                                    child: ppURL != null
+                                        ? CircleAvatar(
+                                            radius:
+                                                MediaQuery.of(context).size.height / 20,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(ppURL),
+                                          )
+                                        : Container(
+                                            height:
+                                                MediaQuery.of(context).size.height / 10,
+                                            width:
+                                                MediaQuery.of(context).size.height / 10,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Color(0xFF6E719B)),
+                                            child: FittedBox(
+                                                child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: Text(
+                                                realName[0],
+                                                style: TextStyle(
+                                                    color: Colors.white, fontSize: 100),
+                                              ),
+                                            )),
+                                          ),
+                                  ),
+                                  !ppLoad
+                                      ? Container(
+                                    height: (MediaQuery.of(context).size.height / 20)*2,
+                                    width: (MediaQuery.of(context).size.height / 20)*2,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white24,
                                     ),
-                            ),
-                            !ppLoad
-                                ? Container(
-                              height: (MediaQuery.of(context).size.height / 20)*2,
-                              width: (MediaQuery.of(context).size.height / 20)*2,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white24,
+                                    child: Center(
+                                      child:
+                                      CircularProgressIndicator(),
+                                    ),
+                                  )
+                                      : Container()
+                                ],
                               ),
-                              child: Center(
-                                child:
-                                CircularProgressIndicator(),
+                              SizedBox(height: 20,),
+                          StreamBuilder(stream: FirebaseFirestore.instance.collection("Users").doc(user.uid).snapshots(),builder: (context,AsyncSnapshot<DocumentSnapshot> snapshot){
+                            if(snapshot.hasData){
+                              return Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: MediaQuery.of(context).size.width / 15),
+                                    child: Text(snapshot.data["adsoyad"],
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600)),
+                                  ));
+                            }else{
+                              return Row(
+                                children: [
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: MediaQuery.of(context).size.width / 15),
+                                        child: JumpingDotsProgressIndicator(fontSize: 20,color: Colors.white,numberOfDots: 10,),
+                                      )),
+                                ],
+                              );
+
+                            }
+                          },),
+                              SizedBox(
+                                height: 3,
                               ),
-                            )
-                                : Container()
-                          ],
-                        ),
-                        SizedBox(height: 20,),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: MediaQuery.of(context).size.width / 15),
-                              child: Text(realName,
-                                  style: TextStyle(
+                              user.phoneNumber != null
+                                  ? Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left:
+                                                MediaQuery.of(context).size.width / 15),
+                                        child: Text(user.phoneNumber,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w300)),
+                                      ))
+                                  : Container(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 0,horizontal: 20.0),
+                                child: ListView(
+                                  padding: EdgeInsets.zero,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  children: ListTile.divideTiles(
                                       color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600)),
-                            )),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        user.phoneNumber != null
-                            ? Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      left:
-                                          MediaQuery.of(context).size.width / 15),
-                                  child: Text(user.phoneNumber,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w300)),
-                                ))
-                            : Container(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 0,horizontal: 20.0),
-                          child: ListView(
-                            padding: EdgeInsets.zero,
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            children: ListTile.divideTiles(
-                                color: Colors.white,
-                                context: context,
-                                tiles: [
-                                  ListTile(title: Text("Profilim",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                  ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>Kredi())),title: Text("Krediler",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                  ListTile(title: Text("Hakkımızda",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                  ListTile(title: Text("Kullanım Koşulları",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                  ListTile(title: Text("Gizlilik Politikası",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                  ListTile(title: Text("Davet Et & Kazan",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                  ListTile(onTap: ()=>cikis(),title: Text("Çıkış",style: TextStyle(color: Color(0xFFFF0000),fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                ]).toList(),
+                                      context: context,
+                                      tiles: [
+                                        ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyProfile())),title: Text("Profilim",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                        ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>Kredi())),title: Text("Krediler",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                        ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>Hakkimizda())),title: Text("Hakkımızda",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                        ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>KullanimK())),title: Text("Kullanım Koşulları",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                        ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>GizlilikP())),title: Text("Gizlilik Politikası",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                        ListTile(title: Text("Davet Et & Kazan",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                        ListTile(onTap: ()=>cikis(),title: Text("Çıkış",style: TextStyle(color: Color(0xFFFF0000),fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                      ]).toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height /
+                                    8,
+                              ),
+
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height /
-                              8,
-                        ),
-                        
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 20,),
+                      Image.asset("assets/images/justLabel.png",scale: 4,),
+                      SizedBox(height: 20,)
+                    ],
                   ),
                 )
               : Center(

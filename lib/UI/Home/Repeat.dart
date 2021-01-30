@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:soru_defteri/UI/Home/TumSoruDers.dart';
+import 'package:soru_defteri/UI/SoruIci.dart';
 import 'package:soru_defteri/UI/SoruKategori/TodaysRepeat.dart';
 
 class Repeat extends StatefulWidget {
@@ -13,11 +17,20 @@ class _RepeatState extends State<Repeat> {
 
   User user = FirebaseAuth.instance.currentUser;
 
+  List<DocumentSnapshot> favQuests=[];
+  List<DocumentSnapshot> shuffleQuests=[];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    startSync();
+  }
+
+  startSync()async{
+    await FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).where("liked",arrayContains: user.uid).get().then((docs) => favQuests=docs.docs);
+    await FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).get().then((value) => shuffleQuests=value.docs);
+    print(shuffleQuests);
   }
 
   @override
@@ -304,7 +317,10 @@ class _RepeatState extends State<Repeat> {
                                         .width / 30,),
                                     Expanded(
                                       child: GestureDetector(
-                                        onTap: () => null,
+                                        onTap: () {
+                                          shuffle(shuffleQuests);
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>SoruCoz(doc: shuffleQuests[0], docList: shuffleQuests,shuffle: true,)));
+                                        },
 
                                         child: ClipRRect(
                                             borderRadius: BorderRadius
@@ -422,8 +438,7 @@ class _RepeatState extends State<Repeat> {
                                   children: [
                                     Expanded(
                                       child: GestureDetector(
-                                        onTap: () => null,
-
+                                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>SoruCoz(doc: favQuests[0], docList: favQuests,shuffle: true,))),
                                         child: ClipRRect(
                                             borderRadius: BorderRadius
                                                 .only(
@@ -525,7 +540,7 @@ class _RepeatState extends State<Repeat> {
                                         .width / 30,),
                                     Expanded(
                                       child: GestureDetector(
-                                        onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>null)),
+                                        onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>TumSoruDersler())),
                                         child: ClipRRect(
                                             borderRadius: BorderRadius
                                                 .only(
@@ -643,4 +658,22 @@ class _RepeatState extends State<Repeat> {
       ),
     );
   }
+
+  List shuffle(List items) {
+    var random = new Random();
+
+    // Go through all elements.
+    for (var i = items.length - 1; i > 0; i--) {
+
+      // Pick a pseudorandom number according to the list length
+      var n = random.nextInt(i + 1);
+
+      var temp = items[i];
+      items[i] = items[n];
+      items[n] = temp;
+    }
+
+    return items;
+  }
+
 }

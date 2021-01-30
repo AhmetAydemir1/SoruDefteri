@@ -35,7 +35,7 @@ class _BottomNavState extends State<BottomNav> {
     }
     setState(() {
       childs = [
-        Settings(),
+        Container(),
         QuestionWall(),
         Repeat(),
         AddQuestion(
@@ -86,16 +86,20 @@ class _BottomNavState extends State<BottomNav> {
             backgroundColor: Color(0xFF4C5490),
             type: BottomNavigationBarType.fixed,
             onTap: (index) {
-              if (index == 3) {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            firstAdd ? SoruZorluk() : FirstAdd()));
+              if(index!=0) {
+                if (index == 3) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                          firstAdd ? SoruZorluk() : FirstAdd()));
+                }
+                setState(() {
+                  widget.currentIndex = index;
+                });
+              }else if(index==0){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Settings()));
               }
-              setState(() {
-                widget.currentIndex = index;
-              });
             },
             currentIndex: widget.currentIndex,
             items: <BottomNavigationBarItem>[
