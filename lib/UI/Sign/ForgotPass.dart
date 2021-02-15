@@ -13,12 +13,12 @@ class _ForgotPassState extends State<ForgotPass> {
   TextEditingController emailEdit=TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Container(      color: Color(0xFF6E719B),
+    return Container(      color: Color(0xFF6453F6),
 
       child: SafeArea(
         child: Scaffold(
           key: _scaffoldKey,
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             shadowColor: Colors.transparent,

@@ -36,11 +36,11 @@ class _TumSoruDerslerState extends State<TumSoruDersler>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             shadowColor: Colors.transparent,
@@ -73,7 +73,7 @@ class _TumSoruDerslerState extends State<TumSoruDersler>
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [
-                                    Color(0xFF4C5590),
+                                    Color(0xFF4F44DA),
                                     Color(0xFF8181A2)
                                   ],
                                   stops: [
@@ -89,7 +89,7 @@ class _TumSoruDerslerState extends State<TumSoruDersler>
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: Color(0xff6E719B),
+                                      color: Color(0xff6453F6),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(20))),
                                   child: Padding(
@@ -156,8 +156,8 @@ class _TumSoruDerslerState extends State<TumSoruDersler>
                                             begin: Alignment.topCenter,
                                             end: Alignment.bottomCenter,
                                             colors: [
-                                              Color(0xFF4E5691),
-                                              Color(0xFF5C6291)
+                                              Color(0xFF4843CA),
+                                              Color(0xFF5958B0)
                                             ],
                                           )),
                                           child: ListTile(
@@ -165,7 +165,7 @@ class _TumSoruDerslerState extends State<TumSoruDersler>
                                             contentPadding: EdgeInsets.zero,
                                             leading: Container(height: 50,width: 50,child: Align(child: Container(
                                               height: 30,width: 30,
-                                              decoration: BoxDecoration(shape: BoxShape.circle,color: Color(0xff5E6290)),
+                                              decoration: BoxDecoration(shape: BoxShape.circle,color: Color(0xff5652B5)),
                                               child: Center(
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(4.0),
@@ -178,8 +178,8 @@ class _TumSoruDerslerState extends State<TumSoruDersler>
                                               begin: Alignment.topCenter,
                                               end: Alignment.bottomCenter,
                                               colors: [
-                                                Color(0xFF4F5791),
-                                                Color(0xFF666991)
+                                                Color(0xFF4F44DA),
+                                                Color(0xFF8181A2)
                                               ],
                                             )),height: double.maxFinite,width: 40,child: Icon(Icons.arrow_forward,color: Colors.white,),),
                                           ),
@@ -191,8 +191,8 @@ class _TumSoruDerslerState extends State<TumSoruDersler>
                                             begin: Alignment.topCenter,
                                             end: Alignment.bottomCenter,
                                             colors: [
-                                              Color(0xFF4E5691),
-                                              Color(0xFF5C6291)
+                                              Color(0xFF4843CA),
+                                              Color(0xFF5958B0)
                                             ],
                                           )),
                                           child: ListTile(
@@ -200,7 +200,7 @@ class _TumSoruDerslerState extends State<TumSoruDersler>
                                             contentPadding: EdgeInsets.zero,
                                             leading: Container(height: 50,width: 50,child: Align(child: Container(
                                               height: 30,width: 30,
-                                              decoration: BoxDecoration(shape: BoxShape.circle,color: Color(0xff5E6290)),
+                                              decoration: BoxDecoration(shape: BoxShape.circle,color: Color(0xff5652B5)),
                                               child: Center(
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(4.0),
@@ -213,8 +213,8 @@ class _TumSoruDerslerState extends State<TumSoruDersler>
                                               begin: Alignment.topCenter,
                                               end: Alignment.bottomCenter,
                                               colors: [
-                                                Color(0xFF4F5791),
-                                                Color(0xFF666991)
+                                                Color(0xFF4F44DA),
+                                                Color(0xFF8181A2)
                                               ],
                                             )),height: double.maxFinite,width: 40,child: Icon(Icons.arrow_forward,color: Colors.white,),),
                                           ),

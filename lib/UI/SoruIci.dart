@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -33,8 +34,35 @@ class _SoruCozState extends State<SoruCoz> {
   int initialIndex;
   final ImagePicker _picker = ImagePicker();
   User user = FirebaseAuth.instance.currentUser;
+  List mottos=["Bugün içinde bulunduğunuz mücadele, yarın ihtiyacınız olan gücü geliştiriyor."
+
+  ,"Zor Sınavlar güçlü insanlar yetiştirir."
+
+  ,"Her şey sizin aksinize ilerliyor gibi geldiğinde uçakların rüzgarla birlikte değil rüzgara karşı uçtuğunu hatırlayın."
+
+  ,"Bugün sahip oldukların için teşekkür et ve yarın sahip olacakların için savaşmaya başla."
+
+  ,"Hayat her ne kadar zor görünse de, yapabileceğiniz ve başarabileceğiniz bir şey her zaman vardır."
+
+  ,"Dünyayı değiştirebilen insanlar buna inanacak kadar deli olanlardır."
+
+  ,"Kendini fetheden bir adam, savaşta bin kişiyi fetheden birinden daha büyüktür"
+
+  ,"Coşku, zekadan daha önemlidir."
+
+  ,"İş etiği ve tutku ikilisinin, yapamayacağı hiçbir şey yoktur."
+
+  ,"Yedi kez düş, sekiz kez ayağa kalk."
+
+  ,"Unutma: Her şampiyon bir zamanlar pes etmeyi reddeden bir yarışmacıydı."
+
+  ,"Geçmiş ne kadar zor olursa olsun, her zaman yeniden başlayabilirsiniz."
+
+  ,"Kendinizi kıyaslamak zorunda olduğunuz tek kişi geçmişteki sizsiniz."
+  ];
 
   ScrollController scrollController = ScrollController();
+  String myMotto;
 
   @override
   void initState() {
@@ -45,6 +73,7 @@ class _SoruCozState extends State<SoruCoz> {
       initialIndex =
           widget.docList.indexWhere((element) => element.id == widget.doc.id)
               .toInt();
+      myMotto=mottos[Random().nextInt(mottos.length)];
       //widget.docList.removeAt(initialIndex);
       //widget.docList.insert(0, currentDoc);
     });
@@ -125,14 +154,14 @@ class _SoruCozState extends State<SoruCoz> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           appBar: AppBar(
             shadowColor: Colors.transparent,
-            backgroundColor: Color(0xFF6E719B),
+            backgroundColor: Color(0xFF6453F6),
             title: Text("Soru Çözümü"),
           ),
           body: Container(
@@ -158,8 +187,8 @@ class _SoruCozState extends State<SoruCoz> {
                         gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [Color(0xFF4C5590), Color(0xFF8181A2)],
-                            stops: [0.6, 1])),
+                            colors: [Color(0xFF4F44DA), Color(0xFF8181A2)],
+                            stops: [0.5, 1])),
                     child: Center(
                       child: StreamBuilder(
                         stream: FirebaseFirestore.instance.collection("Sorular")
@@ -210,7 +239,7 @@ class _SoruCozState extends State<SoruCoz> {
                                           .size
                                           .width / 10),
                                   child: Text(
-                                    "Soru Çözmenin faydalarıyla alakalı motivasyon mottoları eklenmeli. Bu mottolar ünlü düşünürlerin başarıya dair söylemleri olabilir.",
+                                    myMotto,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w300),
@@ -337,7 +366,7 @@ class _SoruCozState extends State<SoruCoz> {
                                                       10.0),
                                                   child: IconButton(icon: Icon(
                                                     Icons.zoom_in,
-                                                    color: Color(0xFF6E719B),
+                                                    color: Color(0xFF6453F6),
                                                     size: 40,), onPressed: () {
                                                     Navigator.push(context,
                                                         MaterialPageRoute(
@@ -636,7 +665,7 @@ class _SoruCozState extends State<SoruCoz> {
                                                     Color(
                                                         0xFF00AD88),
                                                     Color(
-                                                        0xFF6E719B)
+                                                        0xFF6453F6)
                                                   ],
                                                   begin: Alignment
                                                       .topCenter,
@@ -809,12 +838,12 @@ class _SoruCozState extends State<SoruCoz> {
           return StatefulBuilder(
               builder: (context, setState) {
                 return Container(
-                  color: Color(0xFF6E719B),
+                  color: Color(0xFF6453F6),
                   child: Stack(
                     children: [
                       Scaffold(
                         extendBodyBehindAppBar: true,
-                        backgroundColor: Color(0xFF6E719B),
+                        backgroundColor: Color(0xFF6453F6),
                         appBar: AppBar(
                           title: Text("Çözüm Yükle"),
                           backgroundColor: Colors.transparent,
@@ -851,7 +880,7 @@ class _SoruCozState extends State<SoruCoz> {
                                           Text("Çözüm Fotoğrafını Çek",
                                               style: TextStyle(
                                                   fontSize: 20,
-                                                  color: Color(0xFF6E719B))),
+                                                  color: Color(0xFF6453F6))),
                                           SizedBox(height: MediaQuery
                                               .of(context)
                                               .size
@@ -1018,7 +1047,7 @@ class _SoruCozState extends State<SoruCoz> {
                                       child: Container(
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle, color: Color(
-                                            0xFF6E719B),
+                                            0xFF6453F6),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(15.0),
@@ -1050,7 +1079,7 @@ class _SoruCozState extends State<SoruCoz> {
       builder: (context) {
         return Scaffold(
           extendBodyBehindAppBar: true,
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           appBar: AppBar(
             title: Text("İpucu Yaz"),
             backgroundColor: Colors.transparent,
@@ -1071,119 +1100,121 @@ class _SoruCozState extends State<SoruCoz> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Color(0xFF333E88),
-                        Color(0xFF8181A2)
+                        Color(0xFF302DB2),
+                        Color(0xFF6453F6)
                       ],
                       stops: [
                         0.2,
                         0.7
                       ],),),
-                  child: Column(children: [
-                    SizedBox(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height / 50),
-                    Text("İpucu Önemlidir.", textAlign: TextAlign.center,
-                        style: TextStyle(color: Color(0xFF00AE87),
-                            fontSize: 20)),
-                    SizedBox(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height / 60),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                          "Eklediğin ipucu soruyu çözerken size büyük\nkolaylık sağlayacak..",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    SizedBox(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height / 50),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Container(decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(
-                              MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width / 30)), color: Colors.white),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15.0),
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: TextField(minLines: 10,
-                                  maxLines: 10,
-                                  maxLength: 200,
-                                  controller: ipucuEdit,
-                                  onChanged: (s) {
-                                    setState(() {
-
-                                    });
-                                  },
-                                  decoration: new InputDecoration(
-                                    border: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    errorBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,)),
-                            ),
-                          )),
-                    ),
-                    SizedBox(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height / 40),
-                    Container(
-                      height: 45.0,
-                      child: FlatButton(
-                        onPressed: () async {
-                          await FirebaseFirestore.instance.collection(
-                              "Sorular").doc(doc.id).set(
-                              {"ipucu": ipucuEdit.text.trim()},
-                              SetOptions(merge: true));
-                          Navigator.pop(context);
-                        },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(45.0)),
-                        padding: EdgeInsets.all(0.0),
-                        child: Ink(
-                          decoration: BoxDecoration(
-                              color: Color(0xFF00AE87),
-                              borderRadius: BorderRadius.circular(45.0)),
-                          child: Container(
-                            constraints: BoxConstraints(
-                                maxWidth: MediaQuery
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      SizedBox(
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height / 50),
+                      Text("İpucu Önemlidir.", textAlign: TextAlign.center,
+                          style: TextStyle(color: Color(0xFF00AE87),
+                              fontSize: 20)),
+                      SizedBox(
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height / 60),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                            "Eklediğin ipucu soruyu çözerken size büyük\nkolaylık sağlayacak..",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                      SizedBox(
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height / 50),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Container(decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(
+                                MediaQuery
                                     .of(context)
                                     .size
-                                    .width / 2.3,
-                                minHeight: 45.0),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "KAYDET",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 18),
+                                    .width / 30)), color: Colors.white),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15.0),
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: TextField(minLines: 10,
+                                    maxLines: 10,
+                                    maxLength: 200,
+                                    controller: ipucuEdit,
+                                    onChanged: (s) {
+                                      setState(() {
+
+                                      });
+                                    },
+                                    decoration: new InputDecoration(
+                                      border: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      disabledBorder: InputBorder.none,)),
+                              ),
+                            )),
+                      ),
+                      SizedBox(
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height / 40),
+                      Container(
+                        height: 45.0,
+                        child: FlatButton(
+                          onPressed: () async {
+                            await FirebaseFirestore.instance.collection(
+                                "Sorular").doc(doc.id).set(
+                                {"ipucu": ipucuEdit.text.trim()},
+                                SetOptions(merge: true));
+                            Navigator.pop(context);
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(45.0)),
+                          padding: EdgeInsets.all(0.0),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                color: Color(0xFF00AE87),
+                                borderRadius: BorderRadius.circular(45.0)),
+                            child: Container(
+                              constraints: BoxConstraints(
+                                  maxWidth: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width / 2.3,
+                                  minHeight: 45.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "KAYDET",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
                             ),
                           ),
                         ),
                       ),
+                      SizedBox(height: MediaQuery
+                          .of(context)
+                          .size
+                          .height / 50,),
+                      Text(doc.data().containsKey("ipucu") &&
+                          doc["ipucu"] == ipucuEdit.text
+                          ? "Kaydedildi"
+                          : "Kaydedilmedi",style: TextStyle(color: Colors.white),),
+                    ],
                     ),
-                    SizedBox(height: MediaQuery
-                        .of(context)
-                        .size
-                        .height / 50,),
-                    Text(doc.data().containsKey("ipucu") &&
-                        doc["ipucu"] == ipucuEdit.text
-                        ? "Kaydedildi"
-                        : "Kaydedilmedi"),
-                  ],
                   ),
                 ),
               );

@@ -1,10 +1,7 @@
 class MyStrings {
 
   List mistakes=[
-    "asdasd","dsadsa","sdasda",
-    "asdasd","dsadsa","sdasda",
-    "asdasd","dsadsa","sdasda",
-    "asdasd","dsadsa","sdasda",
+    "Dikkat Eksikliği","Bilgi Eksikliği","Soruyu Anlayamama","Yorum Eksikliği"
   ];
 
   List classesTYT = [
@@ -34,37 +31,39 @@ class MyStrings {
   ];
 
   List turkceTYT = [
-    "Ses Bilgisi",
-    "Dil Bilgisi",
-    "Noktalama İşaretleri",
-    "Yazım Kuralları",
-    "Anlatım Bozuklukları",
-    "Paragraf",
-    "Cümlede Anlam",
-    "Sözcükte Anlam",
+   "Sözcükte Anlam",
+  "Cümlede Anlam",
+  "Paragraf",
+  "Yazım Kuralları",
+  "Noktalama Kuralları",
+  "Ses Bilgisi",
+  "Sözcük Türleri",
+  "Cümle Ögeleri",
+  "Ekler",
+  "Anlatım Bozukluğu",
+  "Fiilde Çatı-Fiil"
   ];
 
   List matematikTYT = [
-    "Basit Eşitsizlikler",
-    "Bölünebilme Kuralları",
-    "Çarpanlara Ayırma",
-    "Denklem Çözme",
-    "Fonksiyonlar",
-    "İstatistik",
-    "Köklü Sayılar",
-    "Kümeler-Kartezyen Çarpım",
-    "Mantık",
-    "Mutlak Değer",
-    "OBEB-OKEK",
-    "Olasılık",
-    "Oran-Orantı",
-    "Permütasyon-Kombinasyon",
-    "Polinomlar",
-    "Problemler",
-    "Rasyonel Sayılar",
-    "Sayı Basamakları",
-    "Temel Kavramlar",
-    "Üslü Sayılar"
+  "Temel Kavramlar",
+  "Basamak Kavramı",
+  "Bölme ve Bölünebilme",
+  "EBOB – EKOK",
+  "Rasyonel Sayılar",
+  "Köklü İfadeler",
+  "Üslü İfadeler",
+  "Denklem Çözme",
+  "Basit Eşitsizlikler",
+  "Mutlak Değer",
+  "Çarpanlara Ayırma",
+  "Oran-Orantı",
+  "Problemler",
+  "Kümeler - Kartezyen Çarpım",
+  "Fonksiyonlar",
+  "Polinomlar",
+  "İstatistik (Veri)",
+  "Mantık",
+
   ];
 
   List matematikAYT = [
@@ -97,47 +96,39 @@ class MyStrings {
   ];
 
   List biyolojiTYT = [
+    "Yaşam Bilimi Biyoloji",
     "Canlıların Ortak Özellikleri",
     "Canlıların Temel Bileşenleri",
-    "Hücre ve Organelleri",
-    "Madde Geçişleri",
+    "Hücre ve Organeller",
     "Canlıların Sınıflandırılması",
-    "Hücre Bölünmeleri ve Üreme",
+    "Hücre Bölünmeleri",
     "Kalıtım",
-    "Ekosistem Ekoloji",
-    "Bitkiler Biyolojisi",
+    "Ekoloji ve Çevre Sorunları",
   ];
   List kimyaTYT = [
     "Kimya Bilimi",
-    "Atomun Yapısı",
-    "Periyodik Tablo",
-    "Maddenin Halleri",
+    "Atomun ve Periyodik Sistem",
     "Kimyasal Türler Arası Etkileşimler",
     "Kimyasal Hesaplamalar",
     "Kimyanın Temel Kanunları",
     "Asit, Baz ve Tuz",
     "Karışımlar",
-    "Kimya Her Yerde",
+    "Doğa ve Kimya",
   ];
   List dinTYT = [
     "Bilgi ve İnanç",
     "İbadetler",
     "Ahlak ve Değerler",
-    "Hz. Muhammed (S.A.V)",
+    "Hz. Muhammed'in Hayatı",
     "Vahiy ve Akıl",
     "İslam Düşüncesinde Yorumlar, Mezhepler",
-    "Din, Kültür ve Medeniyet",
   ];
   List geoTYT = [
     "Açılar ve Üçgenler",
-    "Çokgenler",
-    "Analitik Geometri",
-    "Yamuk",
-    "Eşkenar Dörtgen",
-    "Kare",
-    "Dikdörtgen",
+    "Çokgenler ve Dörtgenler",
     "Çember ve Daire",
     "Katı Cisimler",
+    "Analitik Geometri",
   ];
 
   List geoAYT = [
@@ -216,23 +207,24 @@ class MyStrings {
     "Modern Fiziğin Teknolojideki Uygulamaları",
   ];
   List tarihTYT = [
-    "Tarih Bilimine Giriş",
-    "İlk Türk Devletleri",
-    "İslam Tarihi",
-    "Türk-İslam Tarihi",
-    "Osmanlı Devletinin Kuruluşu",
-    "Osmanlı Devletinin Yükselme Dönemi",
-    "Yeniçağ’da Avrupa",
-    "19. yy’da Osmanlı Devleti",
-    "Osmanlı Kültür ve Medeniyeti",
-    "20. yy’da Osmanlı Devleti",
-    "1. Dünya Savaşı",
-    "Kurtuluş Savaşı’na Hazırlık",
-    "Mondros-İşgaller Ve Cemiyetler",
-    "1. TBMM Dönemi",
-    "Kurtuluş Savaşı",
-    "Atatürk ilke Ve İnkılapları",
-    "Dış Politika",
+  "Tarih Bilimine Giriş",
+  "İlk Türk Devletleri",
+  "İslam Tarihi",
+  "Türk-İslam Tarihi",
+  "Osmanlı Devl. Kuruluşu",
+  "Osmanlı Devl. Yükselme Dön.",
+  "Yeniçağ’da Avrupa",
+  "19. yy’da Osmanlı Devl.",
+  "Osmanlı Kültür ve Medeniyeti",
+  "20. yy’da Osmanlı Devleti",
+  "1. Dünya Savaşı",
+  "Kurtuluş Savaşı’na Hazırlık",
+  "Mondros-İşgaller Ve Cemiyetler",
+  "1.TBMM Dönemi",
+  "Kurtuluş Savaşı",
+  "Atatürk İlke Ve İnkılapları",
+  "Dış Politika",
+
   ];
   List tarihAYT = [
     "Tarih Bilimi",
@@ -260,25 +252,19 @@ class MyStrings {
     "Küreselleşen Dünya",
   ];
   List cografyaTYT = [
-    "Doğa ve İnsan",
+    "Doğa Ve İnsan",
     "Dünya’nın Şekli ve Hareketleri",
     "Coğrafi Konum",
     "Harita Bilgisi",
     "Atmosfer ve Sıcaklık",
-    "Basınç ve Rüzgarlar Nem",
-    "İklimler",
-    "Su – Toprak ve Bitkiler",
-    "Yağış ve Buharlaşma",
-    "İç Kuvvetler / Dış Kuvvetler",
-    "Doğal Afetler",
-    "Bölgeler",
-    "Yerleşme",
-    "Ekonomik Faaliyetler",
-    "Göç",
-    "Nüfus",
+    "İklim Bilgisi",
+    "İç ve Dış Kuvvetler",
+    "Nüfus ve Yerleşme",
     "Türkiye’nin Yer Şekilleri",
-    "Uluslararası Ulaşım Hatları",
-    "Çevre ve Toplum",
+    "Ekonomik Faaliyetler",
+    "Bölgeler",
+    "Doğal Afetler"
+
   ];
   List cografyaAYT = [
     "Dünya’nın Şekli ve Hareketleri",
@@ -330,16 +316,11 @@ class MyStrings {
   List fizikTYT = [
     "Fizik Bilimine Giriş",
     "Madde Ve Özellikleri",
-    "Sıvıların Kaldırma Kuvveti",
-    "Basınç",
-    "Isı, Sıcaklık ve Genleşme",
-    "Hareket",
-    "Dinamik",
-    "İş, Güç  ve  Enerji",
-    "Elektrostatik",
-    "Elektrik Akımı",
+    "Kuvvet ve Hareket",
+    "Isı ve Sıcaklık",
+    "Basınç ve Kaldırma Kuvveti",
+    "Elektrik ve Manyetizma",
     "Optik",
-    "Manyetizma",
     "Dalgalar",
   ];
 }

@@ -10,11 +10,11 @@ class SignInDone extends StatefulWidget {
 class _SignInDoneState extends State<SignInDone> {
   @override
   Widget build(BuildContext context) {
-    return Container(      color: Color(0xFF6E719B),
+    return Container(      color: Color(0xFF6453F6),
 
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             shadowColor: Colors.transparent,
@@ -53,19 +53,19 @@ class _SignInDoneState extends State<SignInDone> {
                         scale: 5,
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 20,
+                        height: MediaQuery.of(context).size.height / 40,
                       ),
                       Text(
                         "İşlem Tamam!",
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 15,
+                        height: MediaQuery.of(context).size.height / 20,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.height / 15),
                         child: Text(
-                          " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\nBibendum est ultricies integer quis. Iaculis urna id",
+                          "Hoşgeldin,\nSoru defterim ile beraber senin sınavlara hazırlık sürecini, beraber en iyi şekilde kurgulayacağız. Yapamadıklarını kaydettiğinde biz senin için hatırlatacağız. Soruları neden yanlış yaptığını inceleyip, sana destek vereceğiz. Aynı zamanda en iyi soruları senin için seçip göstereceğiz.",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white, fontSize: 17),
                         ),

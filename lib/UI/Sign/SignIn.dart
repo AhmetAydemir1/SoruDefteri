@@ -38,11 +38,11 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(      color: Color(0xFF6E719B),
+    return Container(      color: Color(0xFF6453F6),
 
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           body: Stack(
             fit: StackFit.expand,
             children: [
@@ -96,7 +96,7 @@ class _SignInState extends State<SignIn> {
                                 minWidth: double.infinity,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(45)),
-                                color: Color(0xFF272063),
+                                color: Color(0xFF585B8B),
                                 onPressed: () => appleSignIn(),
                                 child: Row(
                                   children: [
@@ -211,7 +211,7 @@ class _SignInState extends State<SignIn> {
                             vertical: 5),
                         child: FlatButton(
                           height: 44,
-                          color: Color(0xFFFF007F),
+                          color: Color(0xFF41C6FF),
                           minWidth: double.infinity,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(45)),

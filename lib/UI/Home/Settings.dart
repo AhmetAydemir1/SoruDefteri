@@ -1,16 +1,14 @@
-import 'dart:async';
-import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:progress_indicators/progress_indicators.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soru_defteri/UI/Home/MyProfile.dart';
+import 'package:soru_defteri/UI/Settings/DavetEt.dart';
+import 'package:soru_defteri/UI/Settings/KodGenerate.dart';
 import 'package:soru_defteri/UI/Settings/Kredi.dart';
+import 'package:soru_defteri/UI/Settings/PremiumOldu%C4%B1.dart';
 import 'package:soru_defteri/UI/Settings/hakkimizda.dart';
 import 'package:soru_defteri/UI/Sign/GizlilikP.dart';
 import 'package:soru_defteri/UI/Sign/KullanimK.dart';
@@ -27,10 +25,8 @@ class _SettingsState extends State<Settings> {
   String realName;
   bool allLoaded = false;
   String phoneNumber;
-  bool ppLoad=true;
-  List<File> pimageList = [];
-  File pimage;
-  final picker = ImagePicker();
+  bool premium=false;
+
 
 
   cikis() {
@@ -56,6 +52,7 @@ class _SettingsState extends State<Settings> {
       setState(() {
         realName = doc.data().containsKey("adsoyad") ? doc["adsoyad"] : "";
         ppURL = doc.data().containsKey("pp") ? doc["pp"] : null;
+        premium=doc.data().containsKey("premium") ? doc["premium"] : false;
       });
     });
     setState(() {
@@ -66,14 +63,14 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           appBar: AppBar(
             shadowColor: Colors.transparent,
-            backgroundColor: Color(0xFF6E719B),
+            backgroundColor: Color(0xFF6453F6),
             title: Text("Ayarlar"),
           ),
           body: allLoaded
@@ -96,48 +93,31 @@ class _SettingsState extends State<Settings> {
                                     height: MediaQuery.of(context).size.height / 18 * 2,
                                     width: MediaQuery.of(context).size.height / 18 * 2,
                                   ),
-                                  GestureDetector(
-                                    onTap: ()=>changeProfile(),
-                                    child: ppURL != null
-                                        ? CircleAvatar(
-                                            radius:
-                                                MediaQuery.of(context).size.height / 20,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(ppURL),
-                                          )
-                                        : Container(
-                                            height:
-                                                MediaQuery.of(context).size.height / 10,
-                                            width:
-                                                MediaQuery.of(context).size.height / 10,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Color(0xFF6E719B)),
-                                            child: FittedBox(
-                                                child: Padding(
-                                              padding: const EdgeInsets.all(10.0),
-                                              child: Text(
-                                                realName[0],
-                                                style: TextStyle(
-                                                    color: Colors.white, fontSize: 100),
-                                              ),
-                                            )),
-                                          ),
-                                  ),
-                                  !ppLoad
-                                      ? Container(
-                                    height: (MediaQuery.of(context).size.height / 20)*2,
-                                    width: (MediaQuery.of(context).size.height / 20)*2,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white24,
-                                    ),
-                                    child: Center(
-                                      child:
-                                      CircularProgressIndicator(),
-                                    ),
-                                  )
-                                      : Container()
+                                  ppURL != null
+                                      ? CircleAvatar(
+                                          radius:
+                                              MediaQuery.of(context).size.height / 20,
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(ppURL),
+                                        )
+                                      : Container(
+                                          height:
+                                              MediaQuery.of(context).size.height / 10,
+                                          width:
+                                              MediaQuery.of(context).size.height / 10,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color(0xFF6453F6)),
+                                          child: FittedBox(
+                                              child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Text(
+                                              realName[0],
+                                              style: TextStyle(
+                                                  color: Colors.white, fontSize: 100),
+                                            ),
+                                          )),
+                                        ),
                                 ],
                               ),
                               SizedBox(height: 20,),
@@ -200,21 +180,17 @@ class _SettingsState extends State<Settings> {
                                       context: context,
                                       tiles: [
                                         ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyProfile())),title: Text("Profilim",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                        ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>Kredi())),title: Text("Krediler",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                        ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>premium ? PremiumOldu() : Kredi())),title: Text("Krediler",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
                                         ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>Hakkimizda())),title: Text("Hakkımızda",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
                                         ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>KullanimK())),title: Text("Kullanım Koşulları",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
                                         ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>GizlilikP())),title: Text("Gizlilik Politikası",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                        ListTile(title: Text("Davet Et & Kazan",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
-                                        ListTile(onTap: ()=>cikis(),title: Text("Çıkış",style: TextStyle(color: Color(0xFFFF0000),fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                        ListTile(onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>DavetEt())),title: Text("Davet Et & Kazan",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w300)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
+                                        ListTile(onTap: ()=>cikis(),title: Text("Çıkış",style: TextStyle(color: Color(0xFFFF0000),fontSize: 16,fontWeight: FontWeight.bold)),trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),),
                                       ]).toList(),
                                 ),
                               ),
                               SizedBox(
-                                height: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height /
-                                    8,
+                                height: 10,
                               ),
 
                             ],
@@ -222,7 +198,13 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                       SizedBox(height: 20,),
-                      Image.asset("assets/images/justLabel.png",scale: 4,),
+                      GestureDetector(onLongPress: ()async{
+                        await FirebaseFirestore.instance.collection("Editor").doc("Editor").get().then((doc){
+                          if(doc["editor"].contains(user.uid)){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>KodGenerate()));
+                          }
+                        });
+                      },child: Image.asset("assets/images/justLabel.png",scale: 4,)),
                       SizedBox(height: 20,)
                     ],
                   ),
@@ -235,64 +217,5 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  changeProfile() async {
-    setState(() {
-      ppLoad = false;
-    });
-    try {
-      final pickedFile = await picker.getImage(source: ImageSource.gallery);
-      if (pickedFile == null) {
-        setState(() {
-          ppLoad = true;
-        });
-        return null;
-      }
-      setState(() {
-        pimage = File(pickedFile.path);
-      });
-      String kapakurlsial;
-      //fotoyu upload et ve tokenini al
-      UploadTask uploadTask = FirebaseStorage.instance
-          .ref()
-          .child("Users")
-          .child(user.uid)
-          .child("ProfilePhoto")
-          .child("pp${user.uid}")
-          .putFile(pimage);
-      final StreamSubscription streamSubscription =
-      uploadTask.snapshotEvents.listen((event) {
-        print("stream subs çalışıyor.");
-      });
-      streamSubscription.cancel();
-      String docUrl = await (await uploadTask).ref.getDownloadURL();
-      kapakurlsial = docUrl;
-      //firestorea yazdır
-      Map<String, dynamic> kullaniciPrefs = Map();
-      kullaniciPrefs["pp"] = kapakurlsial;
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(user.uid)
-          .update(kullaniciPrefs)
-          .whenComplete(
-            () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          setState(() {
-            prefs.setString("ppURL", kapakurlsial);
-          });
-        },
-      );
-
-      await user.updateProfile(photoURL: kapakurlsial);
-      setState(() {
-        ppURL = kapakurlsial;
-      });
-    } on Exception catch (e) {
-      print(e.toString());
-    }
-
-    setState(() {
-      ppLoad = true;
-    });
-  }
 
 }

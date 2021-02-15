@@ -18,10 +18,10 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             shadowColor: Colors.transparent,
@@ -96,6 +96,7 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
                           child: Padding(
                             padding: const EdgeInsets.only(right:20.0),
                             child: InternationalPhoneNumberInput(
+                              initialValue: PhoneNumber(isoCode: "792"),
                               inputDecoration: InputDecoration(
                                 hintText: "Telefon numarası",
                                 border: InputBorder.none,

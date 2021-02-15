@@ -24,10 +24,10 @@ class _FirstAddState extends State<FirstAdd> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             shadowColor: Colors.transparent,

@@ -36,9 +36,9 @@ class _SignInPhoneVerificationState extends State<SignInPhoneVerification> {
     super.initState();
     startSync();
   }
-
+  Timer _timer;
   startSync() async {
-    Timer _timer = new Timer.periodic(
+    _timer = new Timer.periodic(
       Duration(seconds: 1),
       (Timer timer) {
         if (cntDwn == 0) {
@@ -59,11 +59,11 @@ class _SignInPhoneVerificationState extends State<SignInPhoneVerification> {
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
 
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             shadowColor: Colors.transparent,
@@ -565,5 +565,11 @@ class _SignInPhoneVerificationState extends State<SignInPhoneVerification> {
 
   resendCode() {
     phoneSignIn();
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _timer.cancel();
   }
 }

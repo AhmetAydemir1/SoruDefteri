@@ -3,10 +3,11 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:soru_defteri/UI/Home/TumSoruDers.dart';
 import 'package:soru_defteri/UI/SoruIci.dart';
-import 'package:soru_defteri/UI/SoruKategori/TodaysRepeat.dart';
+import 'package:soru_defteri/UI/Home/TodaysRepeat.dart';
 
 class Repeat extends StatefulWidget {
   @override
@@ -30,18 +31,17 @@ class _RepeatState extends State<Repeat> {
   startSync()async{
     await FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).where("liked",arrayContains: user.uid).get().then((docs) => favQuests=docs.docs);
     await FirebaseFirestore.instance.collection("Sorular").where("paylasanID",isEqualTo: user.uid).get().then((value) => shuffleQuests=value.docs);
-    print(shuffleQuests);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
           extendBodyBehindAppBar: true,
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           appBar: AppBar(
             shadowColor: Colors.transparent,
             backgroundColor: Colors.transparent,
@@ -54,7 +54,7 @@ class _RepeatState extends State<Repeat> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: AppBar().preferredSize.height + 20,
+                  height: AppBar().preferredSize.height,
                 ),
                 Expanded(
                   child: Padding(
@@ -76,7 +76,7 @@ class _RepeatState extends State<Repeat> {
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  Color(0xFF565D93),
+                                  Color(0xFF4F44DA),
                                   Color(0xFF8181A2)
                                 ],
                                 stops: [
@@ -137,12 +137,15 @@ class _RepeatState extends State<Repeat> {
                                                   if(snapshot.data.docs[i].data().containsKey("tekrarNum")&&snapshot.data.docs[i]["tekrarNum"]!=3){
                                                     if(snapshot.data.docs[i]["tekrarNum"]==0&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 1)))){
                                                       sayi=sayi+1;
+                                                      print(snapshot.data.docs[i].id);
 
                                                     }else if(snapshot.data.docs[i]["tekrarNum"]==1&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 6)))){
                                                       sayi=sayi+1;
+                                                      print(snapshot.data.docs[i].id);
 
                                                     }else if(snapshot.data.docs[i]["tekrarNum"]==2&&snapshot.data.docs[i]["tekrarTime"].toDate().isBefore(DateTime.now().subtract(Duration(days: 22)))){
                                                       sayi=sayi+1;
+                                                      print(snapshot.data.docs[i].id);
 
                                                     }
                                                   }
@@ -187,19 +190,22 @@ class _RepeatState extends State<Repeat> {
                             SizedBox(
                               height: 15,
                             ),
-                            RichText(
-                              textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.w300),
-                                    children: [
-                                      TextSpan(text: "Çözdüğün her soruyu "),
-                                      TextSpan(text: "en az 7 tekrar yaparak\n",
-                                          style: TextStyle(
-                                              color: Color(0xff00AE87),fontWeight: FontWeight.bold)),
-                                      TextSpan(
-                                          text: " tam olarak pekiştirebileceğini biliyor muydun?"),
-                                    ]
-                                )),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal:40.0),
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.w300),
+                                      children: [
+                                        TextSpan(text: "Çözdüğün soruları "),
+                                        TextSpan(text: "3 kez tekrar ederek\n",
+                                            style: TextStyle(
+                                                color: Color(0xff00AE87),fontWeight: FontWeight.bold)),
+                                        TextSpan(
+                                            text: "tam olarak pekiştirebilirsin. Benzer tarzda karşına çıkan sorular için, hazır olmuş olursun. "),
+                                      ]
+                                  )),
+                            ),
                             SizedBox(height: 30,),
                             Expanded(
                               child: Padding(
@@ -319,7 +325,11 @@ class _RepeatState extends State<Repeat> {
                                       child: GestureDetector(
                                         onTap: () {
                                           shuffle(shuffleQuests);
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>SoruCoz(doc: shuffleQuests[0], docList: shuffleQuests,shuffle: true,)));
+                                          if (shuffleQuests.isNotEmpty) {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>SoruCoz(doc: shuffleQuests[0], docList: shuffleQuests,shuffle: true,)));
+                                          }else{
+                                            Fluttertoast.showToast(msg: "Daha önce hiç soru yüklememişsiniz.");
+                                          }
                                         },
 
                                         child: ClipRRect(
@@ -438,7 +448,13 @@ class _RepeatState extends State<Repeat> {
                                   children: [
                                     Expanded(
                                       child: GestureDetector(
-                                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>SoruCoz(doc: favQuests[0], docList: favQuests,shuffle: true,))),
+                                        onTap: () {
+                                          if (favQuests.isNotEmpty) {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>SoruCoz(doc: favQuests[0], docList: favQuests,shuffle: true,)));
+                                          }else{
+                                            Fluttertoast.showToast(msg: "Daha önce hiç soru yüklememişsiniz.");
+                                          }
+                                        },
                                         child: ClipRRect(
                                             borderRadius: BorderRadius
                                                 .only(
@@ -641,7 +657,7 @@ class _RepeatState extends State<Repeat> {
                               ),
                             ),
                             SizedBox(
-                              height: AppBar().preferredSize.height+10,
+                              height: MediaQuery.of(context).padding.bottom+10,
                             ),
                           ],
                         ),
@@ -649,7 +665,7 @@ class _RepeatState extends State<Repeat> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
               ],
             ),

@@ -34,6 +34,7 @@ class _AddQuestionState extends State<AddQuestion>
   User user = FirebaseAuth.instance.currentUser;
   final ImagePicker _picker = ImagePicker();
   bool admin=false;
+  bool premium=false;
 
   AutoScrollController _autoScrollController;
   final scrollDirection = Axis.vertical;
@@ -103,6 +104,23 @@ class _AddQuestionState extends State<AddQuestion>
 
   startSync()async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
+    await FirebaseFirestore.instance.collection("Users").doc(user.uid).get().then((doc){
+      if(doc.data().containsKey("premium")){
+        if(doc["premium"]){
+          setState(() {
+            premium=true;
+          });
+        }else{
+          setState(() {
+            premium=false;
+          });
+        }
+      }else{
+        setState(() {
+          premium=false;
+        });
+      }
+    });
     if(prefs.getBool("admin")){
       setState(() {
         admin=true;
@@ -152,12 +170,12 @@ class _AddQuestionState extends State<AddQuestion>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
 
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             shadowColor: Colors.transparent,
@@ -174,7 +192,7 @@ class _AddQuestionState extends State<AddQuestion>
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Color(0xFF616798),
+                      color: Color(0xFF5C54D2),
                       borderRadius: BorderRadius.vertical(
                           top: Radius.circular(
                               MediaQuery
@@ -197,8 +215,8 @@ class _AddQuestionState extends State<AddQuestion>
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [
-                                    Color(0xFF4C5590),
-                                    Color(0xFF8181A2)
+                                    Color(0xFF4846BF),
+                                    Color(0xFF787897)
                                   ],
                                   stops: [
                                     0.6,
@@ -295,8 +313,8 @@ class _AddQuestionState extends State<AddQuestion>
                                                       Color(0xFF00AE87)
                                                     ]
                                                         : [
-                                                      Color(0xFF00828C),
-                                                      Color(0xFF00828C)
+                                                      Color(0xFF0079AE),
+                                                      Color(0xFF0079AE)
                                                     ],
                                                     begin:
                                                     Alignment.topCenter,
@@ -321,8 +339,8 @@ class _AddQuestionState extends State<AddQuestion>
                                                           Color(0xFF00AE87)
                                                         ]
                                                             : [
-                                                          Color(0xFF00828D),
-                                                          Color(0xFF00AD88)
+                                                          Color(0xFF0079AE),
+                                                          Color(0xFF0079AE)
                                                         ],
                                                         begin: Alignment
                                                             .topCenter,
@@ -411,8 +429,8 @@ class _AddQuestionState extends State<AddQuestion>
                                                     colors: !dersChoosen &&
                                                         !konuChoosen
                                                         ? [
-                                                      Color(0xFF6E719B),
-                                                      Color(0xFF6E719B)
+                                                      Color(0xFF6453F6),
+                                                      Color(0xFF6453F6)
                                                     ]
                                                         : dersChoosen &&
                                                         !konuChoosen ? [
@@ -549,8 +567,8 @@ class _AddQuestionState extends State<AddQuestion>
                                                         : !konuChoosen &&
                                                         !questionChoosen
                                                         ? [
-                                                      Color(0xFF6E719B),
-                                                      Color(0xFF6E719B)
+                                                      Color(0xFF6453F6),
+                                                      Color(0xFF6453F6)
                                                     ]
                                                         : konuChoosen &&
                                                         !questionChoosen ? [
@@ -1018,7 +1036,7 @@ class _AddQuestionState extends State<AddQuestion>
                                                                                       Color(
                                                                                           0xFF00AD88),
                                                                                       Color(
-                                                                                          0xFF6E719B)
+                                                                                          0xFF6453F6)
                                                                                     ],
                                                                                     begin: Alignment
                                                                                         .topCenter,
@@ -1293,8 +1311,8 @@ class _AddQuestionState extends State<AddQuestion>
                                                     colors: !questionChoosen &&
                                                         !solutionChoosen
                                                         ? [
-                                                      Color(0xFF6E719B),
-                                                      Color(0xFF6E719B)
+                                                      Color(0xFF6453F6),
+                                                      Color(0xFF6453F6)
                                                     ]
                                                         : questionChoosen &&
                                                         !solutionChoosen ? [
@@ -1776,9 +1794,45 @@ class _AddQuestionState extends State<AddQuestion>
                                             ),
                                           ),
                                         ),
+                                      ), _wrapScrollTag(
+                                          index:8,child:
+                                      Padding(
+                                            padding: const EdgeInsets.only(top:8.0),
+                                            child: Container(
+                                        height: 45.0,
+                                        width:MediaQuery.of(context).size.width/2.3,
+                                        child: FlatButton(
+
+                                               onPressed: () =>uploadQuest(),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45.0)),
+                                            minWidth:MediaQuery.of(context).size.width/2.3,
+                                            padding: EdgeInsets.all(0.0),
+                                            highlightColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            splashColor: Colors.transparent,
+                                            child: Ink(
+                                              decoration: BoxDecoration(
+                                                  color: Color(0xFF00AE87),
+                                                  borderRadius: BorderRadius.circular(45.0)
+                                              ),
+                                              child: Container(
+                                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width/2.3, minHeight: 45.0),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  "Soruyu Kaydet",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,fontSize: 18
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                        ),
                                       ),
-                                      _wrapScrollTag(
-                                        index:8,
+                                          )
+
+                                      ),                                      _wrapScrollTag(
+                                        index:9,
                                         child: SizedBox(
                                           height: MediaQuery
                                               .of(context)
@@ -2216,103 +2270,107 @@ class _AddQuestionState extends State<AddQuestion>
       await FirebaseFirestore.instance.collection("Users").doc(user.uid).get().then((doc){
         kredi=doc["kredi"];
       });
-      if(admin||kredi>0){
-        Navigator.pop(context);
-        Fluttertoast.showToast(msg:"Sorunuz yükleniyor lütfen uygulamayı kapatmayınız.",gravity: ToastGravity.CENTER);
-        String userName;
-        await FirebaseFirestore.instance.collection("Users").doc(user.uid)
-            .get()
-            .then((doc) {
-          userName = doc["userName"];
-        });
-        List questFilesURLS = [];
-        List solutFilesURLS = [];
-        String docIDUUID=Uuid().v4();
-        for(int i=0;i<questFileList.length;i++){
-          final filePath = questFileList[i].path;
-          print(filePath.split(".").last);
-          File mainFile;
-          if (filePath.split(".").last.toLowerCase() == "heic" ||
-              filePath.split(".").last.toLowerCase() == "heif") {
-            String jpegPath = await HeicToJpg.convert(filePath);
-            mainFile = File(jpegPath);
-          } else {
-            mainFile = File(filePath);
-          }
-          UploadTask uploadTask = FirebaseStorage.instance
-              .ref()
-              .child("Sorular")
-              .child(docIDUUID)
-              .child("Quest " + i.toString())
-              .putFile(mainFile);
-          final StreamSubscription streamSubscription =
-          uploadTask.snapshotEvents.listen((event) {
-            print("stream subs çalışıyor.");
+      if(admin||kredi>0||premium){
+        if (konu!=null&&ders!=null&&(questionChoosen||questionChoosingNow)) {
+          Navigator.pop(context);
+          Fluttertoast.showToast(msg:"Sorunuz yükleniyor lütfen uygulamayı kapatmayınız.",gravity: ToastGravity.CENTER);
+          String userName;
+          await FirebaseFirestore.instance.collection("Users").doc(user.uid)
+              .get()
+              .then((doc) {
+            userName = doc["userName"];
           });
-          streamSubscription.cancel();
-          String fotoURL = await (await uploadTask).ref.getDownloadURL();
-          questFilesURLS.add(fotoURL);
-
-        }
-        for(int i=0;i<solutFileList.length;i++){
-          final filePath = solutFileList[i].path;
-          print(filePath.split(".").last);
-          File mainFile;
-          if (filePath.split(".").last.toLowerCase() == "heic" ||
-              filePath.split(".").last.toLowerCase() == "heif") {
-            String jpegPath = await HeicToJpg.convert(filePath);
-            mainFile = File(jpegPath);
-          } else {
-            mainFile = File(filePath);
+          List questFilesURLS = [];
+          List solutFilesURLS = [];
+          String docIDUUID=Uuid().v4();
+          for(int i=0;i<questFileList.length;i++){
+            final filePath = questFileList[i].path;
+            print(filePath.split(".").last);
+            File mainFile;
+            if (filePath.split(".").last.toLowerCase() == "heic" ||
+                filePath.split(".").last.toLowerCase() == "heif") {
+              String jpegPath = await HeicToJpg.convert(filePath);
+              mainFile = File(jpegPath);
+            } else {
+              mainFile = File(filePath);
+            }
+            UploadTask uploadTask = FirebaseStorage.instance
+                .ref()
+                .child("Sorular")
+                .child(docIDUUID)
+                .child("Quest " + i.toString())
+                .putFile(mainFile);
+            final StreamSubscription streamSubscription =
+            uploadTask.snapshotEvents.listen((event) {
+              print("stream subs çalışıyor.");
+            });
+            streamSubscription.cancel();
+            String fotoURL = await (await uploadTask).ref.getDownloadURL();
+            questFilesURLS.add(fotoURL);
+          
           }
-          UploadTask uploadTask = FirebaseStorage.instance
-              .ref()
-              .child("Sorular")
-              .child(docIDUUID)
-              .child("Solut " + i.toString())
-              .putFile(mainFile);
-          final StreamSubscription streamSubscription =
-          uploadTask.snapshotEvents.listen((event) {
-            print("stream subs çalışıyor.");
-          });
-          streamSubscription.cancel();
-          String fotoURL = await (await uploadTask).ref.getDownloadURL();
-          solutFilesURLS.add(fotoURL);
-        }
-        Map<String, dynamic> questInfo = Map();
-        questInfo["soruFotos"] = questFilesURLS;
-        if(solutFilesURLS.isNotEmpty){
-          questInfo["cozumFotos"] = solutFilesURLS;
-        }
-        questInfo["ipucu"] = ipucuFinal;
-        questInfo["paylasanID"] = user.uid;
-        questInfo["date"] = DateTime.now();
-        questInfo["userName"] = userName;
-        questInfo["yayinEvi"]=widget.yayinEvi;
-        questInfo["zorluk"]=widget.zorluk;
-        questInfo["hata"]=mistake;
-        questInfo["sinav"]=sinav;
-        questInfo["ders"]=ders;
-        questInfo["konu"]=konu;
-        questInfo["tekrarNum"]=0;
-        questInfo["tekrarTime"]=DateTime.now();
-        questInfo["tekrarYapilacak"]=DateTime.now().add(Duration(days: 1));
-        questInfo["tekrar"]=true;
-        questInfo["liked"]=[];
-        questInfo["likeSayisi"]=0;
-
-        await FirebaseFirestore.instance.collection(admin?"EditorSorular":"Sorular").doc().set(questInfo);
-        if (!admin) {
-          await FirebaseFirestore.instance.collection("Users").doc(user.uid).set({"kredi":kredi-1},SetOptions(merge:true));
-        }
-
-        Fluttertoast.showToast(msg:"Sorunuz başarıyla yüklenmiştir.",gravity: ToastGravity.CENTER);
-        if (!admin) {
-          int id=RandomDigits.getInteger(10);
-
-          LocalNotification().scheduledNotify(id, "Tekrar etmen gereken sorular var!", "Bugünkü tekrarlarına göz atmayı unutma.",day: 1,hour: 0,minute: 0,second: 0);
-          LocalNotification().scheduledNotify(id, "Tekrar etmen gereken sorular var!", "Bugünkü tekrarlarına göz atmayı unutma.",day: 7,hour: 0,minute: 0,second: 0);
-          LocalNotification().scheduledNotify(id, "Tekrar etmen gereken sorular var!", "Bugünkü tekrarlarına göz atmayı unutma.",day: 28,hour: 0,minute: 0,second: 0);
+          for(int i=0;i<solutFileList.length;i++){
+            final filePath = solutFileList[i].path;
+            print(filePath.split(".").last);
+            File mainFile;
+            if (filePath.split(".").last.toLowerCase() == "heic" ||
+                filePath.split(".").last.toLowerCase() == "heif") {
+              String jpegPath = await HeicToJpg.convert(filePath);
+              mainFile = File(jpegPath);
+            } else {
+              mainFile = File(filePath);
+            }
+            UploadTask uploadTask = FirebaseStorage.instance
+                .ref()
+                .child("Sorular")
+                .child(docIDUUID)
+                .child("Solut " + i.toString())
+                .putFile(mainFile);
+            final StreamSubscription streamSubscription =
+            uploadTask.snapshotEvents.listen((event) {
+              print("stream subs çalışıyor.");
+            });
+            streamSubscription.cancel();
+            String fotoURL = await (await uploadTask).ref.getDownloadURL();
+            solutFilesURLS.add(fotoURL);
+          }
+          Map<String, dynamic> questInfo = Map();
+          questInfo["soruFotos"] = questFilesURLS;
+          if(solutFilesURLS.isNotEmpty){
+            questInfo["cozumFotos"] = solutFilesURLS;
+          }
+          questInfo["ipucu"] = ipucuFinal;
+          questInfo["paylasanID"] = user.uid;
+          questInfo["date"] = DateTime.now();
+          questInfo["userName"] = userName;
+          questInfo["yayinEvi"]=widget.yayinEvi;
+          questInfo["zorluk"]=widget.zorluk;
+          questInfo["hata"]=mistake;
+          questInfo["sinav"]=sinav;
+          questInfo["ders"]=ders;
+          questInfo["konu"]=konu;
+          questInfo["tekrarNum"]=0;
+          questInfo["tekrarTime"]=DateTime.now();
+          questInfo["tekrarYapilacak"]=DateTime.now().add(Duration(days: 1));
+          questInfo["tekrar"]=true;
+          questInfo["liked"]=[];
+          questInfo["likeSayisi"]=0;
+          
+          await FirebaseFirestore.instance.collection(admin?"EditorSorular":"Sorular").doc().set(questInfo);
+          if (!admin&&!premium) {
+            await FirebaseFirestore.instance.collection("Users").doc(user.uid).set({"kredi":kredi-1},SetOptions(merge:true));
+          }
+          
+          Fluttertoast.showToast(msg:"Sorunuz başarıyla yüklenmiştir.",gravity: ToastGravity.CENTER);
+          if (!admin) {
+            int id=RandomDigits.getInteger(5);
+          
+            LocalNotification().scheduledNotify(id, "Tekrar etmen gereken sorular var!", "Bugünkü tekrarlarına göz atmayı unutma.",day: 1,hour: 0,minute: 0,second: 0);
+            LocalNotification().scheduledNotify(id, "Tekrar etmen gereken sorular var!", "Bugünkü tekrarlarına göz atmayı unutma.",day: 7,hour: 0,minute: 0,second: 0);
+            LocalNotification().scheduledNotify(id, "Tekrar etmen gereken sorular var!", "Bugünkü tekrarlarına göz atmayı unutma.",day: 28,hour: 0,minute: 0,second: 0);
+          }
+        }else{
+          Fluttertoast.showToast(msg: "Boşlukları doldurunuz.");
         }
       }
       else{
@@ -2605,10 +2663,10 @@ class _AddQuestionState extends State<AddQuestion>
           context: context,
           builder: (context) {
             return Container(
-              color: Color(0xFF6E719B),
+              color: Color(0xFF6453F6),
               child: Scaffold(
                 extendBodyBehindAppBar: true,
-                backgroundColor: Color(0xFF6E719B),
+                backgroundColor: Color(0xFF6453F6),
                 appBar: AppBar(
                   title: Text("Soru Yükle"),
                   backgroundColor: Colors.transparent,
@@ -2642,7 +2700,7 @@ class _AddQuestionState extends State<AddQuestion>
                                     .size
                                     .height / 16,),
                                 Text("Soru Fotoğrafını Çek", style: TextStyle(
-                                    fontSize: 20, color: Color(0xFF6E719B))),
+                                    fontSize: 20, color: Color(0xFF6453F6))),
                                 SizedBox(height: MediaQuery
                                     .of(context)
                                     .size
@@ -2741,7 +2799,7 @@ class _AddQuestionState extends State<AddQuestion>
                               child: Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle, color: Color(
-                                    0xFF6E719B),
+                                    0xFF6453F6),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(15.0),
@@ -2772,10 +2830,10 @@ class _AddQuestionState extends State<AddQuestion>
           context: context,
           builder: (context) {
             return Container(
-              color: Color(0xFF6E719B),
+              color: Color(0xFF6453F6),
               child: Scaffold(
                 extendBodyBehindAppBar: true,
-                backgroundColor: Color(0xFF6E719B),
+                backgroundColor: Color(0xFF6453F6),
                 appBar: AppBar(
                   title: Text("Çözüm Yükle"),
                   backgroundColor: Colors.transparent,
@@ -2809,7 +2867,7 @@ class _AddQuestionState extends State<AddQuestion>
                                     .size
                                     .height / 16,),
                                 Text("Çözüm Fotoğrafını Çek", style: TextStyle(
-                                    fontSize: 20, color: Color(0xFF6E719B))),
+                                    fontSize: 20, color: Color(0xFF6453F6))),
                                 SizedBox(height: MediaQuery
                                     .of(context)
                                     .size
@@ -2912,7 +2970,7 @@ class _AddQuestionState extends State<AddQuestion>
                               child: Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle, color: Color(
-                                    0xFF6E719B),
+                                    0xFF6453F6),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(15.0),
@@ -2944,7 +3002,7 @@ class _AddQuestionState extends State<AddQuestion>
           builder: (context) {
             return Scaffold(
               extendBodyBehindAppBar: true,
-              backgroundColor: Color(0xFF6E719B),
+              backgroundColor: Color(0xFF6453F6),
               appBar: AppBar(
                 title: Text("Çözüm Yükle"),
                 backgroundColor: Colors.transparent,
@@ -2978,7 +3036,7 @@ class _AddQuestionState extends State<AddQuestion>
                                   .size
                                   .height / 16,),
                               Text("Çözüm Fotoğrafını Çek", style: TextStyle(
-                                  fontSize: 20, color: Color(0xFF6E719B))),
+                                  fontSize: 20, color: Color(0xFF6453F6))),
                               SizedBox(height: MediaQuery
                                   .of(context)
                                   .size
@@ -3076,7 +3134,7 @@ class _AddQuestionState extends State<AddQuestion>
                             padding: EdgeInsets.all(8.0),
                             child: Container(
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Color(0xFF6E719B),
+                                shape: BoxShape.circle, color: Color(0xFF6453F6),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(15.0),
@@ -3108,7 +3166,7 @@ class _AddQuestionState extends State<AddQuestion>
             },
             child: Scaffold(
               extendBodyBehindAppBar: true,
-              backgroundColor: Color(0xFF6E719B),
+              backgroundColor: Color(0xFF6453F6),
               appBar: AppBar(
                 title: Text("İpucu Yaz"),
                 backgroundColor: Colors.transparent,
@@ -3130,120 +3188,122 @@ class _AddQuestionState extends State<AddQuestion>
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Color(0xFF333E88),
-                            Color(0xFF8181A2)
+                            Color(0xFF302DB2),
+                            Color(0xFF6453F6)
                           ],
                           stops: [
                             0.2,
                             0.7
                           ],),),
-                      child: Column(children: [
-                        SizedBox(
-                            height: MediaQuery
-                                .of(context)
-                                .size
-                                .height / 50),
-                        Text("İpucu Önemlidir.", textAlign: TextAlign.center,
-                            style: TextStyle(color: Color(0xFF00AE87),
-                                fontSize: 20)),
-                        SizedBox(
-                            height: MediaQuery
-                                .of(context)
-                                .size
-                                .height / 60),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                              "Eklediğin ipucu soruyu çözerken size büyük\nkolaylık sağlayacak..",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                        SizedBox(
-                            height: MediaQuery
-                                .of(context)
-                                .size
-                                .height / 50),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Container(decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width / 30)), color: Colors.white),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: TextField(minLines: 10,
-                                      maxLines: 10,
-                                      maxLength: 200,
-                                      controller: ipucuEdit,
-                                      onChanged: (s) {
-                                        setState(() {
-
-                                        });
-                                      },
-                                      decoration: new InputDecoration(
-                                        border: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        errorBorder: InputBorder.none,
-                                        disabledBorder: InputBorder.none,)),
-                                ),
-                              )),
-                        ),
-                        SizedBox(
-                            height: MediaQuery
-                                .of(context)
-                                .size
-                                .height / 40),
-                        Container(
-                          height: 45.0,
-                          child: FlatButton(
-                            onPressed: ()async {
-                              setState(() {
-                                ipucuFinal = ipucuEdit.text;
-                              });
-                              Navigator.pop(context);
-                              setState((){
-                                ipucuFinal = ipucuEdit.text;
-                              });
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(45.0)),
-                            padding: EdgeInsets.all(0.0),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  color: Color(0xFF00AE87),
-                                  borderRadius: BorderRadius.circular(45.0)),
-                              child: Container(
-                                constraints: BoxConstraints(
-                                    maxWidth: MediaQuery
+                      child: SingleChildScrollView(
+                        child: Column(children: [
+                          SizedBox(
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 50),
+                          Text("İpucu Önemlidir.", textAlign: TextAlign.center,
+                              style: TextStyle(color: Color(0xFF00AE87),
+                                  fontSize: 20)),
+                          SizedBox(
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 60),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Text(
+                                "Eklediğin ipucu soruyu çözerken size büyük\nkolaylık sağlayacak..",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          SizedBox(
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 50),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Container(decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    MediaQuery
                                         .of(context)
                                         .size
-                                        .width / 2.3,
-                                    minHeight: 45.0),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "KAYDET",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
+                                        .width / 30)), color: Colors.white),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: TextField(minLines: 10,
+                                        maxLines: 10,
+                                        maxLength: 200,
+                                        controller: ipucuEdit,
+                                        onChanged: (s) {
+                                          setState(() {
+
+                                          });
+                                        },
+                                        decoration: new InputDecoration(
+                                          border: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          disabledBorder: InputBorder.none,)),
+                                  ),
+                                )),
+                          ),
+                          SizedBox(
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 40),
+                          Container(
+                            height: 45.0,
+                            child: FlatButton(
+                              onPressed: ()async {
+                                setState(() {
+                                  ipucuFinal = ipucuEdit.text;
+                                });
+                                Navigator.pop(context);
+                                setState((){
+                                  ipucuFinal = ipucuEdit.text;
+                                });
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(45.0)),
+                              padding: EdgeInsets.all(0.0),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF00AE87),
+                                    borderRadius: BorderRadius.circular(45.0)),
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width / 2.3,
+                                      minHeight: 45.0),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "KAYDET",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: MediaQuery
-                            .of(context)
-                            .size
-                            .height / 50,),
-                        Text(ipucuFinal == ipucuEdit.text
-                            ? "Kaydedildi"
-                            : "Kaydedilmedi"),
-                      ],),),
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height / 50,),
+                          Text(ipucuFinal == ipucuEdit.text
+                              ? "Kaydedildi"
+                              : "Kaydedilmedi",style: TextStyle(color: Colors.white)),
+                        ],),
+                      ),),
                   );
                 },
               ),

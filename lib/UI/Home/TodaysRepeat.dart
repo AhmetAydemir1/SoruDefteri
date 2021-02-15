@@ -50,11 +50,11 @@ class _TodaysRepeatState extends State<TodaysRepeat>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             shadowColor: Colors.transparent,
@@ -87,7 +87,7 @@ class _TodaysRepeatState extends State<TodaysRepeat>
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [
-                                    Color(0xFF4C5590),
+                                    Color(0xFF4F44DA),
                                     Color(0xFF8181A2)
                                   ],
                                   stops: [
@@ -103,7 +103,7 @@ class _TodaysRepeatState extends State<TodaysRepeat>
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: Color(0xff6E719B),
+                                      color: Color(0xff6453F6),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(20))),
                                   child: Padding(
@@ -161,7 +161,7 @@ class _TodaysRepeatState extends State<TodaysRepeat>
                               Expanded(
                                 child: StreamBuilder(
                                   stream: FirebaseFirestore.instance
-                                      .collection("Sorular").where("ders",isEqualTo:"Coğrafya").where("konu",isEqualTo: "Doğa ve İnsan")
+                                      .collection("Sorular")
                                       .where("paylasanID", isEqualTo: user.uid)
                                       .orderBy("date",
                                           descending:
@@ -253,7 +253,8 @@ class _TodaysRepeatState extends State<TodaysRepeat>
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF4E5691), Color(0xFF5C6291)],
+          colors: [Color(0xFF4843CA),
+            Color(0xFF5958B0)],
         ),
       ),
       child: ListTile(
@@ -295,7 +296,8 @@ class _TodaysRepeatState extends State<TodaysRepeat>
               gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF4F5791), Color(0xFF666991)],
+            colors: [Color(0xFF4842CA),
+              Color(0xFF6463A3)],
           )),
           height: 200,
           width: 40,

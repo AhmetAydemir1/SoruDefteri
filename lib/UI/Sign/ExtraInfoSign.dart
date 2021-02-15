@@ -21,6 +21,7 @@ class _SignInExtraInfoState extends State<SignInExtraInfo> {
 
   List<String> chooseClassList = [
     "9. Sınıf",
+    "10. Sınıf",
     "11. Sınıf",
     "12. Sınıf",
     "Mezun"
@@ -74,10 +75,10 @@ class _SignInExtraInfoState extends State<SignInExtraInfo> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           key: _scaffoldKey,
           extendBodyBehindAppBar: true,
           appBar: AppBar(
@@ -237,15 +238,15 @@ class _SignInExtraInfoState extends State<SignInExtraInfo> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Card(
-                                  color: Color(0xFF6E719B),
+                                  color: Color(0xFF6453F6),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8.0, vertical: 2),
                                     child: DropdownButton<String>(
-                                      dropdownColor: Color(0xFF6E719B),
-                                      focusColor: Color(0xFF6E719B),
+                                      dropdownColor: Color(0xFF6453F6),
+                                      focusColor: Color(0xFF6453F6),
                                       iconEnabledColor: Colors.white,
                                       hint: Text(
                                         "Sınıf Seçin",
@@ -289,15 +290,15 @@ class _SignInExtraInfoState extends State<SignInExtraInfo> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
                               child: Card(
-                                  color: Color(0xFF6E719B),
+                                  color: Color(0xFF6453F6),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8.0, vertical: 2),
                                     child: DropdownButton<String>(
-                                      dropdownColor: Color(0xFF6E719B),
-                                      focusColor: Color(0xFF6E719B),
+                                      dropdownColor: Color(0xFF6453F6),
+                                      focusColor: Color(0xFF6453F6),
                                       iconEnabledColor: Colors.white,
                                       hint: Text(
                                         "Alan Seçin",

@@ -1,7 +1,14 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:soru_defteri/UI/Home/Settings.dart' as settings;
 
 class MyProfile extends StatefulWidget {
   @override
@@ -16,9 +23,13 @@ class _MyProfileState extends State<MyProfile> {
   String sinif;
   String alan;
   String ppURL;
+  bool ppLoad=true;
+  File pimage;
+  final picker = ImagePicker();
 
   List<String> chooseClassList = [
     "9. Sınıf",
+    "10. Sınıf",
     "11. Sınıf",
     "12. Sınıf",
     "Mezun"
@@ -72,11 +83,11 @@ class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           appBar: AppBar(
             shadowColor: Colors.transparent,
             title: Text(
@@ -93,62 +104,79 @@ class _MyProfileState extends State<MyProfile> {
                       child: SingleChildScrollView(
                         child: Column(
                             children: [
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  ppURL != null
-                                      ? Stack(
-                                    alignment: Alignment.center,
-                                        children: [
-                                          Container(height: 80,width: 80,decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white
-                                          ),),
-                                          CircleAvatar(
-                                              radius: 35,
-                                              child: Container(
-                                                decoration: BoxDecoration(shape: BoxShape.circle),
-                                                height: 70,width: 70,
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.all(Radius.circular(100)),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: ppURL,
-                                                    fit: BoxFit.cover,
+                              GestureDetector(
+                                onTap: ()=>changeProfile(),
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    ppURL != null
+                                        ? Stack(
+                                      alignment: Alignment.center,
+                                          children: [
+                                            Container(height: 80,width: 80,decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white
+                                            ),),
+                                            CircleAvatar(
+                                                radius: 35,
+                                                child: Container(
+                                                  decoration: BoxDecoration(shape: BoxShape.circle),
+                                                  height: 70,width: 70,
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: ppURL,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
+                                          ],
+                                        )
+                                        : Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white),
+                                            height: 80,
+                                            width: 80,
+                                            child: Icon(
+                                              Icons.person,
+                                              size: 70,
+                                              color: Color(0xff00AE87),
                                             ),
-                                        ],
-                                      )
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white),
-                                          height: 80,
-                                          width: 80,
-                                          child: Icon(
-                                            Icons.person,
-                                            size: 70,
-                                            color: Color(0xff00AE87),
                                           ),
-                                        ),
-                                  Container(
-                                      height: 80,
-                                      width: 80,
-                                      child: Align(
-                                          alignment: Alignment.topRight,
-                                          child: Container(
-                                              height: 25,
-                                              width: 25,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Color(0xff00AE87)),
-                                              child: Icon(
-                                                Icons.add,
-                                                color: Colors.white,
-                                                size: 24,
-                                              )))),
-                                ],
+                                    Container(
+                                        height: 80,
+                                        width: 80,
+                                        child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Container(
+                                                height: 25,
+                                                width: 25,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Color(0xff00AE87)),
+                                                child: Icon(
+                                                  Icons.add,
+                                                  color: Colors.white,
+                                                  size: 24,
+                                                )))),
+                                    !ppLoad
+                                        ? Container(
+                                      height: (MediaQuery.of(context).size.height / 20)*2,
+                                      width: (MediaQuery.of(context).size.height / 20)*2,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white24,
+                                      ),
+                                      child: Center(
+                                        child:
+                                        CircularProgressIndicator(),
+                                      ),
+                                    )
+                                        : Container()
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: 10,
@@ -295,10 +323,10 @@ class _MyProfileState extends State<MyProfile> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20, right: 20),
                                     child: Container(
-                                        color: Color(0xFF6E719B),
+                                        color: Color(0xFF6453F6),
                                         child: DropdownButton<String>(
-                                          dropdownColor: Color(0xFF6E719B),
-                                          focusColor: Color(0xFF6E719B),
+                                          dropdownColor: Color(0xFF6453F6),
+                                          focusColor: Color(0xFF6453F6),
                                           iconEnabledColor: Colors.white,
                                           hint: Text(
                                             "Sınıf Seçin",
@@ -346,10 +374,10 @@ class _MyProfileState extends State<MyProfile> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20, right: 20),
                                     child: Container(
-                                        color: Color(0xFF6E719B),
+                                        color: Color(0xFF6453F6),
                                         child: DropdownButton<String>(
-                                          dropdownColor: Color(0xFF6E719B),
-                                          focusColor: Color(0xFF6E719B),
+                                          dropdownColor: Color(0xFF6453F6),
+                                          focusColor: Color(0xFF6453F6),
                                           iconEnabledColor: Colors.white,
                                           hint: Text(
                                             "Alan Seçin",
@@ -393,7 +421,8 @@ class _MyProfileState extends State<MyProfile> {
                                         }
                                         userInfo["sinif"]=sinif;
                                         userInfo["alan"]=alan;
-                                        Navigator.pop(context);
+                                        Navigator.popUntil(context, (route) => route.isFirst);
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>settings.Settings()));
                                         await FirebaseFirestore.instance.collection("Users").doc(user.uid).set(userInfo,SetOptions(merge: true));
                                       },
                                       shape: RoundedRectangleBorder(
@@ -436,4 +465,65 @@ class _MyProfileState extends State<MyProfile> {
       ),
     );
   }
+
+  changeProfile() async {
+    setState(() {
+      ppLoad = false;
+    });
+    try {
+      final pickedFile = await picker.getImage(source: ImageSource.gallery);
+      if (pickedFile == null) {
+        setState(() {
+          ppLoad = true;
+        });
+        return null;
+      }
+      setState(() {
+        pimage = File(pickedFile.path);
+      });
+      String kapakurlsial;
+      //fotoyu upload et ve tokenini al
+      UploadTask uploadTask = FirebaseStorage.instance
+          .ref()
+          .child("Users")
+          .child(user.uid)
+          .child("ProfilePhoto")
+          .child("pp${user.uid}")
+          .putFile(pimage);
+      final StreamSubscription streamSubscription =
+      uploadTask.snapshotEvents.listen((event) {
+        print("stream subs çalışıyor.");
+      });
+      streamSubscription.cancel();
+      String docUrl = await (await uploadTask).ref.getDownloadURL();
+      kapakurlsial = docUrl;
+      //firestorea yazdır
+      Map<String, dynamic> kullaniciPrefs = Map();
+      kullaniciPrefs["pp"] = kapakurlsial;
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(user.uid)
+          .update(kullaniciPrefs)
+          .whenComplete(
+            () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          setState(() {
+            prefs.setString("ppURL", kapakurlsial);
+          });
+        },
+      );
+
+      await user.updateProfile(photoURL: kapakurlsial);
+      setState(() {
+        ppURL = kapakurlsial;
+      });
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+
+    setState(() {
+      ppLoad = true;
+    });
+  }
+
 }

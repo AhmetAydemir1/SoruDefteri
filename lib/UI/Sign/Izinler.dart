@@ -24,10 +24,10 @@ class _IzinlerState extends State<Izinler> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           appBar: AppBar(title: Text("İletiyi Al"),backgroundColor: Colors.transparent,shadowColor: Colors.transparent,),
           body: Column(
             mainAxisSize: MainAxisSize.max,
@@ -39,7 +39,7 @@ class _IzinlerState extends State<Izinler> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height/10,right: 30,left: 30),
-                        child: Text("When one door of happiness closes, another opens, but often we look so long at the closed door that we do not see the one that has been opened for us. ",textAlign: TextAlign.center,style: TextStyle(color: Colors.white,),
+                        child: Text(" Sana yapamadıklarını hatırlatmamız ve gelişmeleri haber verebilmemiz için bildirimlerimize izin vermelisin.",textAlign: TextAlign.center,style: TextStyle(color: Colors.white,),
                       ),),
                       Image.asset("assets/images/izinler.png",fit: BoxFit.fitWidth,)
                     ],

@@ -17,11 +17,11 @@ class _SoruZorlukState extends State<SoruZorluk> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         child: Scaffold(
           extendBodyBehindAppBar: true,
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
@@ -37,7 +37,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
               Opacity(
                   opacity: 0.6,
                   child: Container(
-                    color: Color(0xFF6E719B),
+                    color: Color(0xFF6453F6),
                   )),
               SingleChildScrollView(
                 child: Column(
@@ -112,7 +112,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFF6E719B),
+                                      color: Color(0xFF6453F6),
                                       fontSize:
                                           MediaQuery.of(context).size.height /
                                               40),
@@ -128,7 +128,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                             Radius.circular(30)),
                                         gradient: LinearGradient(
                                             colors: [
-                                              Color(0xFF6E719B),
+                                              Color(0xFF6453F6),
                                               Color(0xFF636798)
                                             ],
                                             begin: Alignment.topCenter,
@@ -138,7 +138,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 5),
                                   child: Text(
-                                    "Bu soru oldukça zor!",
+                                    "Olmaz olsun böyle soru!",
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.white),
                                   ),
@@ -183,7 +183,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFF6E719B),
+                                      color: Color(0xFF6453F6),
                                       fontSize:
                                           MediaQuery.of(context).size.height /
                                               40),
@@ -199,7 +199,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                             Radius.circular(30)),
                                         gradient: LinearGradient(
                                             colors: [
-                                              Color(0xFF6E719B),
+                                              Color(0xFF6453F6),
                                               Color(0xFF636798)
                                             ],
                                             begin: Alignment.topCenter,
@@ -209,7 +209,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 5),
                                   child: Text(
-                                    "Bu soru sinirlerimi bozacak\nkadar zor!",
+                                    "Bu soru beni yıkmadı ama\nayakta da değilim!",
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.white),
                                   ),
@@ -256,7 +256,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFF6E719B),
+                                      color: Color(0xFF6453F6),
                                       fontSize:
                                           MediaQuery.of(context).size.height /
                                               40),
@@ -272,7 +272,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                             Radius.circular(30)),
                                         gradient: LinearGradient(
                                             colors: [
-                                              Color(0xFF6E719B),
+                                              Color(0xFF6453F6),
                                               Color(0xFF636798)
                                             ],
                                             begin: Alignment.topCenter,
@@ -282,7 +282,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 5),
                                   child: Text(
-                                    "Bu soru kolay ve\neğlenceli!",
+                                    "Bu soru kolay ve\nsınavda gelse yaparım!",
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.white),
                                   ),
@@ -327,7 +327,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFF6E719B),
+                                      color: Color(0xFF6453F6),
                                       fontSize:
                                           MediaQuery.of(context).size.height /
                                               40),
@@ -343,7 +343,7 @@ class _SoruZorlukState extends State<SoruZorluk> {
                                             Radius.circular(30)),
                                         gradient: LinearGradient(
                                             colors: [
-                                              Color(0xFF6E719B),
+                                              Color(0xFF6453F6),
                                               Color(0xFF636798)
                                             ],
                                             begin: Alignment.topCenter,

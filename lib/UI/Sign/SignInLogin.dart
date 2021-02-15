@@ -31,10 +31,10 @@ class _SignInLoginState extends State<SignInLogin> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(      color: Color(0xFF6E719B),
+    return Container(      color: Color(0xFF6453F6),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           key: _scaffoldKey,
           extendBodyBehindAppBar: true,
           appBar: AppBar(

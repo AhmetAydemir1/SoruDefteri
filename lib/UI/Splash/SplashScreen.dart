@@ -30,11 +30,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    precacheImage(Image.asset("assets/images/splashBG1.png").image, context);
+    precacheImage(Image.asset("assets/images/splashBG0.png").image, context);
     precacheImage(Image.asset("assets/images/splashLabel1.png").image, context);
-    precacheImage(Image.asset("assets/images/splashBG2.png").image, context);
     precacheImage(Image.asset("assets/images/splashLabel2.png").image, context);
-    precacheImage(Image.asset("assets/images/splashBG3.png").image, context);
     precacheImage(Image.asset("assets/images/splashLabel3.png").image, context);
   }
 
@@ -46,21 +44,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           body: Stack(
             fit: StackFit.expand,
             children: [
               Image.asset(
-                splashIndex == 0
-                    ? "assets/images/splashBG1.png"
-                    : splashIndex == 1
-                    ? "assets/images/splashBG2.png"
-                    : "assets/images/splashBG3.png",
+                "assets/images/splashBG0.png",
                 fit: BoxFit.fitHeight,
-                alignment: Alignment.centerLeft,
+                alignment: splashIndex==0? Alignment.centerLeft : splashIndex==1 ? Alignment.center : Alignment.centerRight,
               ),
               PageView(
                 controller: pageController,
@@ -96,8 +90,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width / 10),
                             child: Text(
-                              "Sorularını",
-                              style: TextStyle(color: Colors.white, fontSize: 45),
+                              "Sorularını Biriktir",
+                              style: TextStyle(color: Colors.white, fontSize: 45,fontWeight: FontWeight.w300),
                             ),
                           ),
                           Padding(
@@ -105,7 +99,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                 left: MediaQuery.of(context).size.width / 10,
                                 bottom: MediaQuery.of(context).size.height / 10),
                             child: Text(
-                              "Biriktir...",
+                              "Tekrarla...",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 45,
@@ -137,7 +131,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width / 10),
                             child: Text(
-                              "Tümünü",
+                              "Bizimle Beraber",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 25),
@@ -147,8 +141,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width / 10),
                             child: Text(
-                              "Defalarca",
-                              style: TextStyle(color: Colors.white, fontSize: 45),
+                              "Hafızanı",
+                              style: TextStyle(color: Colors.white, fontSize: 45,fontWeight: FontWeight.w300),
                             ),
                           ),
                           Padding(
@@ -156,7 +150,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                 left: MediaQuery.of(context).size.width / 10,
                                 bottom: MediaQuery.of(context).size.height / 10),
                             child: Text(
-                              "Çöz...",
+                              "Derinlemesine Kullan...",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 45,
@@ -198,8 +192,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width / 10),
                             child: Text(
-                              "Sınavdan",
-                              style: TextStyle(color: Colors.white, fontSize: 45),
+                              "Sınavda",
+                              style: TextStyle(color: Colors.white, fontSize: 45,fontWeight: FontWeight.w300),
                             ),
                           ),
                           Padding(
@@ -207,7 +201,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                 left: MediaQuery.of(context).size.width / 10,
                                 bottom: MediaQuery.of(context).size.height / 10),
                             child: Text(
-                              "Korkmak yok!",
+                              "Fark Yarat!",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 45,

@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soru_defteri/UI/AddQuest/AddQuest.dart';
 import 'package:soru_defteri/UI/AddQuest/FirstAdd.dart';
 import 'package:soru_defteri/UI/Home/QuestionWall.dart';
 import 'package:soru_defteri/UI/Home/Repeat.dart';
-import 'package:soru_defteri/UI/Home/Settings.dart';
+import 'package:soru_defteri/UI/Home/Settings.dart' as settings;
+import 'package:soru_defteri/UI/Settings/YetersizKredi.dart';
 
 import 'QuestDiff.dart';
 
@@ -23,6 +25,8 @@ class BottomNav extends StatefulWidget {
 class _BottomNavState extends State<BottomNav> {
   List childs;
   bool firstAdd = true;
+  User user=FirebaseAuth.instance.currentUser;
+  int kredi;
 
   @override
   void initState() {
@@ -44,27 +48,26 @@ class _BottomNavState extends State<BottomNav> {
         )
       ];
     });
+    gunlukKredi();
   }
 
-  startSync() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool("FirstAdd") == null) {
-      setState(() {
-        firstAdd = false;
-      });
-      prefs.setBool("FirstAdd", false);
-    } else {
-      setState(() {
-        firstAdd = prefs.getBool("FirstAdd");
-      });
-    }
+  gunlukKredi() async {
+    await FirebaseFirestore.instance.collection("Users").doc(user.uid)
+        .get()
+        .then((doc) async {
+          setState(() {
+            kredi=doc["kredi"];
+          });
+    });
+    print(kredi);
+    print("krediiii");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: childs[widget.currentIndex],
+      body: kredi!=null ? childs[widget.currentIndex]:Center(child: CircularProgressIndicator(),),
       bottomNavigationBar: bottomNavigationBar(),
     );
   }
@@ -92,13 +95,13 @@ class _BottomNavState extends State<BottomNav> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                          firstAdd ? SoruZorluk() : FirstAdd()));
+                          kredi!=0 ? SoruZorluk() : YetersizKredi()));
                 }
                 setState(() {
                   widget.currentIndex = index;
                 });
               }else if(index==0){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Settings()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>settings.Settings()));
               }
             },
             currentIndex: widget.currentIndex,

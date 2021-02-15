@@ -24,11 +24,11 @@ class _QuestionWallState extends State<QuestionWall> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color(0xFF6E719B),
+        color: Color(0xFF6453F6),
         child: SafeArea(
             bottom: false,
             child: Scaffold(
-              backgroundColor: Color(0xFF6E719B),
+              backgroundColor: Color(0xFF6453F6),
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
@@ -104,7 +104,7 @@ class _QuestionWallState extends State<QuestionWall> {
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.all(Radius.circular(30)),
                                                 gradient: LinearGradient(
-                                                    colors: [Color(0xFF6E719B),Color(0xFF8082A7)],
+                                                    colors: [Color(0xFF6453F6),Color(0xFF8082A7)],
                                                     begin: Alignment.topCenter,
                                                     end: Alignment.bottomCenter
                                                 ),
@@ -322,10 +322,10 @@ class _QuestionWallState extends State<QuestionWall> {
   myGradient(){
     return LinearGradient(
         colors: [
-          Color(0xFF8C8FB0),
-          Color(0xFF6E719B),
-          Color(0xFF6E719B),
-          Color(0xFF8C8FB0),
+          Color(0xFF8378F9),
+          Color(0xFF6453F6),
+          Color(0xFF6453F6),
+          Color(0xFF8378F9),
         ],
         stops: [
           0.1,

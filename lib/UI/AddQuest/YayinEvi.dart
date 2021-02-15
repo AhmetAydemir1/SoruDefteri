@@ -10,15 +10,7 @@ class YayinEvi extends StatefulWidget {
 
 class _YayinEviState extends State<YayinEvi> {
   List<String> yayinEvleri = [
-    "a yayınları",
-    "b yayınları",
-    "c yayınları",
-    "a yayınları",
-    "b yayınları",
-    "c yayınları",
-    "a yayınları",
-    "b yayınları",
-    "a yayınları",
+  "Apotemi", "Üç Dört Beş","Palme", "Karekök","Acil","Bilgi Sarmal","Hız ve Renk","Limit","Birey","Çap","Yayın Denizi","Tonguç Akademi","Sonuç","Sınav","Simya","Nihat Bilgin","Karaağaç","Final","Benim Hocam","3D","Diğer"
   ];
   List<bool> boolList;
   String yayinEvi;
@@ -38,11 +30,11 @@ class _YayinEviState extends State<YayinEvi> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF6E719B),
+      color: Color(0xFF6453F6),
       child: SafeArea(
         child: Scaffold(
           extendBodyBehindAppBar: true,
-          backgroundColor: Color(0xFF6E719B),
+          backgroundColor: Color(0xFF6453F6),
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
@@ -58,7 +50,7 @@ class _YayinEviState extends State<YayinEvi> {
               Opacity(
                   opacity: 0.6,
                   child: Container(
-                    color: Color(0xFF6E719B),
+                    color: Color(0xFF6453F6),
                   )),
               SingleChildScrollView(
                 child: Column(

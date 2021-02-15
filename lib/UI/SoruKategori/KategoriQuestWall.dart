@@ -86,11 +86,11 @@ class _KategoriQuestWallState extends State<KategoriQuestWall> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color(0xFF6E719B),
+        color: Color(0xFF6453F6),
         child: SafeArea(
             bottom: false,
             child: Scaffold(
-              backgroundColor: Color(0xFF6E719B),
+              backgroundColor: Color(0xFF6453F6),
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
@@ -351,7 +351,7 @@ class _KategoriQuestWallState extends State<KategoriQuestWall> {
                                                                 30)),
                                                     gradient: LinearGradient(
                                                         colors: [
-                                                          Color(0xFF6E719B),
+                                                          Color(0xFF6453F6),
                                                           Color(0xFF8082A7)
                                                         ],
                                                         begin:
@@ -807,10 +807,10 @@ class _KategoriQuestWallState extends State<KategoriQuestWall> {
 
   myGradient() {
     return LinearGradient(colors: [
-      Color(0xFF8C8FB0),
-      Color(0xFF6E719B),
-      Color(0xFF6E719B),
-      Color(0xFF8C8FB0),
+      Color(0xFF8378F9),
+      Color(0xFF6453F6),
+      Color(0xFF6453F6),
+      Color(0xFF8378F9),
     ], stops: [
       0.1,
       0.4,
